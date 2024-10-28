@@ -1,0 +1,26 @@
+node_modules/
+build/
+.DS_Store
+.idea
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.local
+dist
+dist-ssr
+coverage
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+*.suo
+.ntvs
+*.njsproj
+*.sln
+*.sw?
+yarn.lock
+package-lock.json

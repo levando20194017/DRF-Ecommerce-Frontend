@@ -1,0 +1,106 @@
+.stock-management {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.gallery-item {
+  cursor: pointer;
+  display: inline-block;
+  float: none;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  vertical-align: middle;
+  width: 150px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.gallery-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.strike-price {
+  text-decoration: line-through;
+}
+.gallery {
+  .canvas-visible {
+    opacity: 1;
+    transition: opacity 1s;
+  }
+
+  .canvas-hidden {
+    opacity: 0;
+  }
+  .btn-remove {
+    background-color: rgb(244, 33, 33);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    height: 32px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  .btn-select {
+    background-color: #262b40;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    height: 32px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .product-gallery {
+    min-height: 100px;
+    height: auto;
+    .btn-select-files {
+      width: 150px;
+      border: none;
+      height: 30px;
+      color: #262b40;
+      border: 1px solid #262b40;
+      background-color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      &:hover {
+        background-color: #262b40;
+        color: #fff;
+        transition: all 0.5s ease-in-out;
+      }
+    }
+  }
+  .images-show {
+    margin-bottom: 10px;
+    .delete {
+      color: red;
+      cursor: pointer;
+    }
+    .image-item {
+      padding: 10px;
+      border: 1px solid #d9d9d9;
+      &:hover {
+        border: 2px solid blue;
+      }
+    }
+    img {
+      height: 100px;
+      width: auto;
+    }
+  }
+}
+.fw-800 {
+  font-weight: 800;
+}
+.search-route-bar {
+  width: 40%;
+}
+
+.search-route-input {
+  width: 200px !important;
+}
+.input-group .form-control:not(:last-child) {
+  border-right: 1px solid black;
+}
