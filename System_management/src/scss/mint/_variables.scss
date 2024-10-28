@@ -75,7 +75,14 @@ $tertiary: #1b998b;
 $quaternary: #c96480;
 
 // Series names and colors. This can be extended or customized as desired. Just add more series and colors.
-$ct-series-names: (a, b, c, d, e, f, g) !default;
+$ct-series-names: (
+  a,
+  b,
+  c,
+  d,
+  e,
+  f,
+  g) !default;
 $ct-series-colors: (
   #1b998b,
   #17a5ce,
@@ -117,80 +124,76 @@ $behance: #0057ff;
 $reddit: #e84422;
 
 // Brand colors
-$brand-colors: ();
-$brand-colors: map-merge(
-  (
-    "facebook": $facebook,
-    "twitter": $twitter,
-    "google": $google,
-    "instagram": $instagram,
-    "pinterest": $pinterest,
-    "youtube": $youtube,
-    "slack": $slack,
-    "dribbble": $dribbble,
-    "dropbox": $dropbox,
-    "twitch": $twitch,
-    "paypal": $paypal,
-    "behance": $behance,
-    "reddit": $reddit,
-    "github": $github,
-  ),
-  $brand-colors
+$brand-colors: (
 );
+$brand-colors: map-merge(("facebook": $facebook,
+      "twitter": $twitter,
+      "google": $google,
+      "instagram": $instagram,
+      "pinterest": $pinterest,
+      "youtube": $youtube,
+      "slack": $slack,
+      "dribbble": $dribbble,
+      "dropbox": $dropbox,
+      "twitch": $twitch,
+      "paypal": $paypal,
+      "behance": $behance,
+      "reddit": $reddit,
+      "github": $github,
+    ),
+    $brand-colors);
 
 // Theme colors
-$theme-colors: ();
-$theme-colors: map-merge(
-  (
-    "primary": $primary,
-    "secondary": $secondary,
-    "tertiary": $tertiary,
-    "quaternary": $quaternary,
-    "primary-app": $primary-app,
-    "secondary-app": $secondary-app,
-    "light": $light,
-    "lighten": $lighten,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "white": $white,
-    "gray": $gray,
-    "indigo": $indigo,
-    "dark": $dark,
-    "soft": $soft,
-    "black": $black,
-    "blue": $blue,
-    "pink": $pink,
-    "cyan": $cyan,
-    "purple": $purple,
-    "soft-indigo": $soft-indigo,
-    "soft-green": $soft-green,
-    "gray-100": $gray-100,
-    "gray-200": $gray-200,
-    "gray-300": $gray-300,
-    "gray-400": $gray-400,
-    "gray-500": $gray-500,
-    "gray-600": $gray-600,
-    "gray-700": $gray-700,
-    "gray-800": $gray-800,
-    "facebook": $facebook,
-    "twitter": $twitter,
-    "google": $google,
-    "instagram": $instagram,
-    "pinterest": $pinterest,
-    "youtube": $youtube,
-    "slack": $slack,
-    "dribbble": $dribbble,
-    "dropbox": $dropbox,
-    "twitch": $twitch,
-    "paypal": $paypal,
-    "behance": $behance,
-    "reddit": $reddit,
-    "github": $github,
-  ),
-  $theme-colors
+$theme-colors: (
 );
+$theme-colors: map-merge(("primary": $primary,
+      "secondary": $secondary,
+      "tertiary": $tertiary,
+      "quaternary": $quaternary,
+      "primary-app": $primary-app,
+      "secondary-app": $secondary-app,
+      "light": $light,
+      "lighten": $lighten,
+      "success": $success,
+      "info": $info,
+      "warning": $warning,
+      "danger": $danger,
+      "white": $white,
+      "gray": $gray,
+      "indigo": $indigo,
+      "dark": $dark,
+      "soft": $soft,
+      "black": $black,
+      "blue": $blue,
+      "pink": $pink,
+      "cyan": $cyan,
+      "purple": $purple,
+      "soft-indigo": $soft-indigo,
+      "soft-green": $soft-green,
+      "gray-100": $gray-100,
+      "gray-200": $gray-200,
+      "gray-300": $gray-300,
+      "gray-400": $gray-400,
+      "gray-500": $gray-500,
+      "gray-600": $gray-600,
+      "gray-700": $gray-700,
+      "gray-800": $gray-800,
+      "facebook": $facebook,
+      "twitter": $twitter,
+      "google": $google,
+      "instagram": $instagram,
+      "pinterest": $pinterest,
+      "youtube": $youtube,
+      "slack": $slack,
+      "dribbble": $dribbble,
+      "dropbox": $dropbox,
+      "twitch": $twitch,
+      "paypal": $paypal,
+      "behance": $behance,
+      "reddit": $reddit,
+      "github": $github,
+    ),
+    $theme-colors);
 
 // Set a specific jump point for requesting color jumps
 $theme-color-interval: 8%;
@@ -355,38 +358,27 @@ $spacers: (
   3: $spacer,
   4: $spacer * 1.5,
   5: $spacer * 3,
-  6: (
-    $spacer * 5,
+  6: ($spacer * 5,
   ),
-  7: (
-    $spacer * 8,
+  7: ($spacer * 8,
   ),
-  8: (
-    $spacer * 10,
+  8: ($spacer * 10,
   ),
-  9: (
-    $spacer * 11,
+  9: ($spacer * 11,
   ),
-  10: (
-    $spacer * 14,
+  10: ($spacer * 14,
   ),
-  11: (
-    $spacer * 16,
+  11: ($spacer * 16,
   ),
-  12: (
-    $spacer * 20,
+  12: ($spacer * 20,
   ),
-  "sm": (
-    $spacer * 1,
+  "sm": ($spacer * 1,
   ),
-  "md": (
-    $spacer * 2,
+  "md": ($spacer * 2,
   ),
-  "lg": (
-    $spacer * 4,
+  "lg": ($spacer * 4,
   ),
-  "xl": (
-    $spacer * 8,
+  "xl": ($spacer * 8,
   ),
 );
 
@@ -518,20 +510,16 @@ $transition-tabs: all 0.2s;
 
 // scss-docs-start embed-responsive-aspect-ratios
 $embed-responsive-aspect-ratios: (
-  "21by9": (
-    x: 21,
+  "21by9": (x: 21,
     y: 9,
   ),
-  "16by9": (
-    x: 16,
+  "16by9": (x: 16,
     y: 9,
   ),
-  "4by3": (
-    x: 4,
+  "4by3": (x: 4,
     y: 3,
   ),
-  "1by1": (
-    x: 1,
+  "1by1": (x: 1,
     y: 1,
   ),
 );
@@ -546,21 +534,34 @@ $fontawesome-webfonts-path: "../vendor/font-awesome/webfonts";
 $font-awesome-5: "Font Awesome 5 Free";
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: "Nunito Sans", sans-serif;
+// stylelint-disable value-keyword-case
+$font-family-inter: "Inter", sans-serif;
 // stylelint-enable value-keyword-case
-$font-family-base: var(--bs-font-sans-serif);
+$font-family-base: "Inter", sans-serif;
 $font-family-code: var(--bs-font-monospace);
 
 // $font-size-root effects the value of `rem`, which is used for as well font sizes, paddings and margins
 // $font-size-base effects the font size of the body text
 $font-size-root: null;
 $font-size-base: 1rem; // Assumes the browser default, typically `16px`
-$font-size-xs: ($font-size-base * 0.75);
-$font-size-sm: ($font-size-base * 0.875);
-$font-size-md: ($font-size-base * 1);
-$font-size-lg: ($font-size-base * 1.25);
-$font-size-xl: ($font-size-base * 1.5);
-$font-size-xxl: ($font-size-base * 2);
+$font-size-xs: (
+  $font-size-base * 0.75
+);
+$font-size-sm: (
+  $font-size-base * 0.875
+);
+$font-size-md: (
+  $font-size-base * 1
+);
+$font-size-lg: (
+  $font-size-base * 1.25
+);
+$font-size-xl: (
+  $font-size-base * 1.5
+);
+$font-size-xxl: (
+  $font-size-base * 2
+);
 
 $font-weight-light: 300;
 $font-weight-normal: 400;
@@ -726,10 +727,8 @@ $input-btn-line-height: $line-height-base;
 
 $input-btn-focus-width: 0.2rem;
 $input-btn-focus-color-opacity: 0.25;
-$input-btn-focus-color: rgba(
-  $component-active-bg,
-  $input-btn-focus-color-opacity
-);
+$input-btn-focus-color: rgba($component-active-bg,
+    $input-btn-focus-color-opacity);
 $input-btn-focus-box-shadow: 0 0 0 $input-btn-focus-width $input-btn-focus-color;
 
 $input-btn-padding-y-sm: 0.25rem;
@@ -843,26 +842,16 @@ $input-height-border: $input-border-width * 2;
 
 $input-height-inner: add($input-line-height * 1em, $input-padding-y * 2);
 $input-height-inner-half: add($input-line-height * 0.5em, $input-padding-y);
-$input-height-inner-quarter: add(
-  $input-line-height * 0.25em,
-  calc($input-padding-y / 2)
-);
+$input-height-inner-quarter: add($input-line-height * 0.25em,
+    calc($input-padding-y / 2));
 
-$input-height: add(
-  $input-line-height * 1em,
-  add($input-padding-y * 2, $input-height-border, false)
-);
-$input-height-sm: add(
-  $input-line-height * 1em,
-  add($input-padding-y-sm * 2, $input-height-border, false)
-);
-$input-height-lg: add(
-  $input-line-height * 1em,
-  add($input-padding-y-lg * 2, $input-height-border, false)
-);
-$input-height-xl: calc(
-  #{$input-line-height * 1.5em} + #{$input-btn-padding-y-lg * 2} + #{$input-height-border}
-);
+$input-height: add($input-line-height * 1em,
+    add($input-padding-y * 2, $input-height-border, false));
+$input-height-sm: add($input-line-height * 1em,
+    add($input-padding-y-sm * 2, $input-height-border, false));
+$input-height-lg: add($input-line-height * 1em,
+    add($input-padding-y-lg * 2, $input-height-border, false));
+$input-height-xl: calc(#{$input-line-height * 1.5em} + #{$input-btn-padding-y-lg * 2} + #{$input-height-border});
 
 $input-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
@@ -910,10 +899,9 @@ $custom-toggle-disabled-bg: $gray-200;
 $custom-toggle-disabled-checked-bg: rgba($primary, 0.7);
 $custom-toggle-border-radius: 0.8rem;
 
-$custom-switch-indicator-size: calc(
-  #{$custom-control-indicator-size} - #{$custom-control-indicator-border-width *
-    4}
-);
+$custom-switch-indicator-size: calc(#{$custom-control-indicator-size} - #{$custom-control-indicator-border-width *
+ 4
+});
 
 $custom-checkbox-disabled-checked-color: $gray-800;
 
@@ -994,15 +982,10 @@ $form-select-bg-size: 16px 12px; // In pixels because image dimensions
 $form-select-indicator-color: $gray-800;
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-select-indicator-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/></svg>");
 
-$form-select-feedback-icon-padding-end: add(
-  1em * 0.75,
-  (2 * $form-select-padding-y * 0.75) + $form-select-padding-x +
-    $form-select-indicator-padding
-);
-$form-select-feedback-icon-position: center right
-  ($form-select-padding-x + $form-select-indicator-padding);
-$form-select-feedback-icon-size: $input-height-inner-half
-  $input-height-inner-half;
+$form-select-feedback-icon-padding-end: add(1em * 0.75,
+    (2 * $form-select-padding-y * 0.75) + $form-select-padding-x + $form-select-indicator-padding);
+$form-select-feedback-icon-position: center right ($form-select-padding-x + $form-select-indicator-padding);
+$form-select-feedback-icon-size: $input-height-inner-half $input-height-inner-half;
 
 $form-select-border-width: $input-border-width;
 $form-select-border-color: $input-border-color;
@@ -1011,8 +994,7 @@ $form-select-box-shadow: $box-shadow-inset;
 
 $form-select-focus-border-color: $input-focus-border-color;
 $form-select-focus-width: $input-focus-width;
-$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width
-  $input-btn-focus-color;
+$form-select-focus-box-shadow: 0 0 0 $form-select-focus-width $input-btn-focus-color;
 
 $form-select-padding-y-sm: $input-padding-y-sm;
 $form-select-padding-x-sm: $input-padding-x-sm;
@@ -1093,12 +1075,10 @@ $form-feedback-icon-invalid: url("data:image/svg+xml,<svg xmlns='http://www.w3.o
 
 // scss-docs-start form-validation-states
 $form-validation-states: (
-  "valid": (
-    "color": $form-feedback-valid-color,
+  "valid": ("color": $form-feedback-valid-color,
     "icon": $form-feedback-icon-valid,
   ),
-  "invalid": (
-    "color": $form-feedback-invalid-color,
+  "invalid": ("color": $form-feedback-invalid-color,
     "icon": $form-feedback-icon-invalid,
   ),
 );
@@ -1244,10 +1224,8 @@ $dropdown-bg: $white;
 $dropdown-border-color: $light;
 $dropdown-border-radius: $border-radius;
 $dropdown-border-width: $border-width;
-$dropdown-inner-border-radius: subtract(
-  $dropdown-border-radius,
-  $dropdown-border-width
-);
+$dropdown-inner-border-radius: subtract($dropdown-border-radius,
+    $dropdown-border-width);
 $dropdown-divider-bg: $gray-200;
 $dropdown-divider-margin-y: calc($spacer / 2);
 $dropdown-box-shadow: $box-shadow;
@@ -1387,10 +1365,8 @@ $popover-max-width: 276px;
 $popover-border-width: $border-width;
 $popover-border-color: rgba($black, 0.2);
 $popover-border-radius: $border-radius-lg;
-$popover-inner-border-radius: subtract(
-  $popover-border-radius,
-  $popover-border-width
-);
+$popover-inner-border-radius: subtract($popover-border-radius,
+    $popover-border-width);
 $popover-box-shadow: $box-shadow;
 
 $popover-header-bg: darken($popover-bg, 3%);
@@ -1457,10 +1433,8 @@ $modal-content-bg: $white;
 $modal-content-border-color: rgba($black, 0.2);
 $modal-content-border-width: $border-width;
 $modal-content-border-radius: $border-radius-lg;
-$modal-content-inner-border-radius: subtract(
-  $modal-content-border-radius,
-  $modal-content-border-width
-);
+$modal-content-inner-border-radius: subtract($modal-content-border-radius,
+    $modal-content-border-width);
 $modal-content-box-shadow-xs: $box-shadow-sm;
 $modal-content-box-shadow-sm-up: $box-shadow;
 
@@ -1645,10 +1619,8 @@ $datepicker-active-background: $secondary;
 $datepicker-active-box-shadow: none;
 
 $datepicker-range-background: $secondary;
-$datepicker-range-cell-focused-background: darken(
-  $datepicker-range-background,
-  5%
-);
+$datepicker-range-cell-focused-background: darken($datepicker-range-background,
+    5%);
 $datepicker-range-color: $white;
 $datepicker-range-highlighted-bg: $gray-200;
 
