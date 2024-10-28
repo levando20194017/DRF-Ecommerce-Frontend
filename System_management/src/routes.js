@@ -2,6 +2,7 @@ export const Routes = {
   DashboardOverview: { path: "/" },
   Login: { path: "/login" },
   Register: { path: "/register" },
+  ForgotPassword: { path: "/forgot-password" },
 
   Product: { path: "/product" },
   ProductEdit: { path: "/product/:id" },

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import SimpleBar from "simplebar-react";
 import { useLocation } from "react-router-dom";
@@ -25,11 +26,9 @@ import {
   Navbar,
 } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
-import { useMsal } from "@azure/msal-react";
 import { Routes } from "../../routes";
 import ReactHero from "../../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../../assets/img/team/profile-picture-3.jpg";
-import { roles } from "../../enums/common";
 
 const initialState = [false, false, false];
 function reducer(state, { type, index }) {
@@ -73,13 +72,10 @@ function Block({ isOpen, title, onToggle, children, icon }) {
 
 export default () => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  const { accounts } = useMsal();
 
   const location = useLocation();
   const { pathname } = location;
 
-  const isAdmin = accounts[0]?.idTokenClaims?.roles.includes(roles.ADMIN);
-  const includeStaff = accounts[0]?.idTokenClaims?.roles.includes(roles.STAFF);
   const NavItem = (props) => {
     const {
       title,
@@ -178,71 +174,61 @@ export default () => {
                 link={Routes.DashboardOverview.path}
                 icon={faChartPie}
               />
-              {isAdmin && (
-                <Block
-                  title="Products"
-                  icon={faShoppingBag}
-                  isOpen={state[0]}
-                  onToggle={() => dispatch({ type: "toggle", index: 0 })}
-                >
-                  <div style={{ marginLeft: "33px" }}>
-                    <NavItem
-                      title="Create Product"
-                      link={Routes.ProductCreate.path}
-                    />
-                    <NavItem title="List Product" link={Routes.Product.path} />
-                    <NavItem title="Catalog" link={Routes.Catalog.path} />
-                  </div>
-                </Block>
-              )}
-              {isAdmin && (
-                <Block
-                  title="Order"
-                  isOpen={state[1]}
-                  icon={faCartPlus}
-                  onToggle={() => dispatch({ type: "toggle", index: 1 })}
-                >
-                  <div style={{ marginLeft: "36px" }}>
-                    <NavItem title="List Order" link={Routes.Order.path} />
-                    <NavItem
-                      title="Transaction Log"
-                      link={Routes.Transaction.path}
-                    />
-                  </div>
-                </Block>
-              )}
-              {isAdmin && (
-                <NavItem
-                  title="Contact"
-                  link={Routes.Contact.path}
-                  icon={faUser}
-                />
-              )}
-              {includeStaff && (
-                <Block
-                  title="Blogs"
-                  isOpen={state[2]}
-                  icon={faNewspaper}
-                  onToggle={() => dispatch({ type: "toggle", index: 2 })}
-                >
-                  <div style={{ marginLeft: "36px" }}>
-                    <NavItem title="New blog" link={Routes.BlogCreate.path} />
-                    <NavItem title="Blogs" link={Routes.Blog.path} />
-                    <NavItem
-                      title="Categories"
-                      link={Routes.BlogCategory.path}
-                    />
-                    <NavItem title="Tags" link={Routes.BlogTag.path} />
-                  </div>
-                </Block>
-              )}
-              {isAdmin && (
-                <NavItem
-                  title="Setting"
-                  icon={faTools}
-                  link={Routes.Setting.path}
-                />
-              )}
+              <Block
+                title="Products"
+                icon={faShoppingBag}
+                isOpen={state[0]}
+                onToggle={() => dispatch({ type: "toggle", index: 0 })}
+              >
+                <div style={{ marginLeft: "33px" }}>
+                  <NavItem
+                    title="Create Product"
+                    link={Routes.ProductCreate.path}
+                  />
+                  <NavItem title="List Product" link={Routes.Product.path} />
+                  <NavItem title="Catalog" link={Routes.Catalog.path} />
+                </div>
+              </Block>
+              <Block
+                title="Order"
+                isOpen={state[1]}
+                icon={faCartPlus}
+                onToggle={() => dispatch({ type: "toggle", index: 1 })}
+              >
+                <div style={{ marginLeft: "36px" }}>
+                  <NavItem title="List Order" link={Routes.Order.path} />
+                  <NavItem
+                    title="Transaction Log"
+                    link={Routes.Transaction.path}
+                  />
+                </div>
+              </Block>
+              <NavItem
+                title="Contact"
+                link={Routes.Contact.path}
+                icon={faUser}
+              />
+              <Block
+                title="Blogs"
+                isOpen={state[2]}
+                icon={faNewspaper}
+                onToggle={() => dispatch({ type: "toggle", index: 2 })}
+              >
+                <div style={{ marginLeft: "36px" }}>
+                  <NavItem title="New blog" link={Routes.BlogCreate.path} />
+                  <NavItem title="Blogs" link={Routes.Blog.path} />
+                  <NavItem
+                    title="Categories"
+                    link={Routes.BlogCategory.path}
+                  />
+                  <NavItem title="Tags" link={Routes.BlogTag.path} />
+                </div>
+              </Block>
+              <NavItem
+                title="Setting"
+                icon={faTools}
+                link={Routes.Setting.path}
+              />
               <Dropdown.Divider className="my-3 border-indigo" />
             </Nav>
           </div>

@@ -26,8 +26,6 @@ import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import Preloader from "../components/layout/Preloader";
-import { useMsal } from "@azure/msal-react";
-import { roles } from "../enums";
 import InvalidPermission from "./invalidPermission/InvalidPermission";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {
@@ -64,41 +62,27 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     setShowSettings(!showSettings);
     localStorage.setItem("settingsVisible", !showSettings);
   };
-  const { accounts } = useMsal();
-  let isAdmin = false;
-  let isExistRole = false;
-  if (accounts[0]?.idTokenClaims?.roles?.length > 0) {
-    isAdmin = accounts[0]?.idTokenClaims?.roles?.includes(roles.ADMIN);
-    isExistRole = true;
-  }
+
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isExistRole === true) {
-          if (isAdmin === true) {
-            return (
-              <>
-                <Sidebar />
+        return (
+          <>
+            <Sidebar />
 
-                <main className="content">
-                  <Navbar />
-                  <div style={{ padding: "0 1rem 0 1rem" }}>
-                    <Component {...props} />
-                    <Footer
-                      toggleSettings={toggleSettings}
-                      showSettings={showSettings}
-                    />
-                  </div>
-                </main>
-              </>
-            );
-          } else {
-            return <Redirect to={Routes.NotFound.path} />;
-          }
-        } else {
-          return <Redirect to={Routes.InvalidPermission.path} />;
-        }
+            <main className="content">
+              <Navbar />
+              <div style={{ padding: "0 1rem 0 1rem" }}>
+                <Component {...props} />
+                <Footer
+                  toggleSettings={toggleSettings}
+                  showSettings={showSettings}
+                />
+              </div>
+            </main>
+          </>
+        );
       }}
     />
   );
@@ -117,41 +101,25 @@ const RouteWithSidebarStaff = ({ component: Component, ...rest }) => {
     setShowSettings(!showSettings);
     localStorage.setItem("settingsVisible", !showSettings);
   };
-  const { accounts } = useMsal();
-  let includeStaff = false;
-  let isExistRole = false;
-  if (accounts[0]?.idTokenClaims?.roles?.length > 0) {
-    includeStaff = accounts[0]?.idTokenClaims?.roles.includes(roles.STAFF);
-    isExistRole = true;
-  }
+
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isExistRole === true) {
-          if (includeStaff === true) {
-            return (
-              <>
-                <Sidebar />
+        <>
+          <Sidebar />
 
-                <main className="content">
-                  <Navbar />
-                  <div style={{ padding: "0 1rem 0 1rem" }}>
-                    <Component {...props} />
-                    <Footer
-                      toggleSettings={toggleSettings}
-                      showSettings={showSettings}
-                    />
-                  </div>
-                </main>
-              </>
-            );
-          } else {
-            return <Redirect to={Routes.NotFound.path} />;
-          }
-        } else {
-          return <Redirect to={Routes.InvalidPermission.path} />;
-        }
+          <main className="content">
+            <Navbar />
+            <div style={{ padding: "0 1rem 0 1rem" }}>
+              <Component {...props} />
+              <Footer
+                toggleSettings={toggleSettings}
+                showSettings={showSettings}
+              />
+            </div>
+          </main>
+        </>
       }}
     />
   );
