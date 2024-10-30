@@ -12,6 +12,7 @@ import Login from "./auth/login";
 import Register from "./auth/register";
 import Contact from "./contact";
 import Blog from "./blog";
+import ListPromotions from "./product/promotion"
 import BlogCreate from "./blog/create";
 import BlogTag from "./blog/tag/index";
 import BlogCategory from "./blog/category/index";
@@ -159,6 +160,7 @@ export default () => (
     />
     <RouteWithSidebar exact path={Routes.PromotionCreate.path} component={CreatePromotion} />
     <RouteWithSidebar exact path={Routes.PromotionUpdate.path} component={UpdatePromotion} />
+    <RouteWithSidebar exact path={Routes.Promotion.path} component={ListPromotions} />
 
     <RouteWithSidebarStaff exact path={Routes.Blog.path} component={Blog} />
     <RouteWithSidebarStaff
