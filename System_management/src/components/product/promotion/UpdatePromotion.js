@@ -73,7 +73,7 @@ export const UpdatePromotion = (props) => {
                             </Row>
                             <Row>
                                 <Col md={8} className="mb-3">
-                                    <Form.Group id="SKU">
+                                    <Form.Group id="SKU" className="form-from_date">
                                         <Form.Label>
                                             From Date <span className="text-danger">*</span>
                                         </Form.Label>
