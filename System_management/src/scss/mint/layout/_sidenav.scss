@@ -15,7 +15,7 @@
 
   @include media-breakpoint-up(md) {
     width: 100%;
-    max-width: 260px;
+    max-width: 300px;
   }
 
   .nav {
@@ -235,7 +235,7 @@
   @include transition(all 0.3s);
 
   @include media-breakpoint-up(md) {
-    margin-left: 260px;
+    margin-left: 300px;
   }
 }
 

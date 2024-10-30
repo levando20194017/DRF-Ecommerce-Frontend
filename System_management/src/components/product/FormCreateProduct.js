@@ -861,7 +861,7 @@ export const FormCreateProduct = ({
             </Col>
           </Row>
           <Row>
-            <Col md={4} className="mb-3">
+            <Col md={3} className="mb-3">
               <Form.Group id="SKU">
                 <Form.Label>
                   SKU <span className="text-danger">*</span>
@@ -883,7 +883,7 @@ export const FormCreateProduct = ({
                 <div className="text-danger">{skuError}</div>
               </Form.Group>
             </Col>
-            <Col md={4} className="mb-3">
+            <Col md={3} className="mb-3">
               <Form.Group id="code">
                 <Form.Label>
                   Product Code <span className="text-danger">*</span>
@@ -905,7 +905,7 @@ export const FormCreateProduct = ({
                 <div className="text-danger">{proCodeError}</div>
               </Form.Group>
             </Col>
-            <Col md={4} className="mb-3">
+            <Col md={3} className="mb-3">
               <Form.Group id="part_number">
                 <Form.Label>
                   Part number <span className="text-danger">*</span>

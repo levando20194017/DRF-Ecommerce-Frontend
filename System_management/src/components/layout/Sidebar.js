@@ -185,10 +185,41 @@ export default () => {
                     title="Create Product"
                     link={Routes.ProductCreate.path}
                   />
-                  <NavItem title="List Product" link={Routes.Product.path} />
-                  <NavItem title="Catalog" link={Routes.Catalog.path} />
+                  <NavItem title="List Products" link={Routes.Product.path} />
+                  <NavItem title="List Catalogs" link={Routes.Catalog.path} />
+                  <NavItem title="Create Catalog" link={Routes.CatalogCreate.path} />
+                  <NavItem title="List Promotions" link={Routes.Promotion.path} />
+                  <NavItem title="Create Promotion" link={Routes.PromotionCreate.path} />
                 </div>
               </Block>
+
+              <Block
+                title="Products Incoming"
+                icon={faShoppingBag}
+                isOpen={state[0]}
+                onToggle={() => dispatch({ type: "toggle", index: 0 })}
+              >
+                <div style={{ marginLeft: "33px" }}>
+                  <NavItem
+                    title="Add Product to Inventory"
+                    link={Routes.ProductCreate.path}
+                  />
+                  <NavItem title="List Products Incoming" link={Routes.Product.path} />
+
+                </div>
+              </Block>
+
+              <Block
+                title="Products Sold"
+                icon={faShoppingBag}
+                isOpen={state[0]}
+                onToggle={() => dispatch({ type: "toggle", index: 0 })}
+              >
+                <div style={{ marginLeft: "33px" }}>
+                  <NavItem title="List Products Sold" link={Routes.Product.path} />
+                </div>
+              </Block>
+
               <Block
                 title="Order"
                 isOpen={state[1]}

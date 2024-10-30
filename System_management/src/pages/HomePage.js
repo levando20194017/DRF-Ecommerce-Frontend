@@ -27,6 +27,8 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import Preloader from "../components/layout/Preloader";
 import InvalidPermission from "./invalidPermission/InvalidPermission";
+import UpdatePromotion from "./product/promotion/UpdatePromotion";
+import CreatePromotion from "./product/promotion/CreatePromotion";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -155,6 +157,9 @@ export default () => (
       path={Routes.CatalogUpdate.path}
       component={CatalogCreate}
     />
+    <RouteWithSidebar exact path={Routes.PromotionCreate.path} component={CreatePromotion} />
+    <RouteWithSidebar exact path={Routes.PromotionUpdate.path} component={UpdatePromotion} />
+
     <RouteWithSidebarStaff exact path={Routes.Blog.path} component={Blog} />
     <RouteWithSidebarStaff
       exact

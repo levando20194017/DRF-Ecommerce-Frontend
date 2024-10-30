@@ -5,11 +5,14 @@ export const Routes = {
   ForgotPassword: { path: "/forgot-password" },
 
   Product: { path: "/product" },
-  ProductEdit: { path: "/product/:id" },
+  ProductEdit: { path: "/product/update-product/:id" },
   ProductCreate: { path: "/product/create" },
   Catalog: { path: "/product/catalog" },
   CatalogCreate: { path: "/product/create-catalog" },
   CatalogUpdate: { path: "/product/update-catalog/:id" },
+  Promotion: { path: "/product/list-promotions" },
+  PromotionCreate: { path: "/product/create-promotion" },
+  PromotionUpdate: { path: "/product/update-promotion/:id" },
 
   Order: { path: "/order" },
 
