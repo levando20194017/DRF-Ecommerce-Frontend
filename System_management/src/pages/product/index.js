@@ -53,7 +53,7 @@ export default () => {
 
   return (
     <>
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2">
         <div className="w-100 mb-xl-0">
           <Breadcrumb
             className="d-none d-md-inline-block"
