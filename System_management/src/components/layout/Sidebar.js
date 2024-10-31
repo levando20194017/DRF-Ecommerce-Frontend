@@ -202,9 +202,9 @@ export default () => {
                 <div style={{ marginLeft: "33px" }}>
                   <NavItem
                     title="Add Product to Inventory"
-                    link={Routes.ProductCreate.path}
+                    link={Routes.ProductIncomingAdd.path}
                   />
-                  <NavItem title="List Products Incoming" link={Routes.Product.path} />
+                  <NavItem title="List Products Incoming" link={Routes.ProductIncoming.path} />
 
                 </div>
               </Block>

@@ -30,6 +30,9 @@ import Preloader from "../components/layout/Preloader";
 import InvalidPermission from "./invalidPermission/InvalidPermission";
 import UpdatePromotion from "./product/promotion/UpdatePromotion";
 import CreatePromotion from "./product/promotion/CreatePromotion";
+import ListProductsIncoming from "./product/product_incoming";
+import AddProductToStore from "../components/product/product_incoming/AddProductToStore";
+import CreateProductIncoming from "./product/product_incoming/CreateProductIncoming";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -161,6 +164,10 @@ export default () => (
     <RouteWithSidebar exact path={Routes.PromotionCreate.path} component={CreatePromotion} />
     <RouteWithSidebar exact path={Routes.PromotionUpdate.path} component={UpdatePromotion} />
     <RouteWithSidebar exact path={Routes.Promotion.path} component={ListPromotions} />
+
+    <RouteWithSidebar exact path={Routes.ProductIncoming.path} component={ListProductsIncoming} />
+    <RouteWithSidebar exact path={Routes.ProductIncomingAdd.path} component={CreateProductIncoming} />
+    <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={ListPromotions} />
 
     <RouteWithSidebarStaff exact path={Routes.Blog.path} component={Blog} />
     <RouteWithSidebarStaff

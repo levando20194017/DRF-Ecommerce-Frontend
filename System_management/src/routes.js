@@ -14,6 +14,10 @@ export const Routes = {
   PromotionCreate: { path: "/product/create-promotion" },
   PromotionUpdate: { path: "/product/update-promotion/:id" },
 
+  ProductIncoming: { path: "/product/list-products-incoming" },
+  ProductIncomingAdd: { path: "/product/add-product-to-store" },
+  ProductIncomingUpdate: { path: "/product/update-product-incoming/:id" },
+
   Order: { path: "/order" },
 
   Blog: { path: "/blogs" },
