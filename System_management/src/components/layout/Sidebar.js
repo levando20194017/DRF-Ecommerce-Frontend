@@ -30,13 +30,13 @@ import { Routes } from "../../routes";
 import ReactHero from "../../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../../assets/img/team/profile-picture-3.jpg";
 
-const initialState = [false, false, false];
+const initialState = [false, false, false, false, false];
 function reducer(state, { type, index }) {
   switch (type) {
     case "expand-all":
-      return [true, true, true];
+      return [true, true, true, true, true];
     case "collapse-all":
-      return [false, false, false];
+      return [false, false, false, false, false];
     case "toggle":
       let newState = [...state];
       newState[index] = !newState[index];
@@ -196,8 +196,8 @@ export default () => {
               <Block
                 title="Products Incoming"
                 icon={faShoppingBag}
-                isOpen={state[0]}
-                onToggle={() => dispatch({ type: "toggle", index: 0 })}
+                isOpen={state[1]}
+                onToggle={() => dispatch({ type: "toggle", index: 1 })}
               >
                 <div style={{ marginLeft: "33px" }}>
                   <NavItem
@@ -212,8 +212,8 @@ export default () => {
               <Block
                 title="Products Sold"
                 icon={faShoppingBag}
-                isOpen={state[0]}
-                onToggle={() => dispatch({ type: "toggle", index: 0 })}
+                isOpen={state[2]}
+                onToggle={() => dispatch({ type: "toggle", index: 2 })}
               >
                 <div style={{ marginLeft: "33px" }}>
                   <NavItem title="List Products Sold" link={Routes.Product.path} />
@@ -222,9 +222,9 @@ export default () => {
 
               <Block
                 title="Order"
-                isOpen={state[1]}
+                isOpen={state[3]}
                 icon={faCartPlus}
-                onToggle={() => dispatch({ type: "toggle", index: 1 })}
+                onToggle={() => dispatch({ type: "toggle", index: 3 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="List Order" link={Routes.Order.path} />
@@ -241,9 +241,9 @@ export default () => {
               />
               <Block
                 title="Blogs"
-                isOpen={state[2]}
+                isOpen={state[4]}
                 icon={faNewspaper}
-                onToggle={() => dispatch({ type: "toggle", index: 2 })}
+                onToggle={() => dispatch({ type: "toggle", index: 4 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="New blog" link={Routes.BlogCreate.path} />
@@ -251,6 +251,10 @@ export default () => {
                   <NavItem
                     title="Categories"
                     link={Routes.BlogCategory.path}
+                  />
+                  <NavItem
+                    title="New Category"
+                    link={Routes.BlogCategoryCreate.path}
                   />
                   <NavItem title="Tags" link={Routes.BlogTag.path} />
                 </div>

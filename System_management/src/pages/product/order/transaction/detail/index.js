@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {Breadcrumb} from "@themesberg/react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPlus} from "@fortawesome/free-solid-svg-icons";
-import {Link, useParams} from "react-router-dom";
-import {apiDetailTransaction} from "../../../../../services/transaction";
-import {status} from "../../../../../enums";
-import {DetailTransactionTable} from "../../../../../components/product/transaction/DetailTable";
+import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link, useParams } from "react-router-dom";
+import { apiDetailTransaction } from "../../../../../services/transaction";
+import { status } from "../../../../../enums";
+import { DetailTransactionTable } from "../../../../../components/product/transaction/DetailTable";
 import "./style.scss"
 
 export default () => {
     const [transaction, setTransaction] = useState({})
     const [transactionDetails, setTransactionDetails] = useState({})
-    const {id} = useParams();
+    const { id } = useParams();
     useEffect(() => {
         if (id) {
             getDetailTransaction()
@@ -32,11 +32,11 @@ export default () => {
 
     return (
         <>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="w-100 mb-4 mb-xl-0">
                     <Breadcrumb className="d-none d-md-inline-block"
-                                listProps={{className: "breadcrumb-dark breadcrumb-transparent"}}>
-                        <Breadcrumb.Item><FontAwesomeIcon icon={faHome}/></Breadcrumb.Item>
+                        listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+                        <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <Link to={'/order'}>Order</Link>
 
@@ -50,7 +50,7 @@ export default () => {
                 </div>
             </div>
 
-            <DetailTransactionTable transactionDetails={transactionDetails}/>
+            <DetailTransactionTable transactionDetails={transactionDetails} />
 
         </>
     );

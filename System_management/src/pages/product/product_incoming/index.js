@@ -7,13 +7,14 @@ import { useHistory } from "react-router-dom";
 import { TablePromotion } from "../../../components/product/promotion/TablePromotion";
 import { Routes } from "../../../routes";
 import TableProductIncoming from "../../../components/product/product_incoming/TableProductIncoming";
+import SearchInput from "../../../components/common/SearchInput";
 
 export default () => {
     const history = useHistory();
 
     return (
         <>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
                         className="d-none d-md-inline-block"
@@ -48,6 +49,7 @@ export default () => {
                     </div>
                 </div>
             </div>
+            <SearchInput />
 
             <TableProductIncoming />
         </>

@@ -1,18 +1,18 @@
-import React, {useEffect, useRef, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPlus} from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import {CatalogTable} from "../../../components/product/catalog/Tables";
+import { CatalogTable } from "../../../components/product/catalog/Tables";
 import Button from "../../../components/common/Button";
-import {Breadcrumb} from "@themesberg/react-bootstrap";
-import {useHistory} from "react-router-dom";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 export default () => {
     const history = useHistory();
 
     return (
         <>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
                         className="d-none d-md-inline-block"
@@ -21,7 +21,7 @@ export default () => {
                         }}
                     >
                         <Breadcrumb.Item>
-                            <FontAwesomeIcon icon={faHome}/>
+                            <FontAwesomeIcon icon={faHome} />
                         </Breadcrumb.Item>
                         <Breadcrumb.Item
                             onClick={() => history.push("/product")}

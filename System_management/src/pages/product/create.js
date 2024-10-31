@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { changeTextToThreeDot } from "../../utils";
 import { listProductType } from "../../enums";
-import { useMsal} from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
 
 export default () => {
   const [status, setStatus] = useState("Published");
@@ -26,7 +26,7 @@ export default () => {
   const [proType, setProType] = useState(listProductType[0]);
   const [mainAvatar, setMainAvatar] = useState([]);
   const [errorCount, setErrorCount] = useState(0);
-  const { instance,  accounts} = useMsal();
+  const { instance, accounts } = useMsal();
 
   const { id } = useParams();
 
@@ -174,7 +174,7 @@ export default () => {
   };
   return (
     <>
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="d-block mb-4 mb-xl-0">
           <Breadcrumb
             className="d-none d-md-inline-block"
@@ -320,9 +320,9 @@ export default () => {
                               {catalog.level === 0
                                 ? changeTextToThreeDot(catalog.name, 20)
                                 : catalog.level === 1
-                                ? "\u00A0\u00A0\u00A0\u00A0" +
+                                  ? "\u00A0\u00A0\u00A0\u00A0" +
                                   changeTextToThreeDot(catalog.name, 20)
-                                : "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0" +
+                                  : "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0" +
                                   changeTextToThreeDot(catalog.name, 20)}
                             </option>
                           ))}

@@ -1,20 +1,21 @@
-import React, {useEffect, useRef, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPlus} from "@fortawesome/free-solid-svg-icons";
-import {CategoryTable} from "../../../components/blog/category/Tables";
+import React, { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { CategoryTable } from "../../../components/blog/category/Tables";
 import Button from "../../../components/common/Button";
-import {Breadcrumb} from "@themesberg/react-bootstrap";
-import {useHistory} from "react-router-dom";
-import {NUMBER_ITEM_PAGE, status} from "../../../enums";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
+import { useHistory } from "react-router-dom";
+import { NUMBER_ITEM_PAGE, status } from "../../../enums";
 import {
     apiDeleteCategory,
     apiGetListCategories,
 } from "../../../services/category";
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ListPagination from "../../../components/common/ListPagination";
 import ModalDeleteItem from "../../../components/common/ModalDelete";
-import {toastFailed} from "../../../utils";
+import { toastFailed } from "../../../utils";
 import "./style.scss"
+import SearchInput from "../../../components/common/SearchInput";
 export default () => {
     const modalDeleteCategory = useRef(null);
     const [pageIndex, setPageIndex] = useState(1)
@@ -69,22 +70,22 @@ export default () => {
                     });
                 }, 0);
                 modalDeleteCategory.current.close()
-            } else if(response?.data.statusCode === 404) {
+            } else if (response?.data.statusCode === 404) {
                 toastFailed('This category is not found')
                 modalDeleteCategory.current.close()
             } else {
                 toastFailed('This category can not be deleted because of having blogs')
                 modalDeleteCategory.current.close()
             }
-        }catch (e) {
+        } catch (e) {
             toastFailed('Delete Category Failed')
         }
     }
 
     return (
         <>
-            <ToastContainer/>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <ToastContainer />
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
                         className="d-none d-md-inline-block"
@@ -93,7 +94,7 @@ export default () => {
                         }}
                     >
                         <Breadcrumb.Item>
-                            <FontAwesomeIcon icon={faHome}/>
+                            <FontAwesomeIcon icon={faHome} />
                         </Breadcrumb.Item>
                         <Breadcrumb.Item onClick={() => history.push("/blogs")}>
                             Blog
@@ -115,6 +116,7 @@ export default () => {
                     </div>
                 </div>
             </div>
+            <SearchInput />
 
             <CategoryTable
                 page={pageIndex}

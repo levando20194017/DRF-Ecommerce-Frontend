@@ -4,13 +4,10 @@ import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import Button from "../../components/common/Button";
 import { useHistory } from "react-router-dom";
-
-import { BlogTable } from "../../components/blog/Tables";
-import { apiGetListBlogs } from "../../services/blog";
-import { NUMBER_ITEM_PAGE } from "../../enums";
+import TableBlog from "../../components/blog/TableBlog";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useMsal} from '@azure/msal-react';
+import SearchInput from "../../components/common/SearchInput";
 
 export default () => {
   const history = useHistory();
@@ -19,25 +16,11 @@ export default () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const { instance,  accounts} = useMsal();
 
   const handleGetListBlogs = async () => {
     setLoading(true);
     try {
-      const params = {
-        PageIndex: page,
-        PageSize: NUMBER_ITEM_PAGE,
-        token: accounts[0].idToken
-      };
-      const response = await apiGetListBlogs(params);
-      if (response.data.statusCode === 200) {
-        if (response.data.data.source.length === 0 && page - 1 > 0) {
-          setPage(page - 1);
-        } else {
-          setBlogs(response.data.data.source);
-          setTotalPages(response.data.data.totalPages);
-        }
-      }
+
     } catch (e) {
       console.log(e);
     } finally {
@@ -59,7 +42,7 @@ export default () => {
   return (
     <>
       <ToastContainer />
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="w-100 mb-4 mb-xl-0">
           <Breadcrumb
             className="d-none d-md-inline-block"
@@ -82,10 +65,11 @@ export default () => {
               Create Blog
             </Button>
           </div>
+
         </div>
       </div>
-
-      <BlogTable
+      <SearchInput />
+      <TableBlog
         blogs={blogs}
         handlePageChange={handlePageChange}
         page={page}

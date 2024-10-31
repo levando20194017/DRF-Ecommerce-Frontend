@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TableListOrder } from "../../components/order/listOrder/TableListOrder";
 import Title from "../../components/order/listOrder/Title";
-import OrderSearch from "../../components/order/listOrder/OrderSearch";
+import SearchInput from "../../components/order/listOrder/SearchInput";
 import "./style.scss";
 import { NUMBER_ITEM_PAGE } from "../../enums";
 import { apiGetOrderList } from "../../services/order";
@@ -39,7 +39,7 @@ const ListOrder = () => {
   return (
     <div className="order">
       <Title />
-      <OrderSearch search={searchOrder} setSearch={setSearchOrder} />
+      <SearchInput search={searchOrder} setSearch={setSearchOrder} />
       <TableListOrder
         page={page}
         setPage={setPage}

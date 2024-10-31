@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {Breadcrumb, Container, Form, InputGroup} from "@themesberg/react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPlus, faSearch} from "@fortawesome/free-solid-svg-icons";
-import {TransactionTable} from "../../../../components/product/transaction/Tables";
-import {NUMBER_ITEM_PAGE, status} from "../../../../enums";
-import {apiGetListTransaction} from "../../../../services/transaction";
+import React, { useEffect, useState } from "react";
+import { Breadcrumb, Container, Form, InputGroup } from "@themesberg/react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { TransactionTable } from "../../../../components/product/transaction/Tables";
+import { NUMBER_ITEM_PAGE, status } from "../../../../enums";
+import { apiGetListTransaction } from "../../../../services/transaction";
 import ListPagination from "../../../../components/common/ListPagination";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default () => {
     const [pageIndex, setPageIndex] = useState(1)
@@ -43,18 +43,18 @@ export default () => {
     };
 
     const handleInput = (e) => {
-        const {value} = e.target
+        const { value } = e.target
         setMerchantReference(value)
     }
 
     return (
         <>
 
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="w-100 mb-4 mb-xl-0">
                     <Breadcrumb className="d-none d-md-inline-block"
-                                listProps={{className: "breadcrumb-dark breadcrumb-transparent"}}>
-                        <Breadcrumb.Item><FontAwesomeIcon icon={faHome}/></Breadcrumb.Item>
+                        listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+                        <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
                         <Breadcrumb.Item><Link to={'/order'}>Order</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>Transaction Log</Breadcrumb.Item>
                     </Breadcrumb>
@@ -69,7 +69,7 @@ export default () => {
                         <Form className="navbar-search">
                             <Form.Group id="topbarSearch">
                                 <InputGroup className="input-group-merge search-bar">
-                                    <InputGroup.Text><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
+                                    <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
                                     <Form.Control
                                         type="text"
                                         name="merchantReference"
@@ -83,7 +83,7 @@ export default () => {
                 </div>
             </Container>
 
-            <TransactionTable page={pageIndex} transactions={transactions}/>
+            <TransactionTable page={pageIndex} transactions={transactions} />
             {totalPages > 1 && (
                 <ListPagination
                     page={pageIndex}

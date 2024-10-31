@@ -3,7 +3,7 @@ import { Container, Form, InputGroup } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const OrderSearch = ({ setSearch, search }) => {
+const SearchInput = ({ setSearch, search }) => {
   return (
     <>
       <Container fluid className="px-0 pb-3">
@@ -33,4 +33,4 @@ const OrderSearch = ({ setSearch, search }) => {
     </>
   );
 };
-export default OrderSearch;
+export default SearchInput;

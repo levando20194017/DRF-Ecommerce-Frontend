@@ -1,23 +1,22 @@
-import React, {useEffect, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPaperclip} from "@fortawesome/free-solid-svg-icons";
-import {Breadcrumb} from "@themesberg/react-bootstrap";
-import {Col, Row} from "@themesberg/react-bootstrap";
-import {CreateCategory} from "../../../components/blog/category/CreateCategory";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
+import { Col, Row } from "@themesberg/react-bootstrap";
+import { CreateCategory } from "../../../components/blog/category/CreateCategory";
 import {
     apiCreateCategory,
     apiDetailCategory,
-    apiGetListCategories,
     apiUpdateCategory
 } from "../../../services/category";
-import {status} from "../../../enums";
-import {toast, ToastContainer} from "react-toastify";
-import {toastFailed, toastSuccess} from "../../../utils";
-import {useHistory, useParams} from "react-router-dom";
-import {UpdateCategory} from "../../../components/blog/category/UpdateCategory";
+import { status } from "../../../enums";
+import { toast, ToastContainer } from "react-toastify";
+import { toastFailed, toastSuccess } from "../../../utils";
+import { useHistory, useParams } from "react-router-dom";
+import { UpdateCategory } from "../../../components/blog/category/UpdateCategory";
 
 export default () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [category, setCategory] = useState()
     const history = useHistory()
 
@@ -39,7 +38,7 @@ export default () => {
     const handleCreateCategory = async (params) => {
         if (params.name !== '') {
             try {
-                const response = await apiCreateCategory({params})
+                const response = await apiCreateCategory({ params })
                 if (response?.data.statusCode === status.SUCCESS) {
                     setTimeout(() => {
                         toast.success(<span onClick={() => toast.dismiss()}>Create Category successfully</span>, {
@@ -67,7 +66,7 @@ export default () => {
     const handleUpdateCategory = async (params, id) => {
         if (params.name !== '') {
             try {
-                const response = await apiUpdateCategory({params, id})
+                const response = await apiUpdateCategory({ params, id })
                 if (response?.data.statusCode === status.SUCCESS) {
                     setTimeout(() => {
                         toast.success(<span onClick={() => toast.dismiss()}>Edit Category successfully</span>, {
@@ -97,8 +96,8 @@ export default () => {
 
     return (
         <>
-            <ToastContainer/>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <ToastContainer />
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block mb-4 mb-xl-0">
                     <Breadcrumb
                         className="d-none d-md-inline-block"
@@ -107,7 +106,7 @@ export default () => {
                         }}
                     >
                         <Breadcrumb.Item>
-                            <FontAwesomeIcon icon={faHome}/>
+                            <FontAwesomeIcon icon={faHome} />
                         </Breadcrumb.Item>
                         <Breadcrumb.Item onClick={() => history.push("/blogs/categories")}>Category</Breadcrumb.Item>
                         <Breadcrumb.Item active>
@@ -120,8 +119,8 @@ export default () => {
             <Row>
                 <Col xs={12} xl={9}>
                     {id ? <UpdateCategory handleUpdateCategory={handleUpdateCategory}
-                                          category={category}/> :
-                        <CreateCategory handleCreateCategory={handleCreateCategory}/>}
+                        category={category} /> :
+                        <CreateCategory handleCreateCategory={handleCreateCategory} />}
 
                 </Col>
             </Row>

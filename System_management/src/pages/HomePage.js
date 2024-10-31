@@ -93,44 +93,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     />
   );
 };
-
-const RouteWithSidebarStaff = ({ component: Component, ...rest }) => {
-  const localStorageIsSettingsVisible = () => {
-    return localStorage.getItem("settingsVisible") !== "false";
-  };
-
-  const [showSettings, setShowSettings] = useState(
-    localStorageIsSettingsVisible
-  );
-
-  const toggleSettings = () => {
-    setShowSettings(!showSettings);
-    localStorage.setItem("settingsVisible", !showSettings);
-  };
-
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        <>
-          <Sidebar />
-
-          <main className="content">
-            <Navbar />
-            <div style={{ padding: "0 1rem 0 1rem" }}>
-              <Component {...props} />
-              <Footer
-                toggleSettings={toggleSettings}
-                showSettings={showSettings}
-              />
-            </div>
-          </main>
-        </>
-      }}
-    />
-  );
-};
-
 export default () => (
   <Switch>
     <PublicRouteWithLoader
@@ -144,7 +106,7 @@ export default () => (
       component={InvalidPermission}
     />
 
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.DashboardOverview.path}
       component={DashboardOverview}
@@ -169,34 +131,34 @@ export default () => (
     <RouteWithSidebar exact path={Routes.ProductIncomingAdd.path} component={CreateProductIncoming} />
     <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={ListPromotions} />
 
-    <RouteWithSidebarStaff exact path={Routes.Blog.path} component={Blog} />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar exact path={Routes.Blog.path} component={Blog} />
+    <RouteWithSidebar
       exact
       path={Routes.BlogCreate.path}
       component={BlogCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogUpdate.path}
       component={BlogCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategoryCreate.path}
       component={BlogCategoryCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategoryUpdate.path}
       component={BlogCategoryCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategory.path}
       component={BlogCategory}
     />
     <RouteWithSidebar exact path={Routes.Order.path} component={ListOrder} />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogTag.path}
       component={BlogTag}

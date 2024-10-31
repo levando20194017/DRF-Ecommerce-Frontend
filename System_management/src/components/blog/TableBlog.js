@@ -5,7 +5,7 @@ import { Card, Image, Badge, Table } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { Routes } from "../../routes";
-import ModalDeleteItem from "../../components/common/ModalDelete";
+import ModalDeleteItem from "../common/ModalDelete";
 import BlogListPagination from "./BlogListPagination";
 import { NUMBER_ITEM_PAGE } from "../../enums";
 import { apiGetListCategories } from "../../services/category";
@@ -17,7 +17,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { apiGetListTags } from "../../services/tag";
 import ImageLink from "../../assets/img/no-image.png";
 
-export const BlogTable = ({
+export default ({
   blogs,
   handlePageChange,
   page,
@@ -146,10 +146,10 @@ export const BlogTable = ({
         <td style={{ width: "15%", wordBreak: "break-word" }}>
           {categoryId
             ? truncateString(
-                listCategories.find((category) => category.id === categoryId)
-                  ?.name || "--",
-                25
-              )
+              listCategories.find((category) => category.id === categoryId)
+                ?.name || "--",
+              25
+            )
             : "--"}
         </td>
         <td style={{ width: "15%", wordBreak: "break-word" }}>
@@ -159,15 +159,15 @@ export const BlogTable = ({
         <td style={{ width: "15%", wordBreak: "break-word" }}>
           {blogTag.length
             ? truncateString(
-                blogTag
-                  .map((tag) => {
-                    return listTags.find((tagItem) => {
-                      return tagItem.id === tag.tagId;
-                    })?.name;
-                  })
-                  .join("-"),
-                25
-              )
+              blogTag
+                .map((tag) => {
+                  return listTags.find((tagItem) => {
+                    return tagItem.id === tag.tagId;
+                  })?.name;
+                })
+                .join("-"),
+              25
+            )
             : "--"}
         </td>
         <td>{statusBtn(blogStatus)}</td>

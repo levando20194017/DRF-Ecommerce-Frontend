@@ -8,6 +8,7 @@ import { Breadcrumb } from "@themesberg/react-bootstrap";
 import ModalCreateTag from "../../../components/blog/tag/ModalCreateTag";
 import { useHistory } from "react-router-dom";
 import { apiGetListTags } from "../../../services/tag";
+import SearchInput from "../../../components/common/SearchInput";
 
 export default () => {
   const [tags, setTags] = useState([]);
@@ -76,7 +77,7 @@ export default () => {
 
   return (
     <>
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="d-block w-100 mb-4 mb-xl-0">
           <Breadcrumb
             className="d-none d-md-inline-block"
@@ -105,6 +106,7 @@ export default () => {
           </div>
         </div>
       </div>
+      <SearchInput />
 
       <TagTable
         tags={tags}
