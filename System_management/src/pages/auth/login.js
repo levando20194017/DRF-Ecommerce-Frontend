@@ -138,33 +138,17 @@ const Login = () => {
         let data = response.data;
         localStorage.setItem("mintadmin_userData", JSON.stringify(data));
         localStorage.setItem("mintadmin_isLoggedIn", true);
-        window.location.reload();
         history.push("/");
       } else {
-        if (response.data.message === "Email not existed or invalid") {
+        if (response.message === "Invalid email or password") {
           setError({
             ...error,
-            email: "Please try again, your email is incorrect.",
-          });
-        }
-        if (response.data.message === "Password does not exactly") {
-          setError({
-            ...error,
-            password: "Please try again, your password is incorrect.",
-          });
-        }
-        if (response.data.message === "Email not verified") {
-          setError({
-            ...error,
-            email: "Email not verified",
+            password: "Invalid email or password, please try again.",
           });
         }
       }
-
-
     } catch (error) {
       console.log(error);
-      ToastFailed("Login failed!")
     }
   };
 
@@ -240,7 +224,6 @@ const Login = () => {
                 autoComplete="new-password"
               />
             </div>
-            {error.email && <div className="error">{error.email}</div>}
           </Form.Group>
           <Form.Group className="password">
             <Form.Label className="form-label-login">Password</Form.Label>

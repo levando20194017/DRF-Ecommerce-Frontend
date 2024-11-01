@@ -31,7 +31,6 @@ import InvalidPermission from "./invalidPermission/InvalidPermission";
 import UpdatePromotion from "./product/promotion/UpdatePromotion";
 import CreatePromotion from "./product/promotion/CreatePromotion";
 import ListProductsIncoming from "./product/product_incoming";
-import AddProductToStore from "../components/product/product_incoming/AddProductToStore";
 import CreateProductIncoming from "./product/product_incoming/CreateProductIncoming";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {

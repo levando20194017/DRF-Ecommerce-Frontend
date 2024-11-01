@@ -4,16 +4,16 @@ const REFRESH_TOKEN_URL = `${process.env.REACT_APP_BACKEND_URL}/admin/token/refr
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}`
 
 function getCurrentAccessToken() {
-    return JSON.parse(localStorage.getItem("userData"))?.access_token;
+    return JSON.parse(localStorage.getItem("mintadmin_userData"))?.access_token;
 }
 
 function getCurrentRefreshToken() {
     // this is how you access the zustand store outside of React.
-    return JSON.parse(localStorage.getItem("userData"))?.refresh
+    return JSON.parse(localStorage.getItem("mintadmin_userData"))?.refresh
 }
 
 function setRefreshedTokens(tokens) {
-    let userData = JSON.parse(localStorage.getItem("userData"));
+    let userData = JSON.parse(localStorage.getItem("mintadmin_userData"));
     userData.access_token = tokens.access_token;
     userData.refresh = tokens.refresh;
 
@@ -21,9 +21,9 @@ function setRefreshedTokens(tokens) {
 }
 
 function logout() {
-    localStorage.removeItem("userData");
-    localStorage.removeItem("isLoggedIn");
-    window.location.reload();
+    // localStorage.removeItem("userData");
+    // localStorage.removeItem("isLoggedIn");
+    // window.location.reload();
 }
 
 const client = createAxiosClient({
