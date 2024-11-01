@@ -6,10 +6,32 @@ import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { TablePromotion } from "../../../components/product/promotion/TablePromotion";
 import { Routes } from "../../../routes";
+import { apiGetListPromotions } from "../../../services/promotion";
+import SearchInput from "../../../components/common/SearchInput";
 
 export default () => {
     const history = useHistory();
 
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState("");
+
+    const handleGetListPromotions = async () => {
+        const params = {};
+        try {
+            const response = await apiGetListPromotions({ pageIndex, pageSize, promotionName: search })
+            console.log(response);
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        handleGetListPromotions()
+    }, [pageIndex, pageSize, search])
     return (
         <>
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
@@ -47,6 +69,8 @@ export default () => {
                     </div>
                 </div>
             </div>
+
+            <SearchInput search={search} setSearch={setSearch} />
 
             <TablePromotion />
         </>
