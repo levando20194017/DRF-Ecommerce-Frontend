@@ -9,8 +9,8 @@ import IconMail from "../../assets/img/icons/icon-mail.png";
 import IconPassword from "../../assets/img/icons/icon-password.png";
 import IconEyeShow from "../../assets/img/icons/icon-eye-show.png";
 import IconEyeHidden from "../../assets/img/icons/icon-eye-hidden.png";
-import { ReactComponent as CheckIcon } from "../../assets/img/icons/icon_check.svg";
-import { ReactComponent as CheckedIcon } from "../../assets/img/icons/icon_checked.svg";
+import IconChecked from "../../assets/img/icons/icon-checked-white.png"
+import IconCheck from "../../assets/img/icons/icon-check-white.png"
 import { Routes } from "../../routes";
 import { ToastFailed } from "../../components/common/Toast";
 import CryptoJS from 'crypto-js';
@@ -45,13 +45,13 @@ const Login = () => {
     setShowPassword((prevState) => !prevState);
   };
   useEffect(() => {
-    const storedUsername = localStorage.getItem('email');
-    const storedPassword = localStorage.getItem('password');
+    const storedUsername = localStorage.getItem('mintadmin_email');
+    const storedPassword = localStorage.getItem('mintadmin_password');
     if (storedPassword && storedUsername) {
       const bytes = CryptoJS.AES.decrypt(storedPassword, secretKey);
       const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
 
-      const storedRememberMe = localStorage.getItem('rememberMe');
+      const storedRememberMe = localStorage.getItem('mintadmin_rememberMe');
 
       if (storedRememberMe && storedRememberMe === 'true') {
         setForm({
@@ -126,18 +126,18 @@ const Login = () => {
       const response = await apiLogin({ email, password });
       if (response.status === 200) {
         if (rememberMe) {
-          localStorage.setItem('email', form.email);
+          localStorage.setItem('mintadmin_email', form.email);
           const encryptedPassword = CryptoJS.AES.encrypt(form.password, secretKey).toString()
-          localStorage.setItem('password', encryptedPassword);
-          localStorage.setItem('rememberMe', rememberMe.toString());
+          localStorage.setItem('mintadmin_password', encryptedPassword);
+          localStorage.setItem('mintadmin_rememberMe', rememberMe.toString());
         } else {
-          localStorage.removeItem('email');
-          localStorage.removeItem('password');
-          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('mintadmin_email');
+          localStorage.removeItem('mintadmin_password');
+          localStorage.removeItem('mintadmin_rememberMe');
         }
         let data = response.data;
-        localStorage.setItem("userData", JSON.stringify(data));
-        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("mintadmin_userData", JSON.stringify(data));
+        localStorage.setItem("mintadmin_isLoggedIn", true);
         window.location.reload();
         history.push("/");
       } else {
@@ -313,9 +313,9 @@ const Login = () => {
             >
               <span>
                 {rememberMe ? (
-                  <CheckedIcon width={20} height={20} className="mb-1" />
+                  <img src={IconChecked} width={20} height={20} className="mb-1" />
                 ) : (
-                  <CheckIcon width={20} height={20} className="mb-1" />
+                  <img src={IconCheck} width={20} height={20} className="mb-1" />
                 )}
               </span>
               <span className="ms-2 remember">Remember me</span>
