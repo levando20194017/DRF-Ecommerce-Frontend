@@ -2,7 +2,6 @@ import axios from "axios";
 
 let failedQueue = [];
 let isRefreshing = false;
-const user_id = JSON.parse(localStorage.getItem("userData"))?.user_id;
 const processQueue = (error) => {
   failedQueue.forEach((prom) => {
     if (error) {
@@ -86,14 +85,13 @@ export function createAxiosClient({
         originalRequest._retry = true;
         return axios
           .post(refreshTokenUrl, {
-            refresh: refreshToken,
-            user_id
+            refresh_token: refreshToken,
           })
           .then((res) => {
             if (res.data.status === 200) {
               const tokens = {
                 access_token: res.data?.data.access_token,
-                refresh: res.data?.data.refresh,
+                refresh: res.data?.data.refresh_token,
               };
               setRefreshedTokens(tokens);
               processQueue(null);

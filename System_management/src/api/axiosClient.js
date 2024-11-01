@@ -9,15 +9,15 @@ function getCurrentAccessToken() {
 
 function getCurrentRefreshToken() {
     // this is how you access the zustand store outside of React.
-    return JSON.parse(localStorage.getItem("mintadmin_userData"))?.refresh
+    return JSON.parse(localStorage.getItem("mintadmin_userData"))?.refresh_token
 }
 
 function setRefreshedTokens(tokens) {
     let userData = JSON.parse(localStorage.getItem("mintadmin_userData"));
     userData.access_token = tokens.access_token;
-    userData.refresh = tokens.refresh;
+    userData.refresh_token = tokens.refresh_token;
 
-    localStorage.setItem("userData", JSON.stringify(userData));
+    localStorage.setItem("mintadmin_userData", JSON.stringify(userData));
 }
 
 function logout() {
