@@ -8,21 +8,24 @@ import { TablePromotion } from "../../../components/product/promotion/TablePromo
 import { Routes } from "../../../routes";
 import { apiGetListPromotions } from "../../../services/promotion";
 import SearchInput from "../../../components/common/SearchInput";
+import PaginationCommon from "../../../components/common/PaginationCommon";
+import { ToastContainer } from "react-toastify";
 
 export default () => {
     const history = useHistory();
-
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
-    const [loading, setLoading] = useState(false);
+    const [totalRecords, setToalRecords] = useState();
     const [search, setSearch] = useState("");
+    const [listData, setListData] = useState([])
 
     const handleGetListPromotions = async () => {
-        const params = {};
         try {
             const response = await apiGetListPromotions({ pageIndex, pageSize, promotionName: search })
-            console.log(response);
+            if (response.status === 200) {
+                setListData(response.data.promotions)
+                setToalRecords(response.data.total_items)
+            }
 
         } catch (e) {
             console.log(e);
@@ -32,8 +35,10 @@ export default () => {
     useEffect(() => {
         handleGetListPromotions()
     }, [pageIndex, pageSize, search])
+
     return (
-        <>
+        <div className="page-content">
+            <ToastContainer />
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
@@ -69,10 +74,18 @@ export default () => {
                     </div>
                 </div>
             </div>
-
             <SearchInput search={search} setSearch={setSearch} />
-
-            <TablePromotion />
-        </>
+            <div className="table-content">
+                <TablePromotion listData={listData} handleGetListPromotions={handleGetListPromotions} />
+            </div>
+            <div className="bottom-pagination">
+                <PaginationCommon
+                    totalRecords={totalRecords}
+                    pageSize={pageSize}
+                    pageIndex={pageIndex}
+                    setPageIndex={setPageIndex}
+                    setPageSize={setPageSize} />
+            </div>
+        </div>
     );
 };

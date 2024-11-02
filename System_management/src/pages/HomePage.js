@@ -25,7 +25,7 @@ import NotFound from "./notFound/NotFound";
 // components
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
+// import Footer from "../components/layout/Footer";
 import Preloader from "../components/layout/Preloader";
 import InvalidPermission from "./invalidPermission/InvalidPermission";
 import UpdatePromotion from "./product/promotion/UpdatePromotion";
@@ -80,10 +80,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
               <Navbar />
               <div style={{ padding: "0 1rem 0 1rem" }}>
                 <Component {...props} />
-                <Footer
-                  toggleSettings={toggleSettings}
-                  showSettings={showSettings}
-                />
               </div>
             </main>
           </>

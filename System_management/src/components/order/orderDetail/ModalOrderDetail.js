@@ -96,7 +96,7 @@ export default function ModalOrderDetail(props) {
                 <div className="invoice_content_info mt-5">
                   <div className="col-7">
                     <h5 className="fw-bolder">CLIENT INFORMATION</h5>
-                    <div style={{ color: "#4a5073" }}>
+                    <div style={{ color: "#222222" }}>
                       <div>Name: {orderDetail.customerName}</div>
                       {/* <div>
                         Address: 
@@ -120,7 +120,7 @@ export default function ModalOrderDetail(props) {
                         <span className="fw-bolder">INVOICE ID:</span>{" "}
                         {orderDetail?.id}
                       </div>
-                      <div style={{ color: "#4a5073" }}>
+                      <div style={{ color: "#222222" }}>
                         <div>
                           <span>Order Date:</span>{" "}
                           {formatTime(orderDetail?.orderDate)}

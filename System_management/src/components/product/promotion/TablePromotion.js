@@ -1,102 +1,39 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faSearch, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { Card, Form, Image, InputGroup, Table } from "@themesberg/react-bootstrap";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Card, Table } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
-import ImageLink from "../../../assets/img/no-image.png"
 import { Routes } from "../../../routes";
-import ModalDeleteItem from "../../../components/common/ModalDelete";
 import { useHistory } from "react-router-dom";
 import { formatTime, toastFailed, toastSuccess } from "../../../utils";
 import { changeTextToThreeDot } from "../../../utils";
-import ListPagination from "../../common/ListPagination";
 import { ToastContainer } from "react-toastify";
-import { status } from "../../../enums";
 import { Popconfirm } from "antd";
+import { apiDeletePromotion, apiDetailPromotion } from "../../../services/promotion";
 
-export const TablePromotion = (props) => {
-    const [data, setData] = useState([
-        {
-            name: "Do",
-            code: "Do",
-            description: "Do xin chao ca nha,Do xin chao ca nha,Do xin chao ca nha,Do xin chao ca nha,Do xin chao ca nha,Do xin chao ca nha",
-            rate: 0,
-            specialPrice: 0,
-            memberPrice: 0,
-            fromDate: "1970-01-01",
-            endDate: "1970-01-01",
-            createdAt: "1970-01-01"
-        },
-        {
-            name: "Do",
-            code: "Do",
-            description: "Do xin chao ca nha",
-            rate: 0,
-            specialPrice: 0,
-            memberPrice: 0,
-            fromDate: "1970-01-01",
-            endDate: "1970-01-01",
-            createdAt: "1970-01-01"
-        },
-        {
-            name: "Do",
-            code: "Do",
-            description: "Do xin chao ca nha",
-            rate: 0,
-            specialPrice: 0,
-            memberPrice: 0,
-            fromDate: "1970-01-01",
-            endDate: "1970-01-01",
-            createdAt: "1970-01-01"
-        }, {
-            name: "Do",
-            code: "Do",
-            description: "Do xin chao ca nha",
-            rate: 0,
-            specialPrice: 0,
-            memberPrice: 0,
-            fromDate: "1970-01-01",
-            endDate: "1970-01-01",
-            createdAt: "1970-01-01"
-        }
-    ])
-    const modalDelete = useRef(null)
-    const [pageIndex, setPageIndex] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [pageSize, setPageSize] = useState(10);
+export const TablePromotion = ({ listData, handleGetListPromotions }) => {
+    const history = useHistory()
 
-    const handleOpenModalDelete = (id) => {
-
-    }
-    const handleDeleteItem = () => {
-
-    }
-
-    const getListData = async () => {
+    const handleDeleteItem = async (id) => {
         try {
-            const params = {
-                PageIndex: pageIndex,
-                PageSize: 10,
+            const response = await apiDeletePromotion(id)
+            if (response.status == 200) {
+                toastSuccess(response.message)
+                handleGetListPromotions()
             }
-
-            // if (response?.data.statusCode === status.SUCCESS)
         } catch (e) {
+
         }
     }
-
-    useEffect(() => {
-        getListData();
-    }, [pageIndex])
-
     const handleEdit = async (id) => {
-        // const response = await apiDetailPromtion(id)
-        // if (response.status === 200) {
-        //     history.push(Routes.PromotionUpdate.path)
-        // }       
+        const response = await apiDetailPromotion(id)
+        if (response.status === 200) {
+            history.push(`/product/update-promotion/${id}`)
+        }
     }
 
     const TableRow = (props) => {
-        const { id, index, name, code, description, rate, specialPrice, memberPrice, fromDate, endDate, createdAt } = props;
+        const { id, index, name, code, description, rate, special_price, member_price, from_date, to_date, created_at } = props;
         return (
             <tr>
                 <td>
@@ -114,11 +51,11 @@ export const TablePromotion = (props) => {
                     {changeTextToThreeDot(description, 50)}
                 </td>
                 <td className="text-danger">{rate}%</td>
-                <td className="text-danger">{specialPrice}</td>
-                <td className="text-danger">{memberPrice}</td>
-                <td>{formatTime(fromDate)}</td>
-                <td>{formatTime(endDate)}</td>
-                <td>{formatTime(createdAt)}</td>
+                <td className="text-danger">{special_price}</td>
+                <td className="text-danger">{member_price}</td>
+                <td>{formatTime(from_date)}</td>
+                <td>{formatTime(to_date)}</td>
+                <td>{formatTime(created_at)}</td>
                 <td>
                     <Link
                         to={Routes.NullLink.path}
@@ -134,21 +71,16 @@ export const TablePromotion = (props) => {
                         title="Are you sure delete this Item?"
                         okText="Yes"
                         cancelText="No"
+                        onConfirm={() => handleDeleteItem(id)}
                     >
                         <FontAwesomeIcon
                             icon={faTrashAlt}
                             className="me-2 fs-5 text-danger cursor-pointer"
-                            onClick={() => handleOpenModalDelete(id)}
                         />
                     </Popconfirm>
                 </td>
             </tr>
         );
-    };
-    const handlePageChange = (newPage) => {
-        if (newPage <= totalPages) {
-            setPageIndex(newPage);
-        }
     };
 
     return (
@@ -176,7 +108,7 @@ export const TablePromotion = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data && data.length > 0 ? data.map((promotion, index) => (
+                            {listData && listData.length > 0 ? listData.map((promotion, index) => (
                                 <TableRow
                                     index={index}
                                     key={`page-traffic-${promotion.id}`}
@@ -187,20 +119,6 @@ export const TablePromotion = (props) => {
                     </Table>
                 </Card.Body>
             </Card>
-            {totalPages > 1 && (
-                <ListPagination
-                    page={pageIndex}
-                    pageMax={totalPages}
-                    onPageChange={handlePageChange}
-                ></ListPagination>
-            )}
-
-            {/* <PaginationCommon
-                totalRecord={totalRecord}
-                pageSize={pageSize}
-                pageIndex={pageIndex}
-                setPageIndex={setPageIndex}
-                setPageSize={setPageSize} /> */}
         </>
     );
 };

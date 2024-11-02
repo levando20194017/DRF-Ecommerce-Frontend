@@ -1,4 +1,3 @@
-import axios from "../api/axios";
 import client from "../api/axiosClient";
 
 const apiLogin = (data) => {

@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
 const apiGetListPromotions = function ({ pageIndex, pageSize, promotionName }) {
   return axios.get(
@@ -14,8 +14,11 @@ const apiEditPromotion = function (data) {
 const apiRestorePromotion = function (data) {
   return axios.put("/api/promotion/admin/restore-promotion/", data);
 };
-const apiDeletePromotion = function (data) {
-  return axios.put("/api/promotion/admin/delete-promotion/", data);
+const apiDeletePromotion = function (id) {
+  return axios.delete(`/api/promotion/admin/delete-promotion/?id=${id}`);
+};
+const apiDetailPromotion = function (id) {
+  return axios.get(`/api/promotion/admin/get-detail-promotion/?id=${id}`);
 };
 
-export { apiGetListPromotions, apiCreatePromotion, apiEditPromotion, apiRestorePromotion, apiDeletePromotion };
+export { apiGetListPromotions, apiCreatePromotion, apiEditPromotion, apiRestorePromotion, apiDeletePromotion, apiDetailPromotion };

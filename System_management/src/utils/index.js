@@ -14,7 +14,7 @@ export const formatTime = (inputTime) => {
     return `${year}-${month}-${day}`;
 };
 
-export const toastSuccess = (title, path) => {
+export const toastSuccess = (title) => {
     setTimeout(() => {
         toast.success(<span onClick={() => toast.dismiss()}>{title}</span>, {
             position: "top-right",
@@ -25,7 +25,6 @@ export const toastSuccess = (title, path) => {
             draggable: true,
             progress: undefined,
             theme: "colored",
-            onClose: () => path === '' ? '' : (window.location.href = path),
         });
     }, 0);
 };
