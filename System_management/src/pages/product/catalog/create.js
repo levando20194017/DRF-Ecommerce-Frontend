@@ -7,88 +7,45 @@ import { CreateCatalog } from "../../../components/product/catalog/CreateCatalog
 import { UpdateCatalog } from "../../../components/product/catalog/UpdateCatalog";
 import { apiCreateCatalog, apiUpdateCatalog } from "../../../services/catalog";
 import { status } from "../../../enums";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toastSuccess, toastFailed } from "../../../utils";
+import { toastFailed, toastSuccess } from "../../../utils";
 import { useHistory, useParams } from "react-router-dom";
 import { apiDetailCatalog } from "../../../services/catalog";
-import { useMsal } from '@azure/msal-react';
 
 import './style.scss'
+import { Routes } from "../../../routes";
 
 export default () => {
 
     const { id } = useParams();
-    const [catalog, setCatalog] = useState({})
-    const [statusCode, setStatusCode] = useState('')
     const history = useHistory()
-    const { instance, accounts } = useMsal();
+    const [catalog, setCatalog] = useState({})
 
-    useEffect(() => {
-        if (id) getDetailCatalog(id, accounts[0].idToken)
-
-    }, [id]);
     const handleCreateCatalog = async (params) => {
         if (params.name !== '') {
             try {
-                const response = await apiCreateCatalog({ params }, accounts[0].idToken)
+                const response = await apiCreateCatalog(params)
                 if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Create Catalog successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
-                    history.push('/product/catalog')
+                    history.push(Routes.Catalog.path)
+                    toastSuccess(response.message)
                 }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed(response?.data.message)
-                }
-                if (response?.data.statusCode === status.ERROR_SUB) {
-                    toastFailed(response?.data.message)
-                }
+
             } catch (e) {
                 toastFailed('Create Catalog Failed')
             }
         }
     }
 
-    const handleUpdateCatalog = async (params, id) => {
+    const handleUpdateCatalog = async (params) => {
         if (params.name !== '') {
             try {
-                const response = await apiUpdateCatalog({ params, id }, accounts[0].idToken)
-                if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Update Catalog successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
-                    history.push('/product/catalog')
-                }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed('This Catalog is not found')
-                }
-                if (response?.data.statusCode === status.ERROR_SUB) {
-                    toastFailed(response?.data.message)
-                }
-                if (response?.data.statusCode === 404) {
-                    toastFailed('This Catalog is not found')
-                }
-                if (response?.statusCode === 400) {
-                    toastFailed('This Catalog is not found')
+                const response = await apiUpdateCatalog(params)
+                if (response.status === 200) {
+                    toastSuccess(response.message)
+                    history.push(Routes.Catalog.path)
+                } else {
+                    toastFailed(response.message)
                 }
             } catch (e) {
                 toastFailed('This Catalog is not found')
@@ -98,17 +55,20 @@ export default () => {
 
     const getDetailCatalog = async (id) => {
         try {
-            const response = await apiDetailCatalog(id, accounts[0].idToken)
-            if (response?.data.statusCode === status.SUCCESS) {
-                setCatalog(response?.data?.data)
-            }
-            if (response?.data.statusCode === 404) {
-                toastFailed('This Catalog is not found')
+            const response = await apiDetailCatalog(id)
+            if (response.status === 200) {
+                setCatalog(response.data)
+            } else {
+                toastFailed(response?.message)
             }
         } catch (e) {
 
         }
     }
+
+    useEffect(() => {
+        if (id) getDetailCatalog(id)
+    }, [id]);
 
     return (
         <>
@@ -132,7 +92,7 @@ export default () => {
             </div>
 
             <Row>
-                {id ? <UpdateCatalog handleUpdateCatalog={handleUpdateCatalog} catalog={catalog} /> :
+                {id ? <UpdateCatalog handleUpdateCatalog={handleUpdateCatalog} catalog={catalog} id={id} /> :
                     <CreateCatalog handleCreateCatalog={handleCreateCatalog} />}
             </Row>
         </>
