@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
 const apiGetOrderList = function ({ PageIndex, PageSize, data }) {
   return axios.post(

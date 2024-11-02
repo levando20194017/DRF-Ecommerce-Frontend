@@ -5,85 +5,45 @@ import { CategoryTable } from "../../../components/blog/category/Tables";
 import Button from "../../../components/common/Button";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { NUMBER_ITEM_PAGE, status } from "../../../enums";
 import {
-    apiDeleteCategory,
     apiGetListCategories,
 } from "../../../services/category";
-import { toast, ToastContainer } from "react-toastify";
-import ListPagination from "../../../components/common/ListPagination";
-import ModalDeleteItem from "../../../components/common/ModalDelete";
-import { toastFailed } from "../../../utils";
+import { ToastContainer } from "react-toastify";
 import "./style.scss"
 import SearchInput from "../../../components/common/SearchInput";
+import PaginationCommon from "../../../components/common/PaginationCommon";
 export default () => {
-    const modalDeleteCategory = useRef(null);
-    const [pageIndex, setPageIndex] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [categories, setCategories] = useState({})
-    const [deleteId, setDeleteId] = useState('')
+    const [categories, setCategories] = useState([])
     const history = useHistory();
-
-    useEffect(() => {
-        getListCategories()
-    }, [pageIndex]);
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalRecords, setToalRecords] = useState();
+    const [search, setSearch] = useState("");
+    const [totalPages, setTotalPages] = useState(1);
 
     const getListCategories = async () => {
         try {
             const params = {
-                PageIndex: pageIndex,
-                PageSize: 20
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                searchName: search
             }
             const response = await apiGetListCategories(params)
-            if (response?.data.statusCode === status.SUCCESS)
-                setCategories(response?.data?.data?.source)
-            setTotalPages(response?.data?.data?.totalPages)
-        } catch (e) {
-        }
-    }
-    const handleClickButtonDelete = (category) => {
-        setDeleteId(category?.id)
-        modalDeleteCategory.current.open()
-    }
-    const handlePageChange = (newPage) => {
-        if (newPage <= totalPages) {
-            setPageIndex(newPage);
-        }
-    };
-
-    const handleDeleteCategory = async () => {
-        try {
-            const response = await apiDeleteCategory(deleteId)
-            if (response?.data.statusCode === status.SUCCESS) {
-                setCategories(categories.filter((item) => item?.id !== deleteId))
-                setTimeout(() => {
-                    toast.success(<span onClick={() => toast.dismiss()}>Delete Category successfully</span>, {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "colored",
-                        onClose: () => getListCategories(),
-                    });
-                }, 0);
-                modalDeleteCategory.current.close()
-            } else if (response?.data.statusCode === 404) {
-                toastFailed('This category is not found')
-                modalDeleteCategory.current.close()
-            } else {
-                toastFailed('This category can not be deleted because of having blogs')
-                modalDeleteCategory.current.close()
+            if (response.status === 200) {
+                setCategories(response.data.categories)
+                setToalRecords(response.data.total_items)
+                setTotalPages(response.data.total_pages)
             }
         } catch (e) {
-            toastFailed('Delete Category Failed')
         }
     }
 
+    useEffect(() => {
+        getListCategories()
+    }, [pageIndex, pageSize, search])
+
     return (
-        <>
+        <div className="page-content">
             <ToastContainer />
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
@@ -116,26 +76,25 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <SearchInput />
-
-            <CategoryTable
-                page={pageIndex}
-                categories={categories}
-                handleClickButtonDelete={handleClickButtonDelete}
-            />
-            {totalPages > 1 && (
-                <ListPagination
-                    page={pageIndex}
-                    pageMax={totalPages}
-                    onPageChange={handlePageChange}
-                ></ListPagination>
-            )}
-            <ModalDeleteItem
-                ref={modalDeleteCategory}
-                title={"Delete Category"}
-                item={"category"}
-                handleDeleteItem={handleDeleteCategory}
-            />
-        </>
+            <SearchInput search={search} setSearch={setSearch} />
+            <div className="table-content">
+                <CategoryTable
+                    categories={categories}
+                    getListCategories={getListCategories}
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                />
+            </div>
+            {totalPages > 1 &&
+                <div className="bottom-pagination">
+                    <PaginationCommon
+                        totalRecords={totalRecords}
+                        pageSize={pageSize}
+                        pageIndex={pageIndex}
+                        setPageIndex={setPageIndex}
+                        setPageSize={setPageSize} />
+                </div>
+            }
+        </div>
     );
 };

@@ -18,6 +18,7 @@ export default () => {
     const [totalRecords, setToalRecords] = useState();
     const [search, setSearch] = useState("");
     const [listData, setListData] = useState([])
+    const [totalPages, setTotalPages] = useState(1);
 
     const handleGetListPromotions = async () => {
         try {
@@ -25,6 +26,7 @@ export default () => {
             if (response.status === 200) {
                 setListData(response.data.promotions)
                 setToalRecords(response.data.total_items)
+                setTotalPages(response.data.total_pages)
             }
 
         } catch (e) {
@@ -76,16 +78,18 @@ export default () => {
             </div>
             <SearchInput search={search} setSearch={setSearch} />
             <div className="table-content">
-                <TablePromotion listData={listData} handleGetListPromotions={handleGetListPromotions} />
+                <TablePromotion pageIndex={pageIndex} pageSize={pageSize} listData={listData} handleGetListPromotions={handleGetListPromotions} />
             </div>
-            <div className="bottom-pagination">
-                <PaginationCommon
-                    totalRecords={totalRecords}
-                    pageSize={pageSize}
-                    pageIndex={pageIndex}
-                    setPageIndex={setPageIndex}
-                    setPageSize={setPageSize} />
-            </div>
+            {totalPages > 1 &&
+                <div className="bottom-pagination">
+                    <PaginationCommon
+                        totalRecords={totalRecords}
+                        pageSize={pageSize}
+                        pageIndex={pageIndex}
+                        setPageIndex={setPageIndex}
+                        setPageSize={setPageSize} />
+                </div>
+            }
         </div>
     );
 };

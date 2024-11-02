@@ -249,7 +249,7 @@ export default () => {
                   <NavItem title="New blog" link={Routes.BlogCreate.path} />
                   <NavItem title="Blogs" link={Routes.Blog.path} />
                   <NavItem
-                    title="Categories"
+                    title="List Categories"
                     link={Routes.BlogCategory.path}
                   />
                   <NavItem

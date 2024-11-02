@@ -12,7 +12,7 @@ import { Popconfirm } from "antd";
 import { apiDeletePromotion, apiDetailPromotion, apiRestorePromotion } from "../../../services/promotion";
 import { UndoOutlined } from '@ant-design/icons';
 
-export const TablePromotion = ({ listData, handleGetListPromotions }) => {
+export const TablePromotion = ({ pageIndex, pageSize, listData, handleGetListPromotions }) => {
     const history = useHistory()
 
     const handleDeleteItem = async (id) => {
@@ -53,7 +53,7 @@ export const TablePromotion = ({ listData, handleGetListPromotions }) => {
             <tr style={{ opacity: delete_at ? 0.5 : 1, backgroundColor: delete_at ? "#d1d5d8" : "#fff" }}>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
-                        {index + 1}
+                        {index + (pageIndex - 1) * pageSize + 1}
                     </Card.Link>
                 </td>
                 <td>

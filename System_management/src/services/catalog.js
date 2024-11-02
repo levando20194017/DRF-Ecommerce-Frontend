@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
 const apiGetListCatalogs = function ({ pageIndex, pageSize, textSearch }) {
   return axios.get(`/api/catalog/admin/get-list-catalogs/?page_index=${pageIndex}&page_size=${pageSize}&textSearch=${textSearch}`);

@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
 const apiGetProductList = function ({ PageIndex, PageSize }) {
   return axios.get(`/Products?PageIndex=${PageIndex}&PageSize=${PageSize}`);

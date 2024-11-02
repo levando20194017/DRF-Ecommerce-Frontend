@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
 const apiGetListTags = function ({ PageIndex, PageSize }) {
   return axios.get(`/Tag?PageIndex=${PageIndex}&PageSize=${PageSize}`);

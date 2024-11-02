@@ -1,23 +1,22 @@
-import React, {useEffect, useState} from "react";
-import {Col, Row, Card, Form, Button} from '@themesberg/react-bootstrap';
-import {TinyMce} from "../../product/catalog/TinyMce";
+import React, { useEffect, useState } from "react";
+import { Col, Row, Card, Form, Button } from '@themesberg/react-bootstrap';
+import { TinyMce } from "../../product/catalog/TinyMce";
 
 export const UpdateCategory = (props) => {
-    const {category, handleUpdateCategory} = props
+    const { category, handleUpdateCategory } = props
     const [error, setError] = useState('')
     const [form, setForm] = useState({
         name: "",
         description: "",
-        imageUrl: ""
     })
 
     useEffect(() => {
-        setForm({...form, name: category?.name, description: category?.description, imageUrl: category?.imageUrl})
+        setForm({ ...category })
     }, [category]);
     const handleInput = (e) => {
         setError('')
-        const {name, value} = e.target
-        const newForm = {...form, [name]: value}
+        const { name, value } = e.target
+        const newForm = { ...form, [name]: value }
         setForm(newForm)
     }
     const validateInput = () => {
@@ -34,7 +33,7 @@ export const UpdateCategory = (props) => {
 
     const handleSubmit = () => {
         validateInput()
-        handleUpdateCategory(form, category?.id,)
+        handleUpdateCategory(form)
     }
 
     return (
@@ -64,14 +63,14 @@ export const UpdateCategory = (props) => {
                         <Col sm={12} className="mb-3">
                             <TinyMce
                                 handleChangeEditor={handleChangeEditor}
-                                data={form?.description}
+                                data={form.description}
                             />
                         </Col>
                     </Row>
                     <div className="mt-3">
                         <Button
                             variant="primary"
-                            onClick={() => handleSubmit()}
+                            onClick={handleSubmit}
                         >Edit Category</Button>
                     </div>
                 </Form>

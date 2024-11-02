@@ -1,21 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {Col, Row, Card, Form, Button} from '@themesberg/react-bootstrap';
-import {TinyMce} from "../../product/catalog/TinyMce";
-import {apiGetListCategories} from "../../../services/category";
-import {status} from "../../../enums";
+import React, { useEffect, useState } from "react";
+import { Col, Row, Card, Form, Button } from '@themesberg/react-bootstrap';
+import { TinyMce } from "../../product/catalog/TinyMce";
 
 export const CreateCategory = (props) => {
-    const {handleCreateCategory} = props
+    const { handleCreateCategory } = props
     const [error, setError] = useState('')
     const [form, setForm] = useState({
         name: "",
         description: "",
-        imageUrl: ""
     })
     const handleInput = (e) => {
         setError('')
-        const {name, value} = e.target
-        const newForm = {...form, [name]: value}
+        const { name, value } = e.target
+        const newForm = { ...form, [name]: value }
         setForm(newForm)
     }
     const validateInput = () => {
@@ -25,7 +22,7 @@ export const CreateCategory = (props) => {
     }
 
     const handleChangeEditor = (value) => {
-        setForm({...form, description: value})
+        setForm({ ...form, description: value })
     }
 
     const handleSubmit = () => {

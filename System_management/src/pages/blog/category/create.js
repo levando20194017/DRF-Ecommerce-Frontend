@@ -14,6 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { toastFailed, toastSuccess } from "../../../utils";
 import { useHistory, useParams } from "react-router-dom";
 import { UpdateCategory } from "../../../components/blog/category/UpdateCategory";
+import { Routes } from "../../../routes";
 
 export default () => {
     const { id } = useParams();
@@ -27,35 +28,22 @@ export default () => {
     const getCatagory = async () => {
         try {
             const response = await apiDetailCategory(id)
-            if (response?.data.statusCode === status.SUCCESS) {
-                setCategory(response?.data?.data)
+            if (response.status === 200) {
+                setCategory(response.data)
             }
         } catch (e) {
 
         }
     }
 
-    const handleCreateCategory = async (params) => {
-        if (params.name !== '') {
+    const handleCreateCategory = async (data) => {
+        if (data.name !== '') {
             try {
-                const response = await apiCreateCategory({ params })
-                if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Create Category successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
+                const response = await apiCreateCategory(data)
+                if (response.status === 200) {
                     history.push('/blogs/categories')
-                }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed('Category is duplicated')
+                } else {
+                    toastFailed(response.message)
                 }
             } catch (e) {
                 toastFailed('Create Category Failed')
@@ -63,30 +51,15 @@ export default () => {
         }
     }
 
-    const handleUpdateCategory = async (params, id) => {
-        if (params.name !== '') {
+    const handleUpdateCategory = async (data) => {
+        if (data.name !== '') {
+            const formData = { ...data, category_id: id }
             try {
-                const response = await apiUpdateCategory({ params, id })
-                if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Edit Category successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
-                    history.push('/blogs/categories')
-                }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed('Category is duplicated')
-                }
-                if (response?.data.statusCode === 404) {
-                    toastFailed('This category is not found')
+                const response = await apiUpdateCategory(formData)
+                if (response.status === 200) {
+                    history.push(Routes.BlogCategory.path)
+                } else {
+                    toastFailed(response.message)
                 }
             } catch (e) {
                 toastFailed('Edit Category Failed')
@@ -118,8 +91,11 @@ export default () => {
             </div>
             <Row>
                 <Col xs={12} xl={9}>
-                    {id ? <UpdateCategory handleUpdateCategory={handleUpdateCategory}
-                        category={category} /> :
+                    {id ?
+                        <UpdateCategory
+                            handleUpdateCategory={handleUpdateCategory}
+                            category={category} />
+                        :
                         <CreateCategory handleCreateCategory={handleCreateCategory} />}
 
                 </Col>
