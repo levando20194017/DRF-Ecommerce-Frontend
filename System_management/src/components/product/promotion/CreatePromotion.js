@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { apiCreatePromotion, apiDetailPromotion, apiEditPromotion } from "../../../services/promotion";
 import dayjs from 'dayjs';
 import { Routes } from "../../../routes";
+import { toastFailed } from "../../../utils";
 
 export const CreatePromotion = () => {
     const [error, setError] = useState("");
@@ -41,6 +42,8 @@ export const CreatePromotion = () => {
             const response = await apiCreatePromotion(dataDetail)
             if (response.status === 200) {
                 history.push(Routes.Promotion.path)
+            } else {
+                toastFailed(response.message)
             }
         } catch (e) {
             console.log(e);
