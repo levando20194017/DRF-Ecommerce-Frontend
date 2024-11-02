@@ -76,7 +76,7 @@ export const CatalogTable = ({ listData, getListCatalogs }) => {
         // const rowStyle = { paddingLeft: `${(level - 1) * 20 + 10}px` }; // Indentation
         const indentation = '--- '.repeat(level - 1);
         return (
-            <tr style={{ opacity: delete_at ? 0.5 : 1 }}>
+            <tr style={{ opacity: delete_at ? 0.5 : 1, backgroundColor: delete_at ? "#d1d5d8" : "#fff" }}>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
                         {props.index + 1}
@@ -101,7 +101,7 @@ export const CatalogTable = ({ listData, getListCatalogs }) => {
                                 onConfirm={() => handleRestoreItem(id)}
                                 className="cursor-pointer text-center"
                             >
-                                <UndoOutlined style={{ color: "yellow", opacity: 1, fontSize: "25px" }} className="cursor-pointer" />
+                                <UndoOutlined style={{ color: "green", opacity: 1, fontSize: "25px" }} className="cursor-pointer" />
                             </Popconfirm>
                         </div>
                         :
