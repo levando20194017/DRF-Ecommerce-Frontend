@@ -9,14 +9,19 @@ import ModalCreateTag from "../../../components/blog/tag/ModalCreateTag";
 import { useHistory } from "react-router-dom";
 import { apiGetListTags } from "../../../services/tag";
 import SearchInput from "../../../components/common/SearchInput";
+import { toastFailed } from "../../../utils";
+import PaginationCommon from "../../../components/common/PaginationCommon";
+import { ToastContainer } from "react-toastify";
 
 export default () => {
-  const [tags, setTags] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [allTags, setAllTags] = useState([]);
-  const [totalTags, setTotalTags] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setToalRecords] = useState();
+  const [search, setSearch] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
 
   const modalCreateTag = useRef(null);
   const history = useHistory();
@@ -26,13 +31,13 @@ export default () => {
   const handleGetAllTags = async () => {
     setLoading(true);
     try {
-      const params = {
-        PageIndex: 1,
-        PageSize: totalTags,
-      };
-      const response = await apiGetListTags(params);
-      if (response.data.statusCode === 200) {
-        setAllTags(response.data.data.source);
+      const response = await apiGetListTags({ pageIndex, pageSize, searchName: search });
+      if (response.status === 200) {
+        setAllTags(response.data.tags);
+        setToalRecords(response.data.total_items)
+        setTotalPages(response.data.total_pages)
+      } else {
+        toastFailed(response.message)
       }
     } catch (e) {
       console.log(e);
@@ -40,43 +45,20 @@ export default () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (totalTags) {
-      handleGetAllTags();
-    }
-  }, [totalTags]);
-  const handleGetListTags = async () => {
-    try {
-      const params = {
-        PageIndex: page,
-        PageSize: 20,
-      };
-      const response = await apiGetListTags(params);
-      if (response.data.statusCode === 200) {
-        if (response.data.data.source.length === 0 && page - 1 > 0) {
-          setPage(page - 1);
-        } else {
-          setTags(response.data.data.source);
-          setTotalPages(response.data.data.totalPages);
-          setTotalTags(response.data.data.totalRecords);
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(async () => {
-    handleGetListTags();
-  }, [page]);
 
-  const handlePageChange = (newPage) => {
-    if (newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
+  useEffect(async () => {
+    handleGetAllTags();
+  }, [pageIndex, pageSize, search]);
 
   return (
-    <>
+    <div className="page-content">
+      <ToastContainer />
+      <ModalCreateTag
+        ref={modalCreateTag}
+        title={"Create Tag"}
+        handleGetListTags={handleGetAllTags}
+        allTags={allTags}
+      />
       <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="d-block w-100 mb-4 mb-xl-0">
           <Breadcrumb
@@ -106,24 +88,26 @@ export default () => {
           </div>
         </div>
       </div>
-      <SearchInput />
-
-      <TagTable
-        tags={tags}
-        allTags={allTags}
-        handlePageChange={handlePageChange}
-        handleGetListTags={handleGetListTags}
-        page={page}
-        setPage={setPage}
-        totalPages={totalPages}
-        loading={loading}
-      />
-      <ModalCreateTag
-        ref={modalCreateTag}
-        title={"Create Tag"}
-        handleGetListTags={handleGetListTags}
-        allTags={allTags}
-      />
-    </>
+      <SearchInput search={search} setSearch={setSearch} />
+      <div className="table-content">
+        <TagTable
+          loading={loading}
+          allTags={allTags}
+          handleGetListTags={handleGetAllTags}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+        />
+      </div>
+      {totalPages > 1 &&
+        <div className="bottom-pagination">
+          <PaginationCommon
+            totalRecords={totalRecords}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            setPageSize={setPageSize} />
+        </div>
+      }
+    </div>
   );
 };

@@ -2,221 +2,48 @@ import React, {
   useState,
   useImperativeHandle,
   forwardRef,
-  useEffect,
 } from "react";
 import { Modal, Button } from "@themesberg/react-bootstrap";
 import {
   apiCreateTag,
-  apiUpdateTag,
-  apiDetailTag,
 } from "../../../services/tag";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "react-bootstrap/Spinner";
-// const status = ["Draft", "Publish"];
+import { toastFailed, toastSuccess } from "../../../utils";
 
 const ModalCreateTag = (props, ref) => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { title, save, tagId, handleGetListTags, allTags } = props;
+  const { title, handleGetListTags } = props;
   const [tagName, setTagName] = useState("");
   const [tagError, setTagError] = useState("");
-
-  const handleDetailTag = async () => {
-    if (tagId) {
-      try {
-        const response = await apiDetailTag(tagId);
-        if (response.data.statusCode === 200) {
-          setTagName(response.data.data.name);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
 
   const handleCreateTag = async () => {
     if (!tagName) {
       setTagError("Tag Name is required!");
     } else {
-      if (allTags.find((tag) => tag.name === tagName.trim())) {
-        toast.error(
-          <span onClick={() => toast.dismiss()}>Tag name is duplicated!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      } else {
+      try {
         setLoading(true);
-        try {
-          const response = await apiCreateTag({ name: tagName.trim() });
-          if (response.data.statusCode === 200) {
-            setShowModal(false);
-            setTagName("");
-            handleGetListTags();
-            toast.success(
-              <span onClick={() => toast.dismiss()}>
-                Create Tag successfully!
-              </span>,
-              {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              }
-            );
-          } else {
-            toast.error(
-              <span onClick={() => toast.dismiss()}>Create Tag failed!</span>,
-              {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              }
-            );
-          }
-        } catch (e) {
-          console.log(e);
-          toast.error(
-            <span onClick={() => toast.dismiss()}>Create Tag failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } finally {
-          setLoading(false);
+        const response = await apiCreateTag({ name: tagName.trim() });
+        if (response.status === 200) {
+          setShowModal(false);
+          setTagName("");
+          handleGetListTags();
+          toastSuccess(response.message)
+        } else {
+          toastFailed(response.message)
         }
+      } catch (e) {
+        console.log(e);
+        toastFailed("Create Tag failed!")
+      } finally {
+        setLoading(false);
       }
     }
   };
-
-  const handleUpdateTag = async () => {
-    if (!tagName) {
-      setTagError("Tag Name is required!");
-    } else {
-      if (allTags.find((tag) => tag.name === tagName.trim())) {
-        toast.error(
-          <span onClick={() => toast.dismiss()}>Tag name is duplicated!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      } else {
-        setLoading(true);
-        try {
-          const response = await apiUpdateTag(tagId, { name: tagName.trim() });
-          if (response.data.statusCode === 200) {
-            if (response.data.message === "Tag is not found") {
-              toast.error(
-                <span onClick={() => toast.dismiss()}>
-                  This Tag is not found!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            } else {
-              setShowModal(false);
-              handleGetListTags();
-              toast.success(
-                <span onClick={() => toast.dismiss()}>
-                  Edit Tag successfully!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 2000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            }
-          } else {
-            toast.error(
-              <span onClick={() => toast.dismiss()}>Edit Tag failed!</span>,
-              {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              }
-            );
-          }
-        } catch (e) {
-          console.log(e);
-          toast.error(
-            <span onClick={() => toast.dismiss()}>Edit Tag failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } finally {
-          setLoading(false);
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    handleDetailTag();
-    setTagError("");
-  }, [tagId, showModal]);
-
   const close = () => {
     setShowModal(false);
-    if (!tagId) {
-      setTagName("");
-    }
+    setTagName("");
   };
   const open = () => {
     setShowModal(true);
@@ -227,11 +54,7 @@ const ModalCreateTag = (props, ref) => {
   }));
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (tagId) {
-      handleUpdateTag();
-    } else {
-      handleCreateTag();
-    }
+    handleCreateTag();
   };
   return (
     <>
@@ -273,30 +96,6 @@ const ModalCreateTag = (props, ref) => {
                     />
                     {tagError && <div className="text-danger">{tagError}</div>}
                   </div>
-                  {/* <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label text-color"
-                        >
-                          Status
-                        </label>
-                        <Field
-                          as="select"
-                          name="category"
-                          className="form-control"
-                        >
-                          {status.map((item, index) => (
-                            <option value={index} key={index}>
-                              {item}
-                            </option>
-                          ))}
-                        </Field>
-                        {errors.category && touched.category ? (
-                          <div className="text-danger py-2">
-                            {errors.category}
-                          </div>
-                        ) : null}
-                      </div> */}
                 </div>
                 <div className="d-flex justify-content-center py-4">
                   <Button
@@ -314,10 +113,9 @@ const ModalCreateTag = (props, ref) => {
                   ) : (
                     <Button
                       className="w-75 text-white background-primary"
-                      variant="secondary"
                       type="submit"
                     >
-                      {save ?? "Create"}
+                      Create
                     </Button>
                   )}
                 </div>
