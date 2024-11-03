@@ -59,7 +59,7 @@ export default (props) => {
                 </td>
                 <td>
                     <Image src={!product_image ? ImageLink : `${process.env.REACT_APP_IMAGE_URL}${product_image}`}
-                        className="product-thunmbnail me-2" />
+                        className="product-thumbnail me-2" />
                 </td>
                 <td>
                     {changeTextToThreeDot(product_name, 20)}
@@ -107,7 +107,7 @@ export default (props) => {
         <>
             <ToastContainer />
             <Card border="light" className="shadow-sm mb-4">
-                <Card.Body className="pb-0">
+                <Card.Body className="">
                     <Table
                         responsive
                         className="table-centered table-nowrap rounded mb-0"

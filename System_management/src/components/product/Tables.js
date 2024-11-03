@@ -198,10 +198,10 @@ export const ProductTable = ({
           {imageUrl ? (
             <Image
               src={`${process.env.REACT_APP_IMAGE_URL}${imageUrl}`}
-              className="product-thunmbnail me-2"
+              className="product-thumbnail me-2"
             />
           ) : (
-            <Image src={`${ImageLink}`} className="product-thunmbnail me-2" />
+            <Image src={`${ImageLink}`} className="product-thumbnail me-2" />
           )}
         </td>
         <td>{sku ? sku : "--"}</td>
@@ -211,8 +211,8 @@ export const ProductTable = ({
         <td>
           {catalogId
             ? listCatalogs.find((catalog) => {
-                return catalog.id === catalogId;
-              })?.name
+              return catalog.id === catalogId;
+            })?.name
             : ""}
         </td>
         <td>{formatTime(createdAt)}</td>
@@ -295,12 +295,12 @@ export const ProductTable = ({
             <tbody>
               {listProducts
                 ? listProducts.map((product, index) => (
-                    <TableRow
-                      index={index}
-                      key={`page-traffic-${product.id}`}
-                      {...product}
-                    />
-                  ))
+                  <TableRow
+                    index={index}
+                    key={`page-traffic-${product.id}`}
+                    {...product}
+                  />
+                ))
                 : ""}
             </tbody>
           </Table>

@@ -111,7 +111,7 @@ export const TagTable = ({
   return (
     <>
       <Card border="light" className="shadow-sm mb-4">
-        <Card.Body className="pb-0">
+        <Card.Body className="">
           {loading ? (
             <div
               className=" d-flex justify-content-center align-items-center"

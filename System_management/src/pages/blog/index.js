@@ -8,19 +8,30 @@ import TableBlog from "../../components/blog/TableBlog";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SearchInput from "../../components/common/SearchInput";
+import { apiGetListBlogs } from "../../services/blog";
+import PaginationCommon from "../../components/common/PaginationCommon";
+import { Spinner } from "reactstrap";
 
 export default () => {
   const history = useHistory();
 
-  const [blogs, setBlogs] = useState([]);
-  const [page, setPage] = useState(1);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setToalRecords] = useState();
+  const [search, setSearch] = useState("");
+  const [listData, setListData] = useState([])
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const handleGetListBlogs = async () => {
-    setLoading(true);
     try {
-
+      setLoading(true);
+      const response = await apiGetListBlogs({ pageIndex, pageSize, name: search, tag: "" })
+      if (response.status === 200) {
+        setListData(response.data.blogs)
+        setToalRecords(response.data.total_items)
+        setTotalPages(response.data.total_pages)
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -28,17 +39,9 @@ export default () => {
     }
   };
 
-  useEffect(async () => {
-    setBlogs([]);
-    handleGetListBlogs();
-  }, [page]);
-
-  const handlePageChange = (newPage) => {
-    if (newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
-
+  useEffect(() => {
+    handleGetListBlogs()
+  }, [pageIndex, pageSize, search])
   return (
     <>
       <ToastContainer />
@@ -68,15 +71,31 @@ export default () => {
 
         </div>
       </div>
-      <SearchInput />
-      <TableBlog
-        blogs={blogs}
-        handlePageChange={handlePageChange}
-        page={page}
-        totalPages={totalPages}
-        handleGetListBlogs={handleGetListBlogs}
-        loading={loading}
-      />
+      <SearchInput search={search} setSearch={setSearch} />
+      <div className="table-content">
+        {loading ?
+          <div className=" d-flex justify-content-center align-items-center">
+            <Spinner animation="border" variant="primary" />
+          </div>
+          :
+          <TableBlog
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            listData={listData}
+            handleGetListBlogs={handleGetListBlogs}
+          />
+        }
+      </div>
+      {totalPages > 1 &&
+        <div className="bottom-pagination">
+          <PaginationCommon
+            totalRecords={totalRecords}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            setPageSize={setPageSize} />
+        </div>
+      }
     </>
   );
 };

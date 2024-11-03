@@ -132,14 +132,16 @@
     width: 100%;
   }
 
-  .ant-picker .ant-picker-input > input {
+  .ant-picker .ant-picker-input>input {
     font-size: 16px;
     text-align: center;
   }
 }
+
 .cursor-pointer {
   cursor: pointer;
 }
+
 #SKU {
   .ant-picker {
     height: 48px;
@@ -147,10 +149,13 @@
     width: 100%;
   }
 }
+
 .card-body {
+
   .ant-select,
   .ant-select-selector {
     height: 48px !important;
     width: 100%;
+    font-size: 16px !important;
   }
 }

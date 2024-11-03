@@ -11,8 +11,12 @@ const apiGetListCatalogsWithNoDeleted = function ({ pageIndex, pageSize, textSea
 const apiCreateCatalog = function (data) {
   return axios.post("/api/catalog/admin/create-new-catalog/", data);
 };
-const apiUploadImage = function (data) {
-  return axios.post("/api/admin/upload-image/", data);
+const apiUploadImage = function (formData) {
+  return axios.post("/api/admin/upload-image/", formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 };
 
 const apiDetailCatalog = function (id) {

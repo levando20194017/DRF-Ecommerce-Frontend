@@ -117,7 +117,7 @@ export const TablePromotion = ({ pageIndex, pageSize, listData, handleGetListPro
         <>
             <ToastContainer />
             <Card border="light" className="shadow-sm mb-4">
-                <Card.Body className="pb-0">
+                <Card.Body className="">
                     <Table
                         responsive
                         className="table-centered table-nowrap rounded mb-0"

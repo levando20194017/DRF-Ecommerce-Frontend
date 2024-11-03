@@ -1,70 +1,22 @@
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Card, Image, Badge, Table } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 
-import { Routes } from "../../routes";
-import ModalDeleteItem from "../common/ModalDelete";
-import BlogListPagination from "./BlogListPagination";
-import { NUMBER_ITEM_PAGE } from "../../enums";
-import { apiGetListCategories } from "../../services/category";
-import { apiDeleteBlog } from "../../services/blog";
-import { toast } from "react-toastify";
+import { apiDeleteBlog, apiRestoreBlog } from "../../services/blog";
 import "react-toastify/dist/ReactToastify.css";
-import { formatTime } from "../../utils";
-import Spinner from "react-bootstrap/Spinner";
-import { apiGetListTags } from "../../services/tag";
+import { formatTime, toastFailed, toastSuccess } from "../../utils";
 import ImageLink from "../../assets/img/no-image.png";
+import { Popconfirm } from "antd";
+import { UndoOutlined } from '@ant-design/icons';
 
 export default ({
-  blogs,
-  handlePageChange,
-  page,
-  totalPages,
-  handleGetListBlogs,
-  loading,
+  pageIndex,
+  pageSize,
+  listData,
+  handleGetListBlogs
 }) => {
-  const [blogId, setBlogId] = useState(undefined);
-  const [listCategories, setListCategories] = useState([]);
-  const [listTags, setListTags] = useState([]);
-  const modalDeleteBlog = useRef(null);
-  const handleOpenModalDeleteBlog = (id) => {
-    setBlogId(id);
-    modalDeleteBlog.current.open();
-  };
-  const handleGetListCategories = async () => {
-    try {
-      const params = {
-        PageIndex: 1,
-        PageSize: 1000,
-      };
-      const response = await apiGetListCategories(params);
-      if (response.data.statusCode === 200) {
-        setListCategories(response.data.data.source);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const handleGetListTags = async () => {
-    try {
-      const params = {
-        PageIndex: 1,
-        PageSize: 1000,
-      };
-      const response = await apiGetListTags(params);
-      if (response.data.statusCode === 200) {
-        setListTags(response.data.data.source);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(() => {
-    handleGetListCategories();
-    handleGetListTags();
-  }, []);
   const truncateString = (str, maxLength) => {
     if (str.length <= maxLength) {
       return str;
@@ -72,256 +24,159 @@ export default ({
     return str.substring(0, maxLength) + "...";
   };
 
+  const handleDeleteItem = async (id) => {
+    try {
+      const response = await apiDeleteBlog(id);
+      if (response.status === 200) {
+        handleGetListBlogs();
+        toastSuccess(response.message)
+      } else {
+        toastFailed(response.message)
+      }
+    } catch (e) {
+      console.log(e);
+      toastFailed("Delete blog failed!")
+    }
+  };
+
+  const handleRestoreItem = async (id) => {
+    try {
+      const response = await apiRestoreBlog(id);
+      if (response.status === 200) {
+        handleGetListBlogs();
+        toastSuccess(response.message)
+      } else {
+        toastFailed(response.message)
+      }
+    } catch (e) {
+      console.log(e);
+      toastFailed("Delete blog failed!")
+    }
+  };
+
   const TableRow = (props) => {
     const {
       id,
       index,
-      imageUrl,
+      image,
       title,
-      categoryId,
-      blogStatus,
-      createdAt,
-      shortDescription,
-      // content,
+      category_name,
+      created_at,
+      delete_at,
+      short_description,
       slug,
-      blogTag,
+      tags,
     } = props;
-    const statusBtn = (blogStatus) => {
-      if (blogStatus === "Published") {
-        return (
-          <Badge bg="info" className="me-1">
-            Published
-          </Badge>
-        );
-      } else if (blogStatus === "Draft") {
-        return (
-          <Badge bg="primary" className="me-1">
-            Draft
-          </Badge>
-        );
-      } else if (blogStatus === "Pending" || blogStatus === "PENDING") {
-        return (
-          <Badge bg="warning" className="me-1">
-            Pending
-          </Badge>
-        );
-      } else if (blogStatus === "POSTED") {
-        return (
-          <Badge bg="success" className="me-1">
-            Posted
-          </Badge>
-        );
-      } else {
-        return (
-          <Badge bg="danger" className="me-1">
-            {blogStatus}
-          </Badge>
-        );
-      }
-    };
 
     return (
-      <tr>
+      <tr style={{ opacity: delete_at ? 0.5 : 1, backgroundColor: delete_at ? "#d1d5d8" : "#fff" }}>
         <td>
           <Card.Link href="#" className="text-primary fw-bold">
-            {index + (page - 1) * NUMBER_ITEM_PAGE + 1}
+            {index + (pageIndex - 1) * pageSize + 1}
           </Card.Link>
         </td>
         <td>
-          {imageUrl ? (
+          {image ? (
             <Image
-              src={`${process.env.REACT_APP_IMAGE_URL}${imageUrl}`}
-              className="product-thunmbnail me-2"
+              src={`${process.env.REACT_APP_IMAGE_URL}${image}`}
+              className="product-thumbnail me-2"
             />
           ) : (
-            <Image src={`${ImageLink}`} className="product-thunmbnail me-2" />
+            <Image src={`${ImageLink}`} className="product-thumbnail me-2" />
           )}
         </td>
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
+        <td style={{ wordBreak: "break-word" }}>
           {title ? truncateString(title, 25) : "--"}
         </td>
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
+        <td style={{ wordBreak: "break-word" }}>
           {slug ? truncateString(slug, 25) : "--"}
         </td>
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
-          {categoryId
-            ? truncateString(
-              listCategories.find((category) => category.id === categoryId)
-                ?.name || "--",
-              25
-            )
-            : "--"}
+        <td style={{ wordBreak: "break-word" }}>
+          {category_name ? truncateString(category_name, 25) : "--"}
         </td>
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
-          {shortDescription ? truncateString(shortDescription, 25) : "--"}
+        <td style={{ wordBreak: "break-word" }}>
+          {short_description ? truncateString(short_description, 25) : "--"}
         </td>
         {/* <td>{content}</td> */}
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
-          {blogTag.length
-            ? truncateString(
-              blogTag
-                .map((tag) => {
-                  return listTags.find((tagItem) => {
-                    return tagItem.id === tag.tagId;
-                  })?.name;
-                })
-                .join("-"),
-              25
-            )
-            : "--"}
+        <td style={{ wordBreak: "break-word" }}>
+          {tags}
         </td>
-        <td>{statusBtn(blogStatus)}</td>
-        <td style={{ width: "15%", wordBreak: "break-word" }}>
-          {formatTime(createdAt)}
+        <td style={{ wordBreak: "break-word" }}>
+          {formatTime(created_at)}
         </td>
+        <td>{delete_at ? formatTime(delete_at) : "---"}</td>
         <td>
-          <Link
-            to={`/blogs/update-blog/${id}`}
-            className="text-primary fw-bold"
-          >
-            <FontAwesomeIcon icon={faEdit} className="me-2 fs-5" />
-          </Link>
-          <Link to={Routes.NullLink.path} className="text-primary fw-bold">
-            <FontAwesomeIcon
-              icon={faTrashAlt}
-              className="me-2 fs-5 text-danger"
-              onClick={() => handleOpenModalDeleteBlog(id)}
-            />
-          </Link>
+          {delete_at ?
+            <div className="text-center">
+              <Popconfirm
+                title="Are you sure you want to restore this item?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => handleRestoreItem(id)}
+                className="cursor-pointer text-center"
+              >
+                <UndoOutlined style={{ color: "green", opacity: 1, fontSize: "25px" }} className="cursor-pointer" />
+              </Popconfirm>
+            </div>
+            :
+            <div className="d-flex gap-3">
+              <Link
+                to={`/blogs/update-blog/${id}`}
+                className="text-primary fw-bold"
+              >
+                <FontAwesomeIcon icon={faEdit} className="me-2 fs-5" />
+              </Link>
+              <Popconfirm
+                title="Are you sure you want to delete this item?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => handleDeleteItem(id)}
+                className="cursor-pointer"
+              >
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  className="me-2 fs-5 text-danger"
+                />
+              </Popconfirm>
+            </div>
+          }
         </td>
       </tr>
     );
   };
 
-  const handleDeleteBlog = async () => {
-    try {
-      const response = await apiDeleteBlog(blogId);
-      if (response.data.statusCode === 200) {
-        modalDeleteBlog.current.close();
-        handleGetListBlogs();
-        toast.success(
-          <span onClick={() => toast.dismiss()}>Delete Blog successfully</span>,
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      } else {
-        if (response.data.statusCode === 400) {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              This Blog is not found!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } else {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>Delete blog failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error(
-        <span onClick={() => toast.dismiss()}>Delete blog failed!</span>,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
-    }
-  };
-
   return (
-    <>
-      <Card border="light" className="shadow-sm mb-4">
-        <Card.Body className="">
-          {loading ? (
-            <div
-              className=" d-flex justify-content-center align-items-center"
-              style={{ height: "50vh" }}
-            >
-              <Spinner animation="border" variant="primary" />
-            </div>
-          ) : (
-            <Table
-              responsive
-              className="table-centered table-nowrap rounded mb-0"
-            >
-              <thead className="thead-light">
-                <tr>
-                  <th className="border-0">#</th>
-                  <th className="border-0">IMAGE</th>
-                  <th className="border-0">TITLE</th>
-                  <th className="border-0">SLUG</th>
-                  <th className="border-0">CATEGORY</th>
-                  <th className="border-0">SHORT DES</th>
-                  {/* <th className="border-0">CONTENT</th> */}
-                  <th className="border-0">TAGS</th>
-                  <th className="border-0">STATUS</th>
-                  <th className="border-0">DATE CREATED</th>
-                  <th className="border-0">ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                {blogs.map((blog, index) => (
-                  <TableRow
-                    key={`page-traffic-${blog.id}`}
-                    {...blog}
-                    index={index}
-                  />
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Card.Body>
-        <Card.Footer>
-          {totalPages > 1 && (
-            <BlogListPagination
-              page={page}
-              pageMax={totalPages}
-              onPageChange={handlePageChange}
-            ></BlogListPagination>
-          )}
-        </Card.Footer>
-      </Card>
-      <ModalDeleteItem
-        ref={modalDeleteBlog}
-        title={"Delete Blog"}
-        item={"blog"}
-        handleDeleteItem={handleDeleteBlog}
-      />
-    </>
+    <Card border="light" className="shadow-sm mb-4">
+      <Card.Body className="">
+        <Table
+          responsive
+          className="table-centered table-nowrap rounded mb-0"
+        >
+          <thead className="thead-light">
+            <tr>
+              <th className="border-0">#</th>
+              <th className="border-0">IMAGE</th>
+              <th className="border-0">TITLE</th>
+              <th className="border-0">SLUG</th>
+              <th className="border-0">CATEGORY</th>
+              <th className="border-0">SHORT DES</th>
+              <th className="border-0">TAGS</th>
+              <th className="border-0">DATE CREATED</th>
+              <th className="border-0">DATE DELETED</th>
+              <th className="border-0">ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listData.map((blog, index) => (
+              <TableRow
+                key={`page-traffic-${blog.id}`}
+                {...blog}
+                index={index}
+              />
+            ))}
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
   );
 };

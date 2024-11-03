@@ -73,7 +73,7 @@ export default () => {
 
             <SearchInput search={search} setSearch={setSearch} />
             <div className="table-content">
-                <CatalogTable listData={listData} getListCatalogs={getListCatalogs} />
+                <CatalogTable pageIndex={pageIndex} pageSize={pageSize} listData={listData} getListCatalogs={getListCatalogs} />
             </div>
             <div className="bottom-pagination">
                 <PaginationCommon

@@ -6,7 +6,6 @@ import { Row } from "@themesberg/react-bootstrap";
 import { CreateCatalog } from "../../../components/product/catalog/CreateCatalog";
 import { UpdateCatalog } from "../../../components/product/catalog/UpdateCatalog";
 import { apiCreateCatalog, apiUpdateCatalog } from "../../../services/catalog";
-import { status } from "../../../enums";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastFailed, toastSuccess } from "../../../utils";
@@ -26,9 +25,11 @@ export default () => {
         if (params.name !== '') {
             try {
                 const response = await apiCreateCatalog(params)
-                if (response?.data.statusCode === status.SUCCESS) {
+                if (response.status === 200) {
                     history.push(Routes.Catalog.path)
                     toastSuccess(response.message)
+                } else {
+                    toastFailed(response.message)
                 }
 
             } catch (e) {

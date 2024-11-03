@@ -12,7 +12,7 @@ import { Popconfirm } from "antd";
 import { ToastContainer } from "react-toastify";
 import { UndoOutlined } from '@ant-design/icons';
 
-export const CatalogTable = ({ listData, getListCatalogs }) => {
+export const CatalogTable = ({ pageIndex, pageSize, listData, getListCatalogs }) => {
     const history = useHistory();
 
     // Flatten the catalog tree with indentation based on the level
@@ -70,7 +70,7 @@ export const CatalogTable = ({ listData, getListCatalogs }) => {
     };
 
     const TableRow = (props) => {
-        const { id, name, created_at, level, delete_at, image } = props;
+        const { index, id, name, created_at, level, delete_at, image } = props;
 
         // Style level for indentation
         // const rowStyle = { paddingLeft: `${(level - 1) * 20 + 10}px` }; // Indentation
@@ -79,7 +79,7 @@ export const CatalogTable = ({ listData, getListCatalogs }) => {
             <tr style={{ opacity: delete_at ? 0.5 : 1, backgroundColor: delete_at ? "#d1d5d8" : "#fff" }}>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
-                        {props.index + 1}
+                        {index + (pageIndex - 1) * pageSize + 1}
                     </Card.Link>
                 </td>
                 <td>
@@ -144,7 +144,7 @@ export const CatalogTable = ({ listData, getListCatalogs }) => {
         <>
             <ToastContainer />
             <Card border="light" className="shadow-sm mb-4">
-                <Card.Body className="pb-0">
+                <Card.Body className="">
                     <Table
                         responsive
                         className="table-centered table-nowrap rounded mb-0"

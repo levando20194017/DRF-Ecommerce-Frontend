@@ -114,7 +114,7 @@ export const CategoryTable = (props) => {
     return (
         <>
             <Card border="light" className="shadow-sm mb-4 table-description">
-                <Card.Body className="pb-0">
+                <Card.Body className="">
                     <Table
                         responsive
                         className="table-centered table-nowrap rounded mb-0"
