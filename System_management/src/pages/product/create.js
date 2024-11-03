@@ -9,24 +9,59 @@ import "./style.scss";
 import { apiGetListCatalogs } from "../../services/catalog";
 import { apiGetListPromotions } from "../../services/promotion";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { changeTextToThreeDot } from "../../utils";
 import { listProductType } from "../../enums";
-import { useMsal } from '@azure/msal-react';
+import { toastFailed } from "../../utils";
 
 export default () => {
-  const [status, setStatus] = useState("Published");
   const [listCatalogs, setListCatalogs] = useState([]);
   const [listPromotions, setListPromotions] = useState([]);
-  const [catalog, setCatalog] = useState(1);
-  const [promotion, setPromotion] = useState(1);
-  const [labels, setLabels] = useState([]);
   const [avtProduct, setAvtProduct] = useState("");
-  const [proType, setProType] = useState(listProductType[0]);
   const [mainAvatar, setMainAvatar] = useState([]);
   const [errorCount, setErrorCount] = useState(0);
-  const { instance, accounts } = useMsal();
+  const [formData, setFormData] = useState({
+    catalog: undefined,
+    promotion: undefined,
+    name: "",
+    launch_date: undefined,
+    short_description: "",
+    description: "",
+    image: "",
+    gallery: "",
+    price: undefined,
+    color: "",
+    product_type: "",
+    screen_size: "",
+    screen_technology: "",
+    resolution: "",
+    screen_features: "",
+    main_camera: "",
+    telephoto_camera: "",
+    ultra_wide_camera: "",
+    video_recording: "",
+    camera_features: "",
+    front_camera: "",
+    chipset: "",
+    gpu: "",
+    nfc: false,
+    sim_type: "",
+    network_support: "",
+    gps_support: "",
+    storage_capacity: undefined,
+    dimensions: "",
+    weight: undefined,
+    back_material: "",
+    frame_material: "",
+    water_resistance: "",
+    os_version: "",
+    security_features: "",
+    other_features: "",
+    audio_technologies: "",
+    charging_technology: "",
+    charging_port: "",
+    wifi: "",
+    bluetooth: "",
+  })
 
   const { id } = useParams();
 
@@ -36,23 +71,8 @@ export default () => {
       const maxSize = 3 * 1024 * 1024; // 3MB
       if (file?.size > maxSize) {
         // Kích thước vượt quá giới hạn
-        toast.error(
-          <span onClick={() => toast.dismiss()}>
-            Please upload photos smaller than 3MB.
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
+        toastFailed("Please upload photos smaller than 3MB.")
         setErrorCount((prevCount) => prevCount + 1);
-
         return;
       }
       if (
@@ -63,21 +83,7 @@ export default () => {
           file.type === "image/gif"
         )
       ) {
-        toast.error(
-          <span onClick={() => toast.dismiss()}>
-            Please select PNG, GIF or JPG file.
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
+        toastFailed("Please select PNG, GIF or JPG file.")
         setErrorCount((prevCount) => prevCount + 1);
         return;
       }
@@ -94,42 +100,27 @@ export default () => {
   const handleGetListCatalogs = async () => {
     try {
       const params = {
-        PageIndex: 1,
-        PageSize: 1000,
-        parentId: "",
-        token: accounts[0].idToken
+        pageIndex: 1,
+        pageSize: 10000,
+        searchName: ""
       };
       const response = await apiGetListCatalogs(params);
-      if (response?.data.statusCode === status.SUCCESS)
-        setListCatalogs(response?.data?.data?.source);
-      setListCatalogs(flattenArray(response?.data?.data?.source));
+      if (response.status === 200)
+        setListCatalogs(response.data.catalogs);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const flattenArray = (tree, level = 0) => {
-    const flatArray = [];
-
-    for (const item of tree) {
-      flatArray.push(item);
-
-      if (item.subCatalogs.length > 0) {
-        flatArray.push(...flattenArray(item.subCatalogs));
-      }
-    }
-
-    return flatArray;
-  };
-
   const handleGetListPromotions = async () => {
     try {
       const response = await apiGetListPromotions({
-        PageIndex: 1,
-        PageSize: 1000,
+        pageIndex: 1,
+        pageSize: 10000,
+        searchName: ""
       });
-      if (response.data.statusCode === 200) {
-        setListPromotions(response.data.data.source);
+      if (response.status === 200) {
+        setListPromotions(response.data.promotions);
       }
     } catch (e) {
       console.log(e);
@@ -140,38 +131,6 @@ export default () => {
     handleGetListPromotions();
   }, []);
 
-  // const handleStatusChange = (event) => {
-  //   const selectedStatus = event.target.value;
-  //   setStatus(selectedStatus);
-  // };
-  const handleCatalogChange = (event) => {
-    const selectedCatalog = event.target.value;
-    setCatalog(selectedCatalog);
-  };
-
-  const handlePromotionChange = (event) => {
-    const selectedPromotion = event.target.value;
-    setPromotion(selectedPromotion);
-  };
-  const handleProductTypeChange = (event) => {
-    const selectedProType = event.target.value;
-    setProType(selectedProType);
-  };
-
-  const handleLabelChange = (event) => {
-    const { value } = event.target;
-    let updatedSelectedLabels = [...labels];
-
-    if (updatedSelectedLabels.includes(value)) {
-      updatedSelectedLabels = updatedSelectedLabels.filter(
-        (labelSelected) => labelSelected !== value
-      );
-    } else {
-      updatedSelectedLabels.push(value);
-    }
-
-    setLabels(updatedSelectedLabels);
-  };
   return (
     <>
       <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
@@ -198,23 +157,6 @@ export default () => {
       <Row>
         <Col xs={12} xl={9}>
           <FormCreateProduct
-            status={status}
-            catalog={catalog}
-            labels={labels}
-            avtProduct={avtProduct}
-            promotion={promotion}
-            proType={proType}
-            setStatus={setStatus}
-            setListCatalogs={setListCatalogs}
-            setCatalog={setCatalog}
-            setAvtProduct={setAvtProduct}
-            setLabels={setLabels}
-            setListPromotions={setListPromotions}
-            setProType={setProType}
-            setPromotion={setPromotion}
-            mainAvatar={mainAvatar}
-            setMainAvatar={setMainAvatar}
-            listProductType={listProductType}
           />
         </Col>
 
@@ -270,38 +212,10 @@ export default () => {
                   <Form.Label>
                     Product Type <span className="text-danger">*</span>
                   </Form.Label>
-                  <div>
-                    <Form.Group id="promotion">
-                      <Form.Select
-                        value={proType}
-                        onChange={handleProductTypeChange}
-                      >
-                        {listProductType &&
-                          listProductType.map((protype) => {
-                            return <option value={protype}>{protype}</option>;
-                          })}
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
+
                 </Card.Body>
               </Card>
             </Col>
-            {/* <Col xs={12}>
-              <Card border="light" className="bg-white shadow-sm mb-4">
-                <Card.Body>
-                  <p className="mb-4">Status</p>
-                  <div>
-                    <Form.Group id="status">
-                      <Form.Select value={status} onChange={handleStatusChange}>
-                        <option value="Published">Published</option>
-                        <option value="Draft">Draft</option>
-                        <option value="Pending">Pending</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col> */}
             <Col xs={12}>
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
@@ -309,25 +223,7 @@ export default () => {
                     Catalog <span className="text-danger">*</span>
                   </Form.Label>
                   <div>
-                    <Form.Group id="category">
-                      <Form.Select
-                        value={catalog}
-                        onChange={handleCatalogChange}
-                      >
-                        {listCatalogs.length > 0 &&
-                          listCatalogs.map((catalog) => (
-                            <option value={catalog.id}>
-                              {catalog.level === 0
-                                ? changeTextToThreeDot(catalog.name, 20)
-                                : catalog.level === 1
-                                  ? "\u00A0\u00A0\u00A0\u00A0" +
-                                  changeTextToThreeDot(catalog.name, 20)
-                                  : "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0" +
-                                  changeTextToThreeDot(catalog.name, 20)}
-                            </option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
+
                   </div>
                 </Card.Body>
               </Card>
@@ -340,62 +236,12 @@ export default () => {
                   </Form.Label>
                   <div>
                     <Form.Group id="promotion">
-                      <Form.Select
-                        value={promotion}
-                        onChange={handlePromotionChange}
-                      >
-                        {listPromotions &&
-                          listPromotions.map((promotion) => {
-                            return (
-                              <option value={promotion.id}>
-                                {promotion.name}
-                              </option>
-                            );
-                          })}
-                      </Form.Select>
+
                     </Form.Group>
                   </div>
                 </Card.Body>
               </Card>
             </Col>
-            <Col xs={12}>
-              <Card border="light" className="bg-white shadow-sm mb-4">
-                <Card.Body>
-                  <Form.Label>Labels</Form.Label>
-                  <div>
-                    <Form.Group id="label">
-                      <Form.Check
-                        label="New arrival"
-                        id="new_arrival"
-                        htmlFor="new_arrival"
-                        value="New arrival"
-                        onChange={handleLabelChange}
-                        checked={labels.includes("New arrival")}
-                      />
-                      <Form.Check
-                        label="Sale"
-                        id="sale"
-                        htmlFor="sale"
-                        value="Sale"
-                        onChange={handleLabelChange}
-                        checked={labels.includes("Sale")}
-                      />
-                      <Form.Check
-                        label="Special Offer"
-                        id="special_offer"
-                        htmlFor="special_offer"
-                        onChange={handleLabelChange}
-                        value="Special Offer"
-                        checked={labels.includes("Special Offer")}
-                      />
-                    </Form.Group>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-            {/* <Col xs={12}>
-                            <ChooseTagWidget title="Tags" />
-                        </Col> */}
           </Row>
         </Col>
       </Row>

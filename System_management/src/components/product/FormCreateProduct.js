@@ -13,6 +13,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { useHistory, useParams } from "react-router-dom";
 import { TinyMce } from "./catalog/TinyMce";
 import { listMaterials } from "../../enums";
+import { toastFailed, toastSuccess } from "../../utils";
 
 export const FormCreateProduct = ({
   // status,
@@ -82,55 +83,15 @@ export const FormCreateProduct = ({
       const formData = new FormData();
       formData.append("files", avtProduct.file);
       const response = await apiUploadImage(formData);
-      if (response.data.statusCode === 200) {
-        setMainAvatar(response.data.data);
-        toast.success(
-          <span onClick={() => toast.dismiss()}>
-            Upload image successfully!
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
+      if (response.status === 200) {
+        setMainAvatar(response.imgUrl);
+        toastSuccess(response.message)
       } else {
-        toast.error(
-          <span onClick={() => toast.dismiss()}> Upload image failed!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
+        toastFailed("Upload image failed!")
       }
     } catch (e) {
       console.log(e);
-      toast.error(
-        <span onClick={() => toast.dismiss()}>
-          Something went wrong, please try again!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
+      toastFailed("Upload image failed!")
     }
   };
 
