@@ -8,14 +8,14 @@ import { Routes } from "../../routes";
 import ModalDeleteItem from "../../components/common/ModalDelete";
 import { useHistory } from "react-router-dom";
 import ListPagination from "../../components/common/ListPagination";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { status } from "../../enums/common";
 import { NUMBER_ITEM_PAGE_PRODUCT } from "../../enums/common";
 import { apiDeleteProduct } from "../../services/product";
 import ImageLink from "../../assets/img/no-image.png";
 
-import { formatTime } from "../../utils/index";
+import { formatTime, toastFailed, toastSuccess } from "../../utils/index";
 import { apiGetListCatalogs } from "../../services/catalog";
 
 export const ProductTable = ({
@@ -23,132 +23,25 @@ export const ProductTable = ({
   setPage,
   listProducts,
   pageMax,
-  getListProducts,
 }) => {
   const history = useHistory();
-  const [deleteProduct, setDeleteProduct] = useState(null);
   const [listCatalogs, setListCatalogs] = useState([]);
 
-  const modalDeleteProduct = useRef(null);
-  const handleOpenModalDeleteItem = (id) => {
-    setDeleteProduct(id);
-    modalDeleteProduct.current.open();
-  };
-
-  const getMemberPrice = (price) => {
-    return (
-      <>
-        <span>{price}</span>
-        {price ? " SGD" : ""}
-      </>
-    );
-  };
-  // const getPrice = (price, memberPrice) => {
-  //   return (
-  //     <>
-  //       <span
-  //         className={
-  //           "small " + (memberPrice ? "strike-price text-gray" : "text-danger")
-  //         }
-  //       >
-  //         {price}
-  //       </span>
-  //       {price ? " SGD" : ""}
-  //     </>
-  //   );
-  // };
   const handlePageChange = (newPage) => {
     if (newPage <= pageMax) {
       setPage(newPage);
     }
   };
-  const handleDeleteItem = async () => {
+  const handleDeleteItem = async (id) => {
     try {
-      const response = await apiDeleteProduct(deleteProduct);
-      if (response.data.statusCode === status.SUCCESS) {
-        if (response.data.message === "Get record with prameter not found.") {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              This Product is not found!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } else {
-          getListProducts();
-          toast.success(
-            <span onClick={() => toast.dismiss()}>
-              Delete Product successfully
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+      const response = await apiDeleteProduct(id);
+      if (response.status === 200) {
+        toastSuccess(response.message)
       } else {
-        if (response.data.statusCode === 400) {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              This product can not be deleted because it has already been
-              ordered!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } else {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>Delete product failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+        toastFailed(response.message)
       }
-      modalDeleteProduct.current.close();
     } catch (e) {
-      toast.error(
-        <span onClick={() => toast.dismiss()}>Delete product failed!</span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
+      toastFailed("Delete product failed!")
     }
   };
 
@@ -159,34 +52,9 @@ export const ProductTable = ({
       sku,
       imageUrl,
       name,
-      price,
-      memberPrice,
       catalogId,
       createdAt,
     } = props;
-
-    // const statusBtn = (productStatus) => {
-    //   if (productStatus === 0) {
-    //     return (
-    //       <Badge bg="primary" className="me-1">
-    //         Draft
-    //       </Badge>
-    //     );
-    //   } else if (productStatus === 1) {
-    //     return (
-    //       <Badge bg="success" className="me-1">
-    //         Publish
-    //       </Badge>
-    //     );
-    //   } else if (productStatus === 2) {
-    //     return (
-    //       <Badge bg="warning" className="me-1">
-    //         Pending
-    //       </Badge>
-    //     );
-    //   }
-    // };
-
     return (
       <tr>
         <td>
@@ -205,9 +73,7 @@ export const ProductTable = ({
           )}
         </td>
         <td>{sku ? sku : "--"}</td>
-        <td>{name ? name : "--"}</td>
-        <td>{price ? getMemberPrice(price) : "--"} </td>
-        <td>{memberPrice ? getMemberPrice(memberPrice) : "--"}</td>
+        <td>{name ? name : "--"}</td>`
         <td>
           {catalogId
             ? listCatalogs.find((catalog) => {
@@ -228,7 +94,6 @@ export const ProductTable = ({
             <FontAwesomeIcon
               icon={faTrashAlt}
               className="me-2 fs-5 text-danger"
-              onClick={() => handleOpenModalDeleteItem(id)}
             />
           </Link>
         </td>
@@ -315,12 +180,6 @@ export const ProductTable = ({
           )}
         </Card.Footer>
       </Card>
-      <ModalDeleteItem
-        ref={modalDeleteProduct}
-        title={"Delete Product"}
-        item={"product"}
-        handleDeleteItem={handleDeleteItem}
-      />
     </>
   );
 };

@@ -29,3 +29,17 @@ export const ToastSuccess = (title) => {
     });
   }, 0);
 };
+export const ToastWarning = (title) => {
+  setTimeout(() => {
+    toast.warning(<span onClick={() => toast.dismiss()}>{title}</span>, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }, 0);
+};

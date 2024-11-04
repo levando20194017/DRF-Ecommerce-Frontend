@@ -12,12 +12,13 @@ import { useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { listProductType } from "../../enums";
 import { toastFailed } from "../../utils";
+import { apiUploadImage } from "../../services/image";
+import { ToastSuccess } from "../../components/common/Toast";
 
 export default () => {
   const [listCatalogs, setListCatalogs] = useState([]);
   const [listPromotions, setListPromotions] = useState([]);
   const [avtProduct, setAvtProduct] = useState("");
-  const [mainAvatar, setMainAvatar] = useState([]);
   const [errorCount, setErrorCount] = useState(0);
   const [formData, setFormData] = useState({
     catalog: undefined,
@@ -131,6 +132,27 @@ export default () => {
     handleGetListPromotions();
   }, []);
 
+  const getAvtProductLink = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("files", avtProduct.file);
+      const response = await apiUploadImage(formData);
+      if (response.status === 200) {
+        ToastSuccess(response.message)
+      } else {
+        toastFailed("Upload image failed!")
+      }
+    } catch (e) {
+      console.log(e);
+      toastFailed("Upload image failed!")
+    }
+  };
+  useEffect(() => {
+    if (avtProduct) {
+      getAvtProductLink();
+    }
+  }, [avtProduct]);
+
   return (
     <>
       <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
@@ -156,8 +178,7 @@ export default () => {
       </div>
       <Row>
         <Col xs={12} xl={9}>
-          <FormCreateProduct
-          />
+          <FormCreateProduct formData={formData} />
         </Col>
 
         <Col xs={12} xl={3}>
@@ -167,11 +188,11 @@ export default () => {
                 <Card.Body>
                   <div className="d-xl-flex flex-column align-items-center d-">
                     <div className="xl-avatar">
-                      {mainAvatar.length !== 0 ? (
+                      {formData.image ? (
                         <Image
                           fluid
                           rounded
-                          src={`${process.env.REACT_APP_IMAGE_URL}${mainAvatar[0]}`}
+                          src={`${process.env.REACT_APP_IMAGE_URL}${formData.image}`}
                         />
                       ) : (
                         <Image fluid rounded src={CatalogImage} />
