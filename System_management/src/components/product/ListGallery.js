@@ -4,7 +4,7 @@ import { Form, Card } from "@themesberg/react-bootstrap";
 import { ToastFailed, ToastSuccess, ToastWarning } from "../common/Toast";
 import { apiUploadImage } from "../../services/image";
 
-export default () => {
+export default ({ formData, setFormData }) => {
     const [errorCount, setErrorCount] = useState(0);
     const [effectShow, setEffectShow] = useState(true);
     const [isEmptyImages, setIsEmptyImages] = useState(false);
@@ -155,8 +155,10 @@ export default () => {
                 formData.append("files", images[i].file);
             }
             const response = await apiUploadImage(formData);
-            if (response.data.statusCode === 200) {
+            if (response.status === 200) {
+                const newGallery = [...listGallery, ...response.data.data]
                 setListGallery([...listGallery, ...response.data.data]);
+                setFormData({ ...formData, gallery: newGallery.join(",") })
                 setImages([]);
                 ToastSuccess(response.message)
             } else {

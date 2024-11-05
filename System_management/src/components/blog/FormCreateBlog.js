@@ -13,7 +13,7 @@ export const FormCreateBlog = ({
   setSelectedOptionCategory
 }) => {
   const { id } = useParams();
-  const userData = JSON.parse(localStorage.getItem("mintadmin_userData")).user_infor
+  const userData = JSON.parse(localStorage.getItem("mintadmin_userData"))?.user_infor
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 

@@ -10,16 +10,18 @@ import { apiGetListCatalogs } from "../../services/catalog";
 import { apiGetListPromotions } from "../../services/promotion";
 import { useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { listProductType } from "../../enums";
 import { toastFailed } from "../../utils";
 import { apiUploadImage } from "../../services/image";
 import { ToastSuccess } from "../../components/common/Toast";
+import FormInputText from "../../components/common/FormInputText";
+import { Select, TreeSelect } from "antd";
 
 export default () => {
-  const [listCatalogs, setListCatalogs] = useState([]);
-  const [listPromotions, setListPromotions] = useState([]);
+  const [optionsPromotion, setOptionsPromotion] = useState([])
   const [avtProduct, setAvtProduct] = useState("");
   const [errorCount, setErrorCount] = useState(0);
+  const [treeData, setTreeData] = useState([]);
+
   const [formData, setFormData] = useState({
     catalog: undefined,
     promotion: undefined,
@@ -55,6 +57,18 @@ export default () => {
   })
 
   const { id } = useParams();
+
+  // Function to map catalog data to tree data format
+  const mapCatalogToTreeData = (catalogs) => {
+    return catalogs.map(catalog => {
+      return {
+        title: catalog.name,
+        value: catalog.id,
+        children: mapCatalogToTreeData(catalog.children), // Recursive mapping for children
+      };
+    });
+  };
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -96,8 +110,10 @@ export default () => {
         searchName: ""
       };
       const response = await apiGetListCatalogs(params);
-      if (response.status === 200)
-        setListCatalogs(response.data.catalogs);
+      if (response.status === 200) {
+        const mappedData = mapCatalogToTreeData(response.data.data); // Gọi hàm mapping
+        setTreeData(mappedData);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -111,7 +127,10 @@ export default () => {
         searchName: ""
       });
       if (response.status === 200) {
-        setListPromotions(response.data.promotions);
+        setOptionsPromotion(response.data.data.map((item) => ({
+          value: item.id,
+          label: item.name
+        })))
       }
     } catch (e) {
       console.log(e);
@@ -142,6 +161,21 @@ export default () => {
       getAvtProductLink();
     }
   }, [avtProduct]);
+
+  const handleBlur = (name) => {
+    setFormData({ ...formData, [name]: formData[name].trim() })
+  }
+
+  console.log(formData);
+
+  const handleChangePromotion = (value) => {
+    setFormData({ ...formData, promotion: value })
+  }
+
+  const onChangeCatalog = (newValue) => {
+    setFormData({ ...formData, catalog: newValue })
+  };
+
 
   return (
     <>
@@ -220,10 +254,32 @@ export default () => {
             <Col xs={12}>
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
-                  <Form.Label>
-                    Product Type <span className="text-danger">*</span>
-                  </Form.Label>
-
+                  <FormInputText
+                    title={"Version"}
+                    isRequired={false}
+                    value={formData.version}
+                    handleBlur={handleBlur}
+                    keyField={"version"}
+                    formData={formData}
+                    setFormData={setFormData}
+                    maxLength={255}
+                  />
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col xs={12}>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <FormInputText
+                    title={"Weight"}
+                    isRequired={true}
+                    value={formData.weight}
+                    handleBlur={handleBlur}
+                    keyField={"weight"}
+                    formData={formData}
+                    setFormData={setFormData}
+                    maxLength={255}
+                  />
                 </Card.Body>
               </Card>
             </Col>
@@ -234,7 +290,21 @@ export default () => {
                     Catalog <span className="text-danger">*</span>
                   </Form.Label>
                   <div>
-
+                    <Form.Group id="category">
+                      <TreeSelect
+                        style={{
+                          width: '100%',
+                        }}
+                        dropdownStyle={{
+                          maxHeight: 400,
+                          overflow: 'auto',
+                        }}
+                        treeData={treeData}
+                        placeholder="Please select"
+                        treeDefaultExpandAll
+                        onChange={onChangeCatalog}
+                      />
+                    </Form.Group>
                   </div>
                 </Card.Body>
               </Card>
@@ -243,11 +313,17 @@ export default () => {
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
                   <Form.Label>
-                    Promotion <span className="text-danger">*</span>
+                    Promotion
                   </Form.Label>
                   <div>
                     <Form.Group id="promotion">
-
+                      <Select
+                        showSearch
+                        placeholder="Select a promotion"
+                        value={formData.promotion}
+                        onChange={handleChangePromotion}
+                        options={optionsPromotion}
+                      />
                     </Form.Group>
                   </div>
                 </Card.Body>
