@@ -19,7 +19,9 @@ import FormInputDate from "../common/FormInputDate";
 
 export const FormCreateProduct = ({
   formData,
-  setFormData
+  setFormData,
+  errors,
+  setErrors
 }) => {
   const history = useHistory();
   const { id } = useParams();
@@ -46,6 +48,7 @@ export const FormCreateProduct = ({
 
   const handleOnChangeInput = (e, name) => {
     setFormData({ ...formData, [name]: e.target.value })
+    setErrors({ ...errors, [name]: "" })
   }
 
   const handleBlur = (name) => {
@@ -60,6 +63,29 @@ export const FormCreateProduct = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newErrors = {
+      name: formData.name ? "" : "Name is required!",
+      launch_date: formData.launch_date ? "" : "Launch date is required!",
+      image: formData.image ? "" : "Image is required!",
+      color: formData.color ? "" : "Color is required!",
+      gallery: formData.gallery ? "" : "Gallery is required!",
+      price: formData.price ? "" : "Price is required!",
+      product_type: formData.product_type ? "" : "Product type is required!",
+      screen_size: formData.screen_size ? "" : "Screen size is required!",
+      main_camera: formData.main_camera ? "" : "Main camera is required!",
+      front_camera: formData.front_camera ? "" : "Front camera is required!",
+      chipset: formData.chipset ? "" : "Chipset is required!",
+      gpu: formData.gpu ? "" : "GPU is required!",
+      storage_capacity: formData.storage_capacity ? "" : "Storage capacity is required!",
+      dimensions: formData.dimensions ? "" : "Dimensions is required!",
+      weight: formData.weight ? "" : "Weight is required!",
+      catalog: formData.catalog ? "" : "Catalog is required!"
+    }
+    setErrors(newErrors)
+
+    if (Object.values(newErrors).some(error => error)) {
+      return;
+    }
     setLoading(true);
     if (id) {
       try {
@@ -109,11 +135,11 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.name && <div className="text-danger">{errors.name}</div>}
             </Col>
             <Col md={6} className="mb-3">
               <FormInputDate title={"Launch date"} isRequired={true} keyField={"launch_date"} formData={formData} setFormData={setFormData} />
-              <div className="text-danger">{ }</div>
+              {errors.launch_date && <div className="text-danger">{errors.launch_date}</div>}
             </Col>
           </Row>
           <Row>
@@ -141,6 +167,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
               />
+              {errors.price && <div className="text-danger">{errors.price}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -152,19 +179,19 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.product_type && <div className="text-danger">{errors.product_type}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
                 title={"Color"}
-                isRequired={false}
+                isRequired={true}
                 value={formData.color}
                 handleBlur={handleBlur}
                 keyField={"color"}
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.color && <div className="text-danger">{errors.color}</div>}
             </Col>
           </Row>
 
@@ -179,31 +206,29 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.screen_size && <div className="text-danger">{errors.screen_size}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
                 title={"Screen technology"}
-                isRequired={true}
+                isRequired={false}
                 value={formData.screen_technology}
                 handleBlur={handleBlur}
                 keyField={"screen_technology"}
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
                 title={"Resolution"}
-                isRequired={true}
+                isRequired={false}
                 value={formData.resolution}
                 handleBlur={handleBlur}
                 keyField={"resolution"}
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
           </Row>
 
@@ -234,7 +259,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.main_camera && <div className="text-danger">{errors.main_camera}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -246,7 +271,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -258,7 +282,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
           </Row>
 
@@ -273,7 +296,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.front_camera && <div className="text-danger">{errors.front_camera}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -285,7 +308,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.chipset && <div className="text-danger">{errors.chipset}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -297,7 +320,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.gpu && <div className="text-danger">{errors.gpu}</div>}
             </Col>
           </Row>
 
@@ -312,7 +335,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -324,7 +346,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.storage_capacity && <div className="text-danger">{errors.storage_capacity}</div>}
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -336,7 +358,7 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
+              {errors.dimensions && <div className="text-danger">{errors.dimensions}</div>}
             </Col>
           </Row>
 
@@ -351,7 +373,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -363,7 +384,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
             <Col md={4} className="mb-3">
               <FormInputText
@@ -375,7 +395,6 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 maxLength={255} />
-              <div className="text-danger">{ }</div>
             </Col>
           </Row>
 
@@ -416,6 +435,7 @@ export const FormCreateProduct = ({
               <ListGallery
                 formData={formData}
                 setFormData={setFormData}
+                errors={errors}
               />
             </Col>
           </Row>

@@ -59,6 +59,24 @@ export default () => {
     other_info: ""
   })
 
+  const [errors, setErrors] = useState({
+    name: "",
+    launch_date: "",
+    image: "",
+    gallery: "",
+    price: "",
+    product_type: "",
+    screen_size: "",
+    main_camera: "",
+    front_camera: "",
+    chipset: "",
+    gpu: "",
+    storage_capacity: "",
+    dimensions: "",
+    weight: "",
+    catalog: ""
+  })
+
   const { id } = useParams();
 
   // Function to map catalog data to tree data format
@@ -152,6 +170,7 @@ export default () => {
       if (response.status === 200) {
         ToastSuccess(response.message)
         setFormData({ ...formData, image: response.img_url })
+        setErrors({ ...errors, image: "" })
       } else {
         toastFailed("Upload image failed!")
       }
@@ -178,6 +197,7 @@ export default () => {
 
   const onChangeCatalog = (newValue) => {
     setFormData({ ...formData, catalog: newValue })
+    setErrors({ ...errors, catalog: "" })
   };
 
 
@@ -206,7 +226,7 @@ export default () => {
       </div>
       <Row>
         <Col xs={12} xl={9}>
-          <FormCreateProduct formData={formData} setFormData={setFormData} />
+          <FormCreateProduct formData={formData} setFormData={setFormData} errors={errors} setErrors={setErrors} />
         </Col>
 
         <Col xs={12} xl={3}>
@@ -226,6 +246,7 @@ export default () => {
                         <Image fluid rounded src={CatalogImage} />
                       )}
                     </div>
+                    {errors.image && <div className="text-danger">{errors.image}</div>}
                     <div className="file-field mt-3">
                       <div className="d-flex justify-content-xl-center ms-xl-3">
                         <div className="d-flex">
@@ -282,6 +303,7 @@ export default () => {
                     formData={formData}
                     setFormData={setFormData}
                   />
+                  {errors.weight && <div className="text-danger">{errors.weight}</div>}
                 </Card.Body>
               </Card>
             </Col>
@@ -307,6 +329,7 @@ export default () => {
                         onChange={onChangeCatalog}
                       />
                     </Form.Group>
+                    {errors.catalog && <div className="text-danger">{errors.catalog}</div>}
                   </div>
                 </Card.Body>
               </Card>

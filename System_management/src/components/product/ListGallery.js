@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Form, Card } from "@themesberg/react-bootstrap";
 import { ToastFailed, ToastSuccess, ToastWarning } from "../common/Toast";
-import { apiGetListGallery, apiUploadImage } from "../../services/image";
+import { apiGetListGallery } from "../../services/image";
 
-export default ({ formData, setFormData }) => {
+export default ({ formData, setFormData, errors }) => {
     const [errorCount, setErrorCount] = useState(0);
     const [effectShow, setEffectShow] = useState(true);
     const [isEmptyImages, setIsEmptyImages] = useState(false);
@@ -200,7 +200,8 @@ export default ({ formData, setFormData }) => {
 
     return (
         <>
-            <Form.Label>Gallery</Form.Label>
+            <Form.Label>Gallery <span className="text-danger">*</span></Form.Label>
+            {errors.gallery && <div className="text-danger">{errors.gallery}</div>}
             {listGallery.length ? (
                 <div style={{ float: "right" }}>
                     <button className="btn-remove" onClick={handleRemoveAll}>
