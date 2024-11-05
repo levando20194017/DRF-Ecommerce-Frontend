@@ -8,4 +8,13 @@ const apiUploadImage = function (formData) {
   });
 };
 
-export { apiUploadImage };
+const apiGetListGallery = function (formData) {
+  return axios.post("/api/product/admin/upload-gallery/", formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+};
+
+
+export { apiUploadImage, apiGetListGallery };

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Form, Card } from "@themesberg/react-bootstrap";
 import { ToastFailed, ToastSuccess, ToastWarning } from "../common/Toast";
-import { apiUploadImage } from "../../services/image";
+import { apiGetListGallery, apiUploadImage } from "../../services/image";
 
 export default ({ formData, setFormData }) => {
     const [errorCount, setErrorCount] = useState(0);
@@ -150,14 +150,14 @@ export default ({ formData, setFormData }) => {
 
     const getListGallery = async () => {
         try {
-            const formData = new FormData();
+            const formImageData = new FormData();
             for (let i = 0; i < images.length; i++) {
-                formData.append("files", images[i].file);
+                formImageData.append("files", images[i].file);
             }
-            const response = await apiUploadImage(formData);
+            const response = await apiGetListGallery(formImageData);
             if (response.status === 200) {
-                const newGallery = [...listGallery, ...response.data.data]
-                setListGallery([...listGallery, ...response.data.data]);
+                const newGallery = [...listGallery, ...response.image_urls]
+                setListGallery([...listGallery, ...response.image_urls]);
                 setFormData({ ...formData, gallery: newGallery.join(",") })
                 setImages([]);
                 ToastSuccess(response.message)

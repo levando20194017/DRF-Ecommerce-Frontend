@@ -8,7 +8,7 @@ export default ({ title, isRequired, value, keyField, placeholder, formData, set
         const regex = /^\d+(\.\d*)?$/; // Biểu thức chính quy để kiểm tra số và dấu chấm chỉ xuất hiện 1 lần
 
         if (inputValue === "" || regex.test(inputValue)) {
-            setFormData({ ...formData, [name]: e.target.value })
+            setFormData({ ...formData, [name]: inputValue === "" ? "" : parseFloat(inputValue) });
         }
     }
 

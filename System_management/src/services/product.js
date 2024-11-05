@@ -1,22 +1,22 @@
 import axios from "../api/axiosClient";
 
-const apiGetProductList = function ({ PageIndex, PageSize }) {
-  return axios.get(`/Products?PageIndex=${PageIndex}&PageSize=${PageSize}`);
+const apiGetProductList = function ({ pageIndex, pageSize, searchName }) {
+  return axios.get(`/api/product/admin/search-products/?page_index=${pageIndex}&page_size=${pageSize}&name=${searchName}`);
 };
-const apiCreateProduct = function (params) {
-  return axios.post("/Products", params);
+const apiCreateProduct = function (data) {
+  return axios.post("/api/product/admin/create-new-product/", data);
 };
 
 const apiDetailProduct = function (id) {
-  return axios.get(`/Products/${id}`);
+  return axios.get(`/api/product/get-detail-product/?id=${id}`);
 };
 
-const apiUpdateProduct = function (id, params) {
-  return axios.put(`/Products/${id}`, params);
+const apiUpdateProduct = function (data) {
+  return axios.put(`/api/product/admin/edit-product/`, data);
 };
 
 const apiDeleteProduct = function (id) {
-  return axios.delete(`/Products/${id}`);
+  return axios.delete(`/api/product/admin/delete-product/?id=${id}`);
 };
 
 const apiGetListCatalogs = function ({ PageIndex, PageSize }) {

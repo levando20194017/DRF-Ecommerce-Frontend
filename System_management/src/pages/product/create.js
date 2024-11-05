@@ -15,14 +15,17 @@ import { apiUploadImage } from "../../services/image";
 import { ToastSuccess } from "../../components/common/Toast";
 import FormInputText from "../../components/common/FormInputText";
 import { Select, TreeSelect } from "antd";
+import FormInputFloat from "../../components/common/FormInputFloat";
 
 export default () => {
   const [optionsPromotion, setOptionsPromotion] = useState([])
   const [avtProduct, setAvtProduct] = useState("");
   const [errorCount, setErrorCount] = useState(0);
   const [treeData, setTreeData] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("mintadmin_userData"))?.user_infor
 
   const [formData, setFormData] = useState({
+    admin: userData.id,
     catalog: undefined,
     promotion: undefined,
     name: "",
@@ -107,7 +110,7 @@ export default () => {
       const params = {
         pageIndex: 1,
         pageSize: 10000,
-        searchName: ""
+        textSearch: ""
       };
       const response = await apiGetListCatalogs(params);
       if (response.status === 200) {
@@ -124,7 +127,7 @@ export default () => {
       const response = await apiGetListPromotions({
         pageIndex: 1,
         pageSize: 10000,
-        searchName: ""
+        promotionName: ""
       });
       if (response.status === 200) {
         setOptionsPromotion(response.data.data.map((item) => ({
@@ -143,11 +146,12 @@ export default () => {
 
   const getAvtProductLink = async () => {
     try {
-      const formData = new FormData();
-      formData.append("files", avtProduct.file);
-      const response = await apiUploadImage(formData);
+      const formImageData = new FormData();
+      formImageData.append("file", avtProduct.file);
+      const response = await apiUploadImage(formImageData);
       if (response.status === 200) {
         ToastSuccess(response.message)
+        setFormData({ ...formData, image: response.img_url })
       } else {
         toastFailed("Upload image failed!")
       }
@@ -270,15 +274,13 @@ export default () => {
             <Col xs={12}>
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
-                  <FormInputText
+                  <FormInputFloat
                     title={"Weight"}
                     isRequired={true}
                     value={formData.weight}
-                    handleBlur={handleBlur}
                     keyField={"weight"}
                     formData={formData}
                     setFormData={setFormData}
-                    maxLength={255}
                   />
                 </Card.Body>
               </Card>
