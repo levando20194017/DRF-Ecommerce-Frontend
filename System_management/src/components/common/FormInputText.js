@@ -1,7 +1,10 @@
 import React from "react";
 import { Form } from "@themesberg/react-bootstrap";
 
-export default ({ title, isRequired, value, handleOnChange, handleBlur, key, maxLength }) => {
+export default ({ title, isRequired, value, handleBlur, placeholder, keyField, maxLength, formData, setFormData }) => {
+    const handleOnChangeInput = (e, name) => {
+        setFormData({ ...formData, [name]: e.target.value })
+    }
     return (
         <Form.Group id="title">
             <Form.Label>
@@ -9,10 +12,10 @@ export default ({ title, isRequired, value, handleOnChange, handleBlur, key, max
             </Form.Label>
             <Form.Control
                 type="text"
-                placeholder="Product Title"
+                placeholder={placeholder}
                 value={value}
-                onChange={(e) => handleOnChange(e, key)}
-                onBlur={(e) => handleBlur(e, key)}
+                onChange={(e) => handleOnChangeInput(e, keyField)}
+                onBlur={() => handleBlur(keyField)}
                 maxLength={maxLength}
             />
         </Form.Group>

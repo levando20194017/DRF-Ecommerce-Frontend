@@ -37,31 +37,21 @@ export default () => {
     resolution: "",
     screen_features: "",
     main_camera: "",
-    telephoto_camera: "",
-    ultra_wide_camera: "",
     video_recording: "",
     camera_features: "",
     front_camera: "",
     chipset: "",
     gpu: "",
-    nfc: false,
-    sim_type: "",
     network_support: "",
-    gps_support: "",
     storage_capacity: undefined,
     dimensions: "",
     weight: undefined,
-    back_material: "",
-    frame_material: "",
-    water_resistance: "",
-    os_version: "",
+    version: "",
     security_features: "",
-    other_features: "",
-    audio_technologies: "",
-    charging_technology: "",
-    charging_port: "",
+    charging: "",
     wifi: "",
     bluetooth: "",
+    other_info: ""
   })
 
   const { id } = useParams();
@@ -178,7 +168,7 @@ export default () => {
       </div>
       <Row>
         <Col xs={12} xl={9}>
-          <FormCreateProduct formData={formData} />
+          <FormCreateProduct formData={formData} setFormData={setFormData} />
         </Col>
 
         <Col xs={12} xl={3}>
