@@ -4,11 +4,10 @@ import { Form, Card } from "@themesberg/react-bootstrap";
 import { ToastFailed, ToastSuccess, ToastWarning } from "../common/Toast";
 import { apiGetListGallery } from "../../services/image";
 
-export default ({ formData, setFormData, errors }) => {
+export default ({ formData, setFormData, errors, listGallery, setListGallery }) => {
     const [errorCount, setErrorCount] = useState(0);
     const [effectShow, setEffectShow] = useState(true);
     const [isEmptyImages, setIsEmptyImages] = useState(false);
-    const [listGallery, setListGallery] = useState([]);
     const fileInputRef = useRef();
 
     //images when upload from devices

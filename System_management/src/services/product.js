@@ -19,6 +19,10 @@ const apiDeleteProduct = function (id) {
   return axios.delete(`/api/product/admin/delete-product/?id=${id}`);
 };
 
+const apiRestoreProduct = function (data) {
+  return axios.put(`/api/product/admin/restore-product/`, data);
+};
+
 const apiGetListCatalogs = function ({ PageIndex, PageSize }) {
   return axios.get(`/Catalogs?pageIndex=${PageIndex}&pageSize=${PageSize}`);
 };
@@ -38,4 +42,5 @@ export {
   apiDeleteProduct,
   apiGetListCatalogs,
   apiProductSearch,
+  apiRestoreProduct
 };

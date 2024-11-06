@@ -148,7 +148,7 @@ export default () => {
         promotionName: ""
       });
       if (response.status === 200) {
-        setOptionsPromotion(response.data.data.map((item) => ({
+        setOptionsPromotion(response.data.promotions.map((item) => ({
           value: item.id,
           label: item.name
         })))
@@ -188,8 +188,6 @@ export default () => {
   const handleBlur = (name) => {
     setFormData({ ...formData, [name]: formData[name].trim() })
   }
-
-  console.log(formData);
 
   const handleChangePromotion = (value) => {
     setFormData({ ...formData, promotion: value })
@@ -323,6 +321,7 @@ export default () => {
                           maxHeight: 400,
                           overflow: 'auto',
                         }}
+                        value={formData.catalog}
                         treeData={treeData}
                         placeholder="Please select"
                         treeDefaultExpandAll

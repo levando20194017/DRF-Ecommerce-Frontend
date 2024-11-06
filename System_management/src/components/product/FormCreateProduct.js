@@ -24,15 +24,20 @@ export const FormCreateProduct = ({
   setErrors
 }) => {
   const history = useHistory();
+  const [dataDetail, setDataDetail] = useState()
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
+  const [listGallery, setListGallery] = useState([]);
 
   const getDetailProduct = async () => {
     try {
       const response = await apiDetailProduct(id);
       if (response.status === 200) {
-        const data = response.data;
+        setDataDetail(response.data)
+        if (response.data.gallery) {
+          setListGallery(response.data.gallery.split(","))
+        }
       }
     } catch (e) {
       console.log(e);
@@ -45,6 +50,11 @@ export const FormCreateProduct = ({
     }
   }, [id]);
 
+  useEffect(() => {
+    if (id) {
+      setFormData({ ...dataDetail })
+    }
+  }, [id, dataDetail])
 
   const handleOnChangeInput = (e, name) => {
     setFormData({ ...formData, [name]: e.target.value })
@@ -91,8 +101,8 @@ export const FormCreateProduct = ({
       try {
         const response = await apiUpdateProduct(formData);
         if (response.status === 200) {
-          toastSuccess(response.message)
           history.push("/product");
+          toastSuccess(response.message)
         } else {
           toastFailed(response.message)
         }
@@ -106,8 +116,8 @@ export const FormCreateProduct = ({
       try {
         const response = await apiCreateProduct(formData);
         if (response.status === 200) {
-          toastSuccess(response.message)
           history.push("/product");
+          toastSuccess(response.message)
         } else {
           toastFailed(response.message)
         }
@@ -197,15 +207,14 @@ export const FormCreateProduct = ({
 
           <Row>
             <Col md={4} className="mb-3">
-              <FormInputText
+              <FormInputFloat
                 title={"Screen size"}
                 isRequired={true}
                 value={formData.screen_size}
-                handleBlur={handleBlur}
                 keyField={"screen_size"}
                 formData={formData}
                 setFormData={setFormData}
-                maxLength={255} />
+              />
               {errors.screen_size && <div className="text-danger">{errors.screen_size}</div>}
             </Col>
             <Col md={4} className="mb-3">
@@ -436,6 +445,8 @@ export const FormCreateProduct = ({
                 formData={formData}
                 setFormData={setFormData}
                 errors={errors}
+                listGallery={listGallery}
+                setListGallery={setListGallery}
               />
             </Col>
           </Row>
