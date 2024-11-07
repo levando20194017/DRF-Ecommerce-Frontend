@@ -4,11 +4,8 @@ import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import Button from "../../components/common/Button";
 import { useHistory } from "react-router-dom";
-
 import { ProductTable } from "../../components/product/Tables";
-import ProductSearch from "../../components/product/ProductSearch";
-import { apiGetProductList, apiProductSearch } from "../../services/product";
-import { NUMBER_ITEM_PAGE_PRODUCT } from "../../enums";
+import { apiGetProductList } from "../../services/product";
 import SearchInput from "../../components/common/SearchInput";
 import PaginationCommon from "../../components/common/PaginationCommon";
 

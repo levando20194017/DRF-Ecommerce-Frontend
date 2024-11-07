@@ -13,7 +13,7 @@ export default ({ title, isRequired, value, handleBlur, placeholder, keyField, m
             <Form.Control
                 type="text"
                 placeholder={placeholder}
-                value={value}
+                value={formData[keyField]}
                 onChange={(e) => handleOnChangeInput(e, keyField)}
                 onBlur={() => handleBlur(keyField)}
                 maxLength={maxLength}

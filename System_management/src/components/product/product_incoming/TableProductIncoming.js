@@ -2,50 +2,44 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Card, Table, Image } from "@themesberg/react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../../../routes";
 import { formatTime, toastFailed, toastSuccess } from "../../../utils";
 import { changeTextToThreeDot } from "../../../utils";
-import ListPagination from "../../common/ListPagination";
 import { ToastContainer } from "react-toastify";
 import { Popconfirm } from "antd";
 import ImageLink from "../../../assets/img/no-image.png";
+import { apiDeleteProductIncoming, apiDetailProductIncoming } from "../../../services/product";
 
-export default (props) => {
-    const [data, setData] = useState([])
-    const modalDelete = useRef(null)
-    const [pageIndex, setPageIndex] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [pageSize, setPageSize] = useState(10);
+export default ({
+    pageIndex,
+    pageSize,
+    listData,
+    getListProductIncoming
+}) => {
+    const history = useHistory()
 
-    const handleOpenModalDelete = (id) => {
-
-    }
-    const handleDeleteItem = () => {
-
-    }
-
-    const getListData = async () => {
+    const handleDeleteItem = async (id) => {
         try {
-            const params = {
-                PageIndex: pageIndex,
-                PageSize: 10,
+            const response = await apiDeleteProductIncoming(id);
+            if (response.status === 200) {
+                toastSuccess(response?.message);
+                getListProductIncoming(); // Refresh the list
+            } else {
+                toastFailed(response?.message);
             }
-
-            // if (response?.data.statusCode === status.SUCCESS)
         } catch (e) {
+            toastFailed('Delete product incoming failed');
         }
     }
 
-    useEffect(() => {
-        getListData();
-    }, [pageIndex])
-
     const handleEdit = async (id) => {
-        // const response = await apiDetailPromtion(id)
-        // if (response.status === 200) {
-        //     history.push(Routes.PromotionUpdate.path)
-        // }       
+        const response = await apiDetailProductIncoming(id);
+        if (response.status === 200) {
+            history.push(`/product/update-product-incoming/${id}`);
+        } else {
+            toastFailed(response.message);
+        }
     }
 
     const TableRow = (props) => {
@@ -54,7 +48,7 @@ export default (props) => {
             <tr>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
-                        {index + 1}
+                        {index + (pageIndex - 1) * pageSize + 1}
                     </Card.Link>
                 </td>
                 <td>
@@ -86,21 +80,17 @@ export default (props) => {
                         title="Are you sure delete this Item?"
                         okText="Yes"
                         cancelText="No"
+                        onConfirm={() => handleDeleteItem(id)}
+                        className="cursor-pointer"
                     >
                         <FontAwesomeIcon
                             icon={faTrashAlt}
                             className="me-2 fs-5 text-danger cursor-pointer"
-                            onClick={() => handleOpenModalDelete(id)}
                         />
                     </Popconfirm>
                 </td>
             </tr>
         );
-    };
-    const handlePageChange = (newPage) => {
-        if (newPage <= totalPages) {
-            setPageIndex(newPage);
-        }
     };
 
     return (
@@ -126,7 +116,7 @@ export default (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data && data.length > 0 ? data.map((product, index) => (
+                            {listData && listData.length > 0 ? listData.map((product, index) => (
                                 <TableRow
                                     index={index}
                                     key={`page-traffic-${product.id}`}
@@ -137,20 +127,6 @@ export default (props) => {
                     </Table>
                 </Card.Body>
             </Card>
-            {totalPages > 1 && (
-                <ListPagination
-                    page={pageIndex}
-                    pageMax={totalPages}
-                    onPageChange={handlePageChange}
-                ></ListPagination>
-            )}
-
-            {/* <PaginationCommon
-                totalRecord={totalRecord}
-                pageSize={pageSize}
-                pageIndex={pageIndex}
-                setPageIndex={setPageIndex}
-                setPageSize={setPageSize} /> */}
         </>
     );
 };

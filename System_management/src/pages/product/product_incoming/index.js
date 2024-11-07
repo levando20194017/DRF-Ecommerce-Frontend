@@ -8,12 +8,35 @@ import { TablePromotion } from "../../../components/product/promotion/TablePromo
 import { Routes } from "../../../routes";
 import TableProductIncoming from "../../../components/product/product_incoming/TableProductIncoming";
 import SearchInput from "../../../components/common/SearchInput";
+import { apiGetListProductIncoming } from "../../../services/product";
+import PaginationCommon from "../../../components/common/PaginationCommon";
 
 export default () => {
     const history = useHistory();
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalRecords, setToalRecords] = useState();
+    const [search, setSearch] = useState("");
+    const [listData, setListData] = useState([])
+
+    const getListProductIncoming = async () => {
+        try {
+            const response = await apiGetListProductIncoming({ pageIndex, pageSize, searchName: search, startDate: "", endDate: "" })
+            if (response.status === 200) {
+                setListData(response.data.product_incomings)
+                setToalRecords(response.data.total_items)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        getListProductIncoming()
+    }, [pageIndex, pageSize, search])
 
     return (
-        <>
+        <div className="page-content">
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
@@ -49,9 +72,18 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <SearchInput />
-
-            <TableProductIncoming />
-        </>
+            <SearchInput search={search} setSearch={setSearch} />
+            <div className="table-content">
+                <TableProductIncoming pageIndex={pageIndex} pageSize={pageSize} listData={listData} getListProductIncoming={getListProductIncoming} />
+            </div>
+            <div className="bottom-pagination">
+                <PaginationCommon
+                    totalRecords={totalRecords}
+                    pageSize={pageSize}
+                    pageIndex={pageIndex}
+                    setPageIndex={setPageIndex}
+                    setPageSize={setPageSize} />
+            </div>
+        </div>
     );
 };

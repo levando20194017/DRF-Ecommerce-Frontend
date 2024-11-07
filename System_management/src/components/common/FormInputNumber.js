@@ -22,7 +22,7 @@ export default ({ title, isRequired, value, keyField, placeholder, formData, set
             <Form.Control
                 type="text"
                 placeholder={placeholder}
-                value={value}
+                value={formData[keyField]}
                 onChange={(e) => handleChangeNumber(e, keyField)}
                 onKeyPress={(e) => {
                     const charCode = e.which || e.keyCode;

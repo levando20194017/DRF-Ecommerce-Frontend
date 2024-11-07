@@ -20,7 +20,7 @@ export default ({ title, isRequired, value, keyField, placeholder, formData, set
             <Form.Control
                 type="text"
                 placeholder={placeholder}
-                value={value}
+                value={formData[keyField]}
                 onChange={(e) => handleChangeFloat(e, keyField)}
             />
         </Form.Group>

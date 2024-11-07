@@ -23,15 +23,20 @@ const apiRestoreProduct = function (data) {
   return axios.put(`/api/product/admin/restore-product/`, data);
 };
 
-const apiGetListCatalogs = function ({ PageIndex, PageSize }) {
-  return axios.get(`/Catalogs?pageIndex=${PageIndex}&pageSize=${PageSize}`);
+const apiAddProductToStore = function (data) {
+  return axios.post(`/api/product_incoming/admin/create-product-incoming/`, data);
 };
 
-const apiProductSearch = function ({ PageIndex, PageSize, data }) {
-  return axios.post(
-    `/Products/search?PageIndex=${PageIndex}&pageSize=${PageSize}`,
-    data
-  );
+const apiGetListProductIncoming = function ({ pageIndex, pageSize, searchName, startDate, endDate }) {
+  return axios.get(`/api/product_incoming/admin/search_product_incomings/?page_index=${pageIndex}&page_size=${pageSize}&product_name=${searchName}&start_date=${startDate}&end_date=${endDate}`);
+};
+
+const apiDetailProductIncoming = function (id) {
+  return axios.get(`/api/product_incoming/admin/detail-product-incoming/?id=${id}`);
+};
+
+const apiDeleteProductIncoming = function (id) {
+  return axios.delete(`/api/product_incoming/admin/delete-product-incoming/?id=${id}`);
 };
 
 export {
@@ -40,7 +45,9 @@ export {
   apiDetailProduct,
   apiUpdateProduct,
   apiDeleteProduct,
-  apiGetListCatalogs,
-  apiProductSearch,
-  apiRestoreProduct
+  apiRestoreProduct,
+  apiAddProductToStore,
+  apiGetListProductIncoming,
+  apiDetailProductIncoming,
+  apiDeleteProductIncoming
 };
