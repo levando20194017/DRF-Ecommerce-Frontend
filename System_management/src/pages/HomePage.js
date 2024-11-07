@@ -124,7 +124,7 @@ export default () => (
 
     <RouteWithSidebar exact path={Routes.ProductIncoming.path} component={ListProductsIncoming} />
     <RouteWithSidebar exact path={Routes.ProductIncomingAdd.path} component={CreateProductIncoming} />
-    <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={ListPromotions} />
+    <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={CreateProductIncoming} />
 
     <RouteWithSidebar exact path={Routes.Blog.path} component={Blog} />
     <RouteWithSidebar

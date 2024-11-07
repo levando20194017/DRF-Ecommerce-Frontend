@@ -3,21 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { Row } from "@themesberg/react-bootstrap";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Routes } from "../../../routes";
 import AddProductToStore from "../../../components/product/product_incoming/AddProductToStore";
 
 export default () => {
-
-    const { id } = useParams();
     const history = useHistory()
-
-    const handleCreate = async (params) => {
-
-    }
-
     return (
         <>
             <ToastContainer />
@@ -40,7 +33,7 @@ export default () => {
             </div>
 
             <Row>
-                <AddProductToStore handleCreate={handleCreate} />
+                <AddProductToStore />
             </Row>
         </>
     );

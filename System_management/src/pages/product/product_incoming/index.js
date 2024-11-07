@@ -4,24 +4,30 @@ import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../components/common/Button";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { TablePromotion } from "../../../components/product/promotion/TablePromotion";
 import { Routes } from "../../../routes";
 import TableProductIncoming from "../../../components/product/product_incoming/TableProductIncoming";
 import SearchInput from "../../../components/common/SearchInput";
 import { apiGetListProductIncoming } from "../../../services/product";
 import PaginationCommon from "../../../components/common/PaginationCommon";
+import { DatePicker, Space } from 'antd';
+import dayjs from 'dayjs';
 
 export default () => {
+    const dateFormat = 'YYYY/MM/DD';
     const history = useHistory();
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalRecords, setToalRecords] = useState();
     const [search, setSearch] = useState("");
     const [listData, setListData] = useState([])
+    const [date, setDate] = useState({
+        startDate: "",
+        endDate: ""
+    })
 
     const getListProductIncoming = async () => {
         try {
-            const response = await apiGetListProductIncoming({ pageIndex, pageSize, searchName: search, startDate: "", endDate: "" })
+            const response = await apiGetListProductIncoming({ pageIndex, pageSize, searchName: search, startDate: date.startDate, endDate: date.endDate })
             if (response.status === 200) {
                 setListData(response.data.product_incomings)
                 setToalRecords(response.data.total_items)
@@ -33,7 +39,11 @@ export default () => {
 
     useEffect(() => {
         getListProductIncoming()
-    }, [pageIndex, pageSize, search])
+    }, [pageIndex, pageSize, search, date])
+
+    const handleOnChange = (value, keyField) => {
+        setDate({ ...date, [keyField]: value ? value.format('YYYY-MM-DD') : "" });
+    };
 
     return (
         <div className="page-content">
@@ -72,7 +82,31 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <SearchInput search={search} setSearch={setSearch} />
+            <div className="d-flex gap-3">
+                <SearchInput search={search} setSearch={setSearch} />
+                <div>
+                    <Space direction="vertical">
+                        <DatePicker
+                            onChange={(value) => handleOnChange(value, "startDate")}
+                            value={date.startDate ? dayjs(date.startDate, dateFormat) : undefined}
+                            format={dateFormat}
+                            placeholder="Start date"
+                            style={{ width: "200px" }}
+                        />
+                    </Space>
+                </div>
+                <div>
+                    <Space direction="vertical">
+                        <DatePicker
+                            onChange={(value) => handleOnChange(value, "endDate")}
+                            value={date.endDate ? dayjs(date.endDate, dateFormat) : undefined}
+                            format={dateFormat}
+                            placeholder="End date"
+                            style={{ width: "200px" }}
+                        />
+                    </Space>
+                </div>
+            </div>
             <div className="table-content">
                 <TableProductIncoming pageIndex={pageIndex} pageSize={pageSize} listData={listData} getListProductIncoming={getListProductIncoming} />
             </div>

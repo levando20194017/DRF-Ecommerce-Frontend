@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Card, Form, Button } from "@themesberg/react-bootstrap";
+import { Col, Row, Card, Form, Button, Spinner } from "@themesberg/react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import { InputNumber, Select } from 'antd';
 import FormInputFloat from "../../common/FormInputFloat";
 import FormInputNumber from "../../common/FormInputNumber";
 import FormInputDate from "../../common/FormInputDate";
-import { apiAddProductToStore, apiGetProductList } from "../../../services/product";
+import { apiAddProductToStore, apiDetailProductIncoming, apiGetProductList, apiUpdateProductIncoming } from "../../../services/product";
 import { ToastFailed, ToastSuccess } from "../../common/Toast";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Routes } from "../../../routes";
 
 export default () => {
+    const { id } = useParams()
     const [loading, setLoading] = useState(false)
     const [optionsProduct, setOptionsProduct] = useState([])
     const history = useHistory()
@@ -33,6 +34,27 @@ export default () => {
         effective_date: ""
     })
 
+    const getDetailProductIncoming = async () => {
+        try {
+            const response = await apiDetailProductIncoming(id);
+            if (response.status === 200) {
+                const data = response.data
+                setFormData({
+                    id: data.id,
+                    product_id: data.product,
+                    store_id: 1,
+                    cost_price: data.cost_price,
+                    quantity_in: data.quantity_in,
+                    vat: data.vat,
+                    shipping_cost: data.shipping_cost,
+                    effective_date: data.effective_date
+                })
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const getListProducts = async () => {
         try {
             const response = await apiGetProductList({ pageIndex: 1, pageSize: 1000, searchName: "" })
@@ -52,10 +74,17 @@ export default () => {
         getListProducts();
     }, [])
 
+    useEffect(() => {
+        if (id) {
+            getDetailProductIncoming();
+        }
+    }, [id]);
+
     const handleChangeProduct = (value) => {
         setFormData({ ...formData, product_id: value })
     }
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const newErrors = {
             product_id: formData.product_id ? "" : "Product is required!",
             cost_price: formData.cost_price ? "" : "Cost price is required!",
@@ -70,21 +99,36 @@ export default () => {
             return;
         }
 
-        try {
-            setLoading(true)
-            const response = await apiAddProductToStore(formData)
-            if (response.status === 200) {
-                history.push(Routes.ProductIncoming.path)
-                ToastSuccess("Add product to store successfully.")
+        if (id) {
+            try {
+                setLoading(true)
+                const response = await apiUpdateProductIncoming(formData)
+                if (response.status === 200) {
+                    history.push(Routes.ProductIncoming.path)
+                    ToastSuccess("Edit product incoming successfully.")
+                }
+            } catch (e) {
+                console.log(e);
+                ToastFailed("Edit product incoming failed.")
+            } finally {
+                setLoading(false)
             }
-        } catch (e) {
-            console.log(e);
-            ToastFailed("Add product to store failed.")
+        } else {
+            try {
+                setLoading(true)
+                const response = await apiAddProductToStore(formData)
+                if (response.status === 200) {
+                    history.push(Routes.ProductIncoming.path)
+                    ToastSuccess("Add product to store successfully.")
+                }
+            } catch (e) {
+                console.log(e);
+                ToastFailed("Add product to store failed.")
+            } finally {
+                setLoading(false)
+            }
         }
     }
-
-    console.log(formData);
-
 
     return (
         <>
@@ -92,7 +136,7 @@ export default () => {
             <Col xs={12} xl={9}>
                 <Card border="light" className="bg-white shadow-sm mb-4">
                     <Card.Body>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             <Row>
                                 <Col md={12} className="mb-3">
                                     <Form.Group>
@@ -104,6 +148,7 @@ export default () => {
                                                 placeholder="Chọn sản phẩm"
                                                 optionFilterProp="label"
                                                 onChange={handleChangeProduct}
+                                                value={formData.product_id}
                                             >
                                                 {optionsProduct.map(option => (
                                                     <Select.Option key={option.value} value={option.value} label={option.label}>
@@ -191,9 +236,19 @@ export default () => {
                             </Row>
 
                             <div className="mt-3">
-                                <Button variant="primary" onClick={handleSubmit}>
-                                    Thêm sản phẩm
-                                </Button>
+                                {loading ? (
+                                    <div className="text-center" style={{ width: "120px" }}>
+                                        <Spinner animation="border" variant="primary" />
+                                    </div>
+                                ) : id ? (
+                                    <Button variant="primary" type="submit">
+                                        Cập nhật sản phẩm
+                                    </Button>
+                                ) : (
+                                    <Button variant="primary" type="submit">
+                                        Thêm sản phẩm
+                                    </Button>
+                                )}
                             </div>
                         </Form>
                     </Card.Body>

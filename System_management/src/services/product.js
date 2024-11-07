@@ -35,6 +35,10 @@ const apiDetailProductIncoming = function (id) {
   return axios.get(`/api/product_incoming/admin/detail-product-incoming/?id=${id}`);
 };
 
+const apiUpdateProductIncoming = function (data) {
+  return axios.put(`/api/product_incoming/admin/edit-product-incoming/`, data);
+};
+
 const apiDeleteProductIncoming = function (id) {
   return axios.delete(`/api/product_incoming/admin/delete-product-incoming/?id=${id}`);
 };
@@ -49,5 +53,6 @@ export {
   apiAddProductToStore,
   apiGetListProductIncoming,
   apiDetailProductIncoming,
-  apiDeleteProductIncoming
+  apiDeleteProductIncoming,
+  apiUpdateProductIncoming
 };

@@ -169,7 +169,7 @@ export const FormCreateProduct = ({
           </Row>
           <Row>
             <Col md={4} className="mb-3">
-              <FormInputFloat
+              <FormInputNumber
                 title={"Price"}
                 isRequired={true}
                 value={formData.price}
