@@ -23,6 +23,7 @@ const apiRestoreProduct = function (data) {
   return axios.put(`/api/product/admin/restore-product/`, data);
 };
 
+/// product in coming
 const apiAddProductToStore = function (data) {
   return axios.post(`/api/product_incoming/admin/create-product-incoming/`, data);
 };
@@ -43,6 +44,17 @@ const apiDeleteProductIncoming = function (id) {
   return axios.delete(`/api/product_incoming/admin/delete-product-incoming/?id=${id}`);
 };
 
+// product in store
+const apiGetListProductInStore = function ({ pageIndex, pageSize, searchName, storeId }) {
+  return axios.get(`/api/product_store/admin/search-products-in-store/?page_index=${pageIndex}&page_size=${pageSize}&product_name=${searchName}&store_id=${storeId}`);
+};
+//product sold
+
+const apiGetListProductSold = function ({ pageIndex, pageSize, startDate, endDate, storeId }) {
+  return axios.get(`/api/product_sale/admin/get-list-sold-products-filter/?page_index=${pageIndex}&page_size=${pageSize}&store_id=${storeId}&start_date=${startDate}&end_date=${endDate}`);
+};
+
+
 export {
   apiGetProductList,
   apiCreateProduct,
@@ -54,5 +66,7 @@ export {
   apiGetListProductIncoming,
   apiDetailProductIncoming,
   apiDeleteProductIncoming,
-  apiUpdateProductIncoming
+  apiUpdateProductIncoming,
+  apiGetListProductInStore,
+  apiGetListProductSold
 };

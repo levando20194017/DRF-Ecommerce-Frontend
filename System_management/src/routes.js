@@ -18,6 +18,10 @@ export const Routes = {
   ProductIncomingAdd: { path: "/product/add-product-to-store" },
   ProductIncomingUpdate: { path: "/product/update-product-incoming/:id" },
 
+  ProductInStore: { path: "/product/list-products-in-store" },
+
+  ProductSold: { path: "/product/list-products-sold" },
+
   Order: { path: "/order" },
 
   Blog: { path: "/blogs" },

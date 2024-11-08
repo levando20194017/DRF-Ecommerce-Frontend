@@ -194,22 +194,23 @@ export default () => {
               </Block>
 
               <Block
-                title="Products Incoming"
+                title="Store"
                 icon={faShoppingBag}
                 isOpen={state[1]}
                 onToggle={() => dispatch({ type: "toggle", index: 1 })}
               >
                 <div style={{ marginLeft: "33px" }}>
+                  <NavItem title="List Products In Store" link={Routes.ProductInStore.path} />
                   <NavItem
                     title="Add Product to Inventory"
                     link={Routes.ProductIncomingAdd.path}
                   />
                   <NavItem title="List Products Incoming" link={Routes.ProductIncoming.path} />
-
+                  <NavItem title="List Products Sold" link={Routes.ProductSold.path} />
                 </div>
               </Block>
 
-              <Block
+              {/* <Block
                 title="Products Sold"
                 icon={faShoppingBag}
                 isOpen={state[2]}
@@ -218,13 +219,13 @@ export default () => {
                 <div style={{ marginLeft: "33px" }}>
                   <NavItem title="List Products Sold" link={Routes.Product.path} />
                 </div>
-              </Block>
+              </Block> */}
 
               <Block
                 title="Order"
-                isOpen={state[3]}
+                isOpen={state[2]}
                 icon={faCartPlus}
-                onToggle={() => dispatch({ type: "toggle", index: 3 })}
+                onToggle={() => dispatch({ type: "toggle", index: 2 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="List Order" link={Routes.Order.path} />
@@ -241,9 +242,9 @@ export default () => {
               />
               <Block
                 title="Blogs"
-                isOpen={state[4]}
+                isOpen={state[3]}
                 icon={faNewspaper}
-                onToggle={() => dispatch({ type: "toggle", index: 4 })}
+                onToggle={() => dispatch({ type: "toggle", index: 3 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="New blog" link={Routes.BlogCreate.path} />

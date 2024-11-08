@@ -32,6 +32,8 @@ import UpdatePromotion from "./product/promotion/UpdatePromotion";
 import CreatePromotion from "./product/promotion/CreatePromotion";
 import ListProductsIncoming from "./product/product_incoming";
 import CreateProductIncoming from "./product/product_incoming/CreateProductIncoming";
+import ListProductInStore from "./product/product_in_store/ListProductInStore";
+import ListProductsSold from "./product/product_sold/ListProductsSold";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -125,6 +127,10 @@ export default () => (
     <RouteWithSidebar exact path={Routes.ProductIncoming.path} component={ListProductsIncoming} />
     <RouteWithSidebar exact path={Routes.ProductIncomingAdd.path} component={CreateProductIncoming} />
     <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={CreateProductIncoming} />
+
+    <RouteWithSidebar exact path={Routes.ProductInStore.path} component={ListProductInStore} />
+
+    <RouteWithSidebar exact path={Routes.ProductSold.path} component={ListProductsSold} />
 
     <RouteWithSidebar exact path={Routes.Blog.path} component={Blog} />
     <RouteWithSidebar
