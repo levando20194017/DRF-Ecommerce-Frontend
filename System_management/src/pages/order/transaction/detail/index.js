@@ -3,9 +3,9 @@ import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";
-import { apiDetailTransaction } from "../../../../../services/transaction";
-import { status } from "../../../../../enums";
-import { DetailTransactionTable } from "../../../../../components/product/transaction/DetailTable";
+import { apiDetailTransaction } from "../../../../services/transaction";
+import { status } from "../../../../enums";
+import { DetailTransactionTable } from "../../../../components/transaction/DetailTable";
 import "./style.scss"
 
 export default () => {

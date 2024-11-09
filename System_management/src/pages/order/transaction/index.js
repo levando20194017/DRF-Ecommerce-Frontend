@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb, Container, Form, InputGroup } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { TransactionTable } from "../../../../components/product/transaction/Tables";
-import { NUMBER_ITEM_PAGE, status } from "../../../../enums";
-import { apiGetListTransaction } from "../../../../services/transaction";
-import ListPagination from "../../../../components/common/ListPagination";
+import { TransactionTable } from "../../../components/product/transaction/Tables";
+import { NUMBER_ITEM_PAGE, status } from "../../../enums";
+import { apiGetListTransaction } from "../../../services/transaction";
+import ListPagination from "../../../components/common/ListPagination";
 import { Link } from "react-router-dom";
 
 export default () => {
