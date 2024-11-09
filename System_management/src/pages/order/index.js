@@ -12,8 +12,8 @@ import PaginationCommon from "../../components/common/PaginationCommon";
 const ListOrder = () => {
   const dateFormat = 'YYYY/MM/DD';
   const history = useHistory();
-  const [orderStatus, setOrderStatus] = useState();
-  const [paymentStatus, setPaymentStatus] = useState();
+  const [orderStatus, setOrderStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setToalRecords] = useState();
@@ -29,7 +29,7 @@ const ListOrder = () => {
         pageIndex, pageSize, startDate: date.startDate, endDate: date.endDate, orderStatus, paymentStatus
       });
       if (response.status === 200) {
-        setListData(response.data.product_incomings)
+        setListData(response.data.orders)
         setToalRecords(response.data.total_items)
       }
     } catch (e) {

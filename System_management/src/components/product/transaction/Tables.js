@@ -1,30 +1,24 @@
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye} from "@fortawesome/free-solid-svg-icons";
-import {Card, Badge, Table} from "@themesberg/react-bootstrap";
-import {Link} from "react-router-dom";
-import {changeTextToThreeDot, formatTime} from "../../../utils";
-import {NUMBER_ITEM_PAGE} from "../../../enums";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { Card, Badge, Table } from "@themesberg/react-bootstrap";
+import { Link } from "react-router-dom";
+import { changeTextToThreeDot, formatTime } from "../../../utils";
+import { NUMBER_ITEM_PAGE } from "../../../enums";
 
-export const TransactionTable = (props) => {
-    const {transactions, page} = props
-    const getMemberPrice = (price) => {
-        return (
-            <>
-                <span> ${price}</span>
-            </>
-        );
-    };
+export const TransactionTable = ({ pageIndex, pageSize, listData }) => {
+
     const TableRow = (props) => {
         const {
             id,
-            transactionNumber,
+            transaction_number,
             amount,
-            orderDate,
-            bankCode,
-            bankStatus,
-            createdAt,
-            index, page
+            order_date,
+            bank_code,
+            bank_status,
+            bank_message,
+            created_at,
+            index,
         } = props;
         const statusBtn = (productStatus) => {
             if (productStatus === 0) {
@@ -52,14 +46,16 @@ export const TransactionTable = (props) => {
             <tr>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
-                        {index + (page - 1) * NUMBER_ITEM_PAGE + 1}
+                        {index + (pageIndex - 1) * pageSize + 1}
                     </Card.Link>
                 </td>
-                <td>{transactionNumber ? changeTextToThreeDot(transactionNumber, 40) : "--"}</td>
-                <td>{amount ? getMemberPrice(amount) : "--"}</td>
-                <td>{bankCode ? bankCode : "--"}</td>
-                <td>{orderDate ? formatTime(orderDate) : "--"}</td>
-                <td>{bankStatus ? statusBtn(bankStatus) : "--"}</td>
+                <td>{transaction_number ? changeTextToThreeDot(transaction_number, 40) : "--"}</td>
+                <td><div className="text-danger">{amount}</div></td>
+                <td>{order_date ? formatTime(order_date) : "--"}</td>
+                <td>{bank_code ? bank_code : "--"}</td>
+                <td>{bank_status ? statusBtn(bank_status) : "--"}</td>
+                <td>{bank_message ? statusBtn(bank_message) : "--"}</td>
+                <td>{created_at ? formatTime(created_at) : "--"}</td>
                 <td>
                     <Link
                         to={`/transaction-log/${id}`}
@@ -85,25 +81,26 @@ export const TransactionTable = (props) => {
                         className="table-centered table-nowrap rounded mb-0"
                     >
                         <thead className="thead-light">
-                        <tr>
-                            <th className="border-0">#</th>
-                            <th className="border-0">TRANSACTION</th>
-                            <th className="border-0">AMOUNT</th>
-                            <th className="border-0">BANK CODE</th>
-                            <th className="border-0">ORDER DATE</th>
-                            <th className="border-0">BANK STATUS</th>
-                            <th className="border-0">ACTION</th>
-                        </tr>
+                            <tr>
+                                <th className="border-0">#</th>
+                                <th className="border-0">TRANSACTION</th>
+                                <th className="border-0">AMOUNT</th>
+                                <th className="border-0">ORDER DATE</th>
+                                <th className="border-0">BANK CODE</th>
+                                <th className="border-0">BANK STATUS</th>
+                                <th className="border-0">BANK MESSAGE</th>
+                                <th className="border-0">DATE CREATED</th>
+                                <th className="border-0">ACTION</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {transactions && transactions.length > 0 ? (transactions.map((transaction, index) => (
-                            <TableRow
-                                index={index}
-                                page={page}
-                                key={`page-traffic-${transaction.id}`}
-                                {...transaction}
-                            />
-                        ))) : <></>}
+                            {listData && listData.length > 0 ? (listData.map((transaction, index) => (
+                                <TableRow
+                                    index={index}
+                                    key={`page-traffic-${transaction.id}`}
+                                    {...transaction}
+                                />
+                            ))) : <></>}
                         </tbody>
                     </Table>
                 </Card.Body>

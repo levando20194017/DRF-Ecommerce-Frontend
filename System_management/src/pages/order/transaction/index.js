@@ -1,55 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Container, Form, InputGroup } from "@themesberg/react-bootstrap";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { TransactionTable } from "../../../components/product/transaction/Tables";
-import { NUMBER_ITEM_PAGE, status } from "../../../enums";
 import { apiGetListTransaction } from "../../../services/transaction";
-import ListPagination from "../../../components/common/ListPagination";
 import { Link } from "react-router-dom";
+import { DatePicker, Space } from "antd";
+import SearchInput from "../../../components/common/SearchInput";
+import dayjs from 'dayjs';
+import PaginationCommon from "../../../components/common/PaginationCommon";
 
 export default () => {
-    const [pageIndex, setPageIndex] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const [merchantReference, setMerchantReference] = useState('')
-    const [transactions, setTransactions] = useState({})
-    useEffect(() => {
-        getListTransaction()
-    }, [pageIndex])
-
-    useEffect(() => {
-        getListTransaction()
-    }, [merchantReference]);
+    const dateFormat = 'YYYY/MM/DD';
+    const [pageIndex, setPageIndex] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalRecords, setToalRecords] = useState();
+    const [search, setSearch] = useState("");
+    const [listData, setListData] = useState([])
+    const [date, setDate] = useState({
+        startDate: "",
+        endDate: ""
+    })
 
     const getListTransaction = async () => {
         try {
             const params = {
-                PageIndex: pageIndex,
-                PageSize: NUMBER_ITEM_PAGE,
-                merchantReference: merchantReference
+                pageIndex,
+                pageSize,
+                textSearch: search,
+                startDate: date.startDate,
+                endDate: date.endDate
             }
             const response = await apiGetListTransaction(params)
-            if (response?.data.statusCode === status.SUCCESS) {
-                setTransactions(response?.data?.data?.source)
-                setTotalPages(response?.data?.data?.totalPages)
+            if (response.status === 200) {
+                setListData(response.data.product_incomings)
+                setToalRecords(response.data.total_items)
             }
         } catch (e) {
         }
     }
-    const handlePageChange = (newPage) => {
-        if (newPage <= totalPages) {
-            setPageIndex(newPage);
-        }
+    useEffect(() => {
+        getListTransaction()
+    }, [pageIndex, pageSize, search, date])
+
+    const handleOnChange = (value, keyField) => {
+        setDate({ ...date, [keyField]: value ? value.format('YYYY-MM-DD') : "" });
     };
 
-    const handleInput = (e) => {
-        const { value } = e.target
-        setMerchantReference(value)
-    }
-
     return (
-        <>
-
+        <div className="page-content">
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="w-100 mb-4 mb-xl-0">
                     <Breadcrumb className="d-none d-md-inline-block"
@@ -63,34 +62,46 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <Container fluid className="px-0 pb-3">
-                <div className="d-flex justify-content-between w-100">
-                    <div className="d-flex align-items-center">
-                        <Form className="navbar-search">
-                            <Form.Group id="topbarSearch">
-                                <InputGroup className="input-group-merge search-bar">
-                                    <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-                                    <Form.Control
-                                        type="text"
-                                        name="merchantReference"
-                                        placeholder="Search"
-                                        onChange={(e) => handleInput(e)}
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </Form>
-                    </div>
+            <div className="d-flex gap-3">
+                <SearchInput search={search} setSearch={setSearch} />
+                <div>
+                    <Space direction="vertical">
+                        <DatePicker
+                            onChange={(value) => handleOnChange(value, "startDate")}
+                            value={date.startDate ? dayjs(date.startDate, dateFormat) : undefined}
+                            format={dateFormat}
+                            placeholder="Start date"
+                            style={{ width: "200px" }}
+                        />
+                    </Space>
                 </div>
-            </Container>
-
-            <TransactionTable page={pageIndex} transactions={transactions} />
-            {totalPages > 1 && (
-                <ListPagination
-                    page={pageIndex}
-                    pageMax={totalPages}
-                    onPageChange={handlePageChange}
-                ></ListPagination>
-            )}
-        </>
+                <div>
+                    <Space direction="vertical">
+                        <DatePicker
+                            onChange={(value) => handleOnChange(value, "endDate")}
+                            value={date.endDate ? dayjs(date.endDate, dateFormat) : undefined}
+                            format={dateFormat}
+                            placeholder="End date"
+                            style={{ width: "200px" }}
+                        />
+                    </Space>
+                </div>
+            </div>
+            <div className="table-content">
+                <TransactionTable
+                    pageIndex={pageIndex}
+                    pageSize={pageSize}
+                    listData={listData}
+                />
+            </div>
+            <div className="bottom-pagination">
+                <PaginationCommon
+                    totalRecords={totalRecords}
+                    pageSize={pageSize}
+                    pageIndex={pageIndex}
+                    setPageIndex={setPageIndex}
+                    setPageSize={setPageSize} />
+            </div>
+        </div>
     );
 }
