@@ -35,20 +35,46 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
     const statusBtn = (orderStatus) => {
       if (orderStatus === "pending") {
         return (
-          <Badge bg="warning" className="me-1">
-            {orderStatus}
+          <Badge className="me-1 badge-pending">
+            Pending
           </Badge>
         );
-      } else if (orderStatus === "draft") {
+      } else if (orderStatus === "confirmed") {
         return (
-          <Badge bg="primary" className="me-1">
-            {orderStatus}
+          <Badge className="me-1 badge-confirmed">
+            Confirmed
+          </Badge>
+        );
+      } else if (orderStatus === "shipped") {
+        return (
+          <Badge className="me-1 badge-shipped">
+            Shipped
+          </Badge>
+        );
+      } else if (orderStatus === "delivered") {
+        return (
+          <Badge className="me-1 badge-delivered">
+            Delivered
+          </Badge>
+        );
+      } else if (orderStatus === "cancelled") {
+        return (
+          <Badge className="me-1 badge-cancelled">
+            Cancelled
+          </Badge>
+        );
+      } else if (orderStatus === "returned") {
+        return (
+          <Badge className="me-1 badge-returned">
+            Returned
           </Badge>
         );
       } else {
-        <Badge bg="info" className="me-1">
-          {orderStatus}
-        </Badge>;
+        return (
+          <Badge bg="info" className="me-1">
+            {orderStatus}
+          </Badge>
+        );
       }
     };
 
@@ -56,13 +82,13 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
       if (status === "paid") {
         return (
           <Badge bg="success" className="me-1">
-            {status}
+            Paid
           </Badge>
         );
       } else if (status === "unpaid") {
         return (
           <Badge bg="primary" className="me-1">
-            {status}
+            Unpaid
           </Badge>
         );
       } else if (status === "failed") {

@@ -33,7 +33,7 @@ export default () => {
             }
             const response = await apiGetListTransaction(params)
             if (response.status === 200) {
-                setListData(response.data.product_incomings)
+                setListData(response.data.transactions)
                 setToalRecords(response.data.total_items)
             }
         } catch (e) {

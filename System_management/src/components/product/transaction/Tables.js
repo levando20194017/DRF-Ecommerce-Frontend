@@ -4,7 +4,6 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { Card, Badge, Table } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 import { changeTextToThreeDot, formatTime } from "../../../utils";
-import { NUMBER_ITEM_PAGE } from "../../../enums";
 
 export const TransactionTable = ({ pageIndex, pageSize, listData }) => {
 
@@ -20,23 +19,23 @@ export const TransactionTable = ({ pageIndex, pageSize, listData }) => {
             created_at,
             index,
         } = props;
-        const statusBtn = (productStatus) => {
-            if (productStatus === 0) {
+        const statusBtn = (status) => {
+            if (status === "pending") {
                 return (
                     <Badge bg="warning" className="me-1">
-                        Due
+                        Pending
                     </Badge>
                 );
-            } else if (productStatus === 1) {
+            } else if (status === "00") {
                 return (
                     <Badge bg="success" className="me-1">
                         Paid
                     </Badge>
                 );
-            } else if (productStatus === 2) {
+            } else if (status === "02") {
                 return (
                     <Badge bg="danger" className="me-1">
-                        Cancelled
+                        Failed
                     </Badge>
                 );
             }
@@ -54,7 +53,7 @@ export const TransactionTable = ({ pageIndex, pageSize, listData }) => {
                 <td>{order_date ? formatTime(order_date) : "--"}</td>
                 <td>{bank_code ? bank_code : "--"}</td>
                 <td>{bank_status ? statusBtn(bank_status) : "--"}</td>
-                <td>{bank_message ? statusBtn(bank_message) : "--"}</td>
+                <td>{bank_message ? bank_message : "--"}</td>
                 <td>{created_at ? formatTime(created_at) : "--"}</td>
                 <td>
                     <Link
