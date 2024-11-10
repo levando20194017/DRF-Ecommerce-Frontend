@@ -146,11 +146,10 @@ export default function ModalOrderDetail(props) {
                               <td><img src={`${process.env.REACT_APP_IMAGE_URL + product.product_image}`} width={80} height={80} style={{ borderRadius: "4px" }} /></td>
                               <td>{product.product_name}</td>
                               <td>{product.product_color}</td>
-                              <td>{product.promotion_rate ? product.promotion_rate : "---"}</td>
+                              <td>{product.promotion_rate ? `${product.promotion_rate}%` : "---"}</td>
                               <td>{product.unit_price}</td>
                               <td>{product.quantity}</td>
-                              <td>
-                                {product.quantity * product.unit_price}
+                              <td>{product.promotion_rate ? Math.round(product.quantity * product.unit_price * product.promotion_rate / 100) : product.quantity * product.unit_price}
                               </td>
                             </tr>
                           );
