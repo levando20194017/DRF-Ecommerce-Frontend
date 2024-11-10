@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { TransactionTable } from "../../../components/product/transaction/Tables";
+import { TransactionTable } from "../../../components/transaction/Tables";
 import { apiGetListTransaction } from "../../../services/transaction";
 import { Link } from "react-router-dom";
 import { DatePicker, Space } from "antd";

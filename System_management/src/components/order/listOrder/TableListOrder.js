@@ -5,24 +5,34 @@ import { Card, Badge, Table } from "@themesberg/react-bootstrap";
 import ModalOrderDetail from "../orderDetail/ModalOrderDetail";
 import { v4 as uuidv4 } from "uuid";
 import { formatTime } from "../../../utils";
+import { apiOrderDetail } from "../../../services/order";
 export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [orderId, setOrderId] = useState(null);
+  const [orderDetail, setOrderDetail] = useState([]);
 
-  const showModal = (id) => {
-    setIsOpenModal(true);
-    setOrderId(id);
+  const showModal = async (id) => {
+    const response = await handleGetOrderDetail(id)
+    if (response.status === 200) {
+      setIsOpenModal(true);
+      setOrderDetail(response.data)
+    }
   };
-  const toggleModal = () => {
-    setIsOpenModal(!isOpenModal);
-    setOrderId(null);
+  const handleGetOrderDetail = async (id) => {
+    try {
+      const response = await apiOrderDetail(id);
+      return response
+    } catch (e) {
+      console.log();
+    }
   };
+
 
   const TableRow = (props) => {
     const {
       id,
       index,
-      guest_name,
+      guest_first_name,
+      guest_last_name,
       total_cost,
       order_status,
       payment_method,
@@ -107,7 +117,7 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
             {index + (pageIndex - 1) * pageSize + 1}
           </Card.Link>
         </td>
-        <td>{guest_name}</td>
+        <td>{guest_first_name + " " + guest_last_name}</td>
         <td className="text-danger">{total_cost}</td>
         <td>{statusBtn(order_status)}</td>
         <td>{payment_method}</td>
@@ -161,9 +171,7 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
       <ModalOrderDetail
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
-        toggleFromParent={toggleModal}
-        setOrderId={setOrderId}
-        orderId={orderId}
+        orderDetail={orderDetail}
       />
     </>
   );
