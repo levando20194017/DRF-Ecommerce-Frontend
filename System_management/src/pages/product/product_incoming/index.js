@@ -50,18 +50,16 @@ export default () => {
             <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block w-100 mb-4 mb-xl-0">
                     <Breadcrumb
-                        className="d-none d-md-inline-block"
-                        listProps={{
-                            className: "breadcrumb-dark breadcrumb-transparent",
-                        }}
+                        listProps={{ className: "breadcrumb-primary    breadcrumb-text-light text-white" }}
+                        style={{ width: "280px" }}
                     >
                         <Breadcrumb.Item>
                             <FontAwesomeIcon icon={faHome} />
                         </Breadcrumb.Item>
                         <Breadcrumb.Item
-                            onClick={() => history.push(Routes.ProductIncoming.path)}
+                            onClick={() => history.push(Routes.ProductInStore.path)}
                         >
-                            Product Incoming
+                            Store
                         </Breadcrumb.Item>
                         <Breadcrumb.Item active>
                             List Products Incoming
