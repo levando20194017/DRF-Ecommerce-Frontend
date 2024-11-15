@@ -1,0 +1,38 @@
+
+.footer-body footer a:hover {
+    background-color: aliceblue;
+    color: black;
+}
+
+.b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+
+.footer-body {
+    background-size: cover;
+    background-position: bottom 10% center;
+    height: 40vh;
+}
+
+.footer-container {
+
+    width: 100%;
+    height: 40vh;
+    color: white;
+    background: rgba(29, 27, 27, 0.87);
+
+    // -webkit-box-shadow: 0px 1px 22px 5px rgba(0, 0, 0, 0.75);
+    // -moz-box-shadow: 0px 1px 22px 5px rgba(0, 0, 0, 0.75);
+    // box-shadow: 0px 1px 22px 5px rgba(0, 0, 0, 0.75);
+}
+
+.footer-title {
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 600%;
+}

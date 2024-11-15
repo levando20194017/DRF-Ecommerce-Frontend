@@ -21,14 +21,20 @@ input {
     font-weight: 400 !important;
   }
 }
+
 .card-body {
   .ant-space {
     width: 100% !important;
   }
+
   .ant-space-item {
     .ant-picker {
       height: 43.59px;
       width: 100% !important;
     }
   }
+}
+
+.text-gray {
+  color: #666;
 }

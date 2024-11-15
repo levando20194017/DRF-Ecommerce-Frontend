@@ -1,0 +1,88 @@
+.related-pro{
+    .title{
+        text-align: center;
+        border: medium none;
+        display: flex;
+        width: auto;
+        position: relative;
+        margin: 0 auto 30px;
+        padding: 0 0px 0px;
+        color: black;
+        position: relative;
+        font-weight: 700;
+        font-size: 30px;
+        text-transform: capitalize !important;
+        letter-spacing: 0.2px;
+    }
+    .top-categories{
+        .title{
+            text-align: center;
+            border: medium none;
+            display: flex;
+            width: auto;
+            position: relative;
+            margin: 0 auto 30px;
+            padding: 0 0px 0px;
+            color: black;
+            position: relative;
+            font-weight: 700;
+            font-size: 30px;
+            text-transform: capitalize !important;
+            letter-spacing: 0.2px;
+        }
+        .top-categories_list{
+            padding: 20px 20px;
+            background: #e6e6e6;
+            width: 100%;
+            img {
+                height: 350px;
+                width: 300px;
+              }
+            .top-categories_item{
+                height: auto;
+                padding: 20px;
+                background-color: #fff;
+                border: 5px solid #e6e6e6;
+                &_detail{
+                    font-weight: 600;
+                    i{
+                        padding-left: 3px;
+                        color: orange
+                    }
+                }
+            }
+        }
+        .categories-list{
+            padding: 0 40px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            color: rgb(108, 104, 104);
+            >div{
+                cursor: pointer;
+          transition: color 0.3s ease-in-out;
+          position: relative;
+          padding-bottom: 3px;
+          &:hover {
+            color: orange
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: orange;
+            transition: width 0.4s ease-in-out;
+          }
+          &.active {
+            color: orange;
+          }
+          &.active::after{
+            width: 100%;
+          }
+            }
+        }
+    }
+}

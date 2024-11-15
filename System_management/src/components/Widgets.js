@@ -5,31 +5,8 @@ import { faAngleDown, faAngleUp, faChartArea, faChartBar, faChartLine, faFlagUsa
 import { faAngular, faBootstrap, faReact, faVuejs } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Card, Image, Button, ListGroup, ProgressBar } from '@themesberg/react-bootstrap';
 import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./Charts";
-
-import Profile1 from "../assets/img/team/profile-picture-1.jpg";
-import ProfileCover from "../assets/img/profile-cover.jpg";
-
 import teamMembers from "../data/teamMembers";
 
-
-export const ProfileCardWidget = () => {
-  return (
-    <Card border="light" className="text-center p-0 mb-4">
-      <div style={{ backgroundImage: `url(${ProfileCover})` }} className="profile-cover rounded-top" />
-      <Card.Body className="pb-5">
-        <Card.Img src={Profile1} alt="Neil Portrait" className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4" />
-        <Card.Title>Neil Sims</Card.Title>
-        <Card.Subtitle className="fw-normal">Senior Software Engineer</Card.Subtitle>
-        <Card.Text className="text-gray mb-4">New York, USA</Card.Text>
-
-        <Button variant="primary" size="sm" className="me-2">
-          <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Connect
-        </Button>
-        <Button variant="secondary" size="sm">Send Message</Button>
-      </Card.Body>
-    </Card>
-  );
-};
 
 export const ChoosePhotoWidget = (props) => {
   const { title, photo } = props;
@@ -63,34 +40,21 @@ export const ChoosePhotoWidget = (props) => {
 };
 
 export const CounterWidget = (props) => {
-  const { icon, iconColor, category, title, period, percentage } = props;
-  const percentageIcon = percentage < 0 ? faAngleDown : faAngleUp;
-  const percentageColor = percentage < 0 ? "text-danger" : "text-success";
+  const { icon, category, data } = props;
 
   return (
     <Card border="light" className="shadow-sm">
       <Card.Body>
         <Row className="d-block d-xl-flex align-items-center">
-          <Col xl={5} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-3 mb-xl-0">
-            <div className={`icon icon-shape icon-md icon-${iconColor} rounded me-4 me-sm-0`}>
+          <Col xl={3} className="text-xl-center d-flex align-items-center justify-content-xl-center mb-3 mb-xl-0">
+            <div style={{ backgroundColor: "red", borderRadius: "50%" }}>
               <FontAwesomeIcon icon={icon} />
             </div>
-            <div className="d-sm-none">
-              <h5>{category}</h5>
-              <h3 className="mb-1">{title}</h3>
-            </div>
           </Col>
-          <Col xs={12} xl={7} className="px-xl-0">
+          <Col xs={12} xl={9} className="px-xl-0">
             <div className="d-none d-sm-block">
-              <h5>{category}</h5>
-              <h3 className="mb-1">{title}</h3>
-            </div>
-            <small>{period}, <FontAwesomeIcon icon={faGlobeEurope} size="xs" /> WorldWide</small>
-            <div className="small mt-2">
-              <FontAwesomeIcon icon={percentageIcon} className={`${percentageColor} me-1`} />
-              <span className={`${percentageColor} fw-bold`}>
-                {percentage}%
-              </span> Since last month
+              <div className="text-gray">{category}</div>
+              <div>{data}</div>
             </div>
           </Col>
         </Row>
