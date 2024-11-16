@@ -15,6 +15,7 @@ import AddToCartPage from "./screens/AddToCart";
 import "./index.css";
 import { OrderStatus } from "./components/OrderStatus";
 import NotFound from "./screens/NotFound";
+import { Routes } from "./screens/Routes";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,29 +23,29 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        path: "/",
+        path: Routes.HomePage.path,
         element: <HomePage />,
       },
       {
-        path: "/add-to-cart",
+        path: Routes.AddToCart.path,
         element: <AddToCartPage />,
       },
       {
-        path: "/order-status",
+        path: Routes.OrderStatus.path,
         element: <OrderStatus />,
       },
     ],
   },
   {
-    path: "/signup",
+    path: Routes.SignUp.path,
     element: <SignupPage />,
   },
   {
-    path: "/login",
+    path: Routes.Login.path,
     element: <LoginPage />,
   },
   {
-    path: "/forgot-password",
+    path: Routes.ForgotPassword.path,
     element: <ForgotPasswordPage />,
   },
 ]);

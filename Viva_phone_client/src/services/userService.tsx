@@ -1,4 +1,4 @@
-import axios from '../axios';
+import axios from '../axios/axios';
 
 const handleLoginApi = (userEmail: string, userPassword: string) => {
     return axios.post('/api/login', { email: userEmail, password: userPassword });
