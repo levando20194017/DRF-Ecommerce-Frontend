@@ -5,8 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/Layout";
-import Product from "./screens/Product";
-import ProductDetail from "./screens/Product/ProductDetail";
 import SignupPage from "./screens/Signup";
 import LoginPage from "./screens/Login";
 import ForgotPasswordPage from "./screens/ForgotPassword";
@@ -16,29 +14,24 @@ import { HomePage } from "./screens/Home";
 import AddToCartPage from "./screens/AddToCart";
 import "./index.css";
 import { OrderStatus } from "./components/OrderStatus";
-import Map from "./components/Map";
-import Test from "./components/Test";
+import NotFound from "./screens/NotFound";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    errorElement: <p>Not found</p>,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
         element: <HomePage />,
       },
       {
-        path: "/addtocart",
+        path: "/add-to-cart",
         element: <AddToCartPage />,
       },
       {
-        path: "/orderstatus",
+        path: "/order-status",
         element: <OrderStatus />,
-      },
-      {
-        path: "/map",
-        element: <Map />,
       },
     ],
   },
@@ -51,12 +44,8 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "/forgotpassword",
+    path: "/forgot-password",
     element: <ForgotPasswordPage />,
-  },
-  {
-    path: "/test",
-    element: <Test />,
   },
 ]);
 
