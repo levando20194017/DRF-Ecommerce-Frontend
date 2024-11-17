@@ -21,10 +21,6 @@ export const Footer = () => {
             <p className="footer-title_title">Văn phòng miền Trung</p>
             <p>A3-30 - KDT Minh Khang - TP.Vinh, Nghệ An</p>
           </div>
-          <div>
-            <p className="footer-title_title">Địa chỉ nhà máy</p>
-            <p>CCN Đắc Sở, Hoài Đức, Tp. Hà Nội</p>
-          </div>
         </div>
 
         <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">

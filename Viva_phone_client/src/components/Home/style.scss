@@ -43,8 +43,10 @@
     justify-content: center;
 
     /* Nền với độ trong suốt cao */
-    background: rgba(10, 10, 10, 0.4); /* Gần đen, rất trong suốt */
-    -webkit-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.5); /* Đổ bóng trong suốt */
+    background: rgba(10, 10, 10, 0.4);
+    /* Gần đen, rất trong suốt */
+    -webkit-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.5);
+    /* Đổ bóng trong suốt */
     -moz-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 35px 44px -22px rgba(20, 20, 20, 0.6);
 
@@ -52,11 +54,9 @@
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 
     /* Gradient tối trong suốt */
-    background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.4),
-      rgba(25, 25, 25, 0.3)
-    );
+    background: linear-gradient(0deg,
+        rgba(0, 0, 0, 0.4),
+        rgba(25, 25, 25, 0.3));
 
     &:hover {
       animation-play-state: paused;
@@ -71,14 +71,18 @@
     top: -2px;
 
     /* Gradient cho viền, sáng hơn một chút */
-    background: linear-gradient(
-      45deg,
-      rgba(40, 40, 40, 0.3),
-      /* Xám đậm trong suốt */ rgba(60, 60, 60, 0.2),
-      /* Xám trung bình trong suốt */ rgba(90, 90, 90, 0.15),
-      /* Xám sáng, rất trong */ rgba(50, 50, 50, 0.3),
-      /* Xám đậm hơn */ rgba(30, 30, 30, 0.4) /* Gần đen, nhưng trong hơn */
-    );
+    background: linear-gradient(45deg,
+        rgba(40, 40, 40, 0.3),
+        /* Xám đậm trong suốt */
+        rgba(60, 60, 60, 0.2),
+        /* Xám trung bình trong suốt */
+        rgba(90, 90, 90, 0.15),
+        /* Xám sáng, rất trong */
+        rgba(50, 50, 50, 0.3),
+        /* Xám đậm hơn */
+        rgba(30, 30, 30, 0.4)
+        /* Gần đen, nhưng trong hơn */
+      );
     background-size: 400%;
     width: calc(100% + 4px);
     height: calc(100% + 4px);
@@ -95,9 +99,11 @@
     0% {
       background-position: 0 0;
     }
+
     50% {
       background-position: 400% 0;
     }
+
     100% {
       background-position: 0 0;
     }
@@ -159,6 +165,7 @@
     @include brandIntroduce(100%);
     transition: transform 1s ease, opacity 0.8s ease;
     animation: slide-up 0.8s ease 1s forwards;
+
     .text {
       font-weight: 600;
       will-change: opacity;
@@ -229,11 +236,9 @@
     bottom: -140px;
     height: 293px;
     width: 100%;
-    background: linear-gradient(
-      360deg,
-      rgba(22, 22, 24, 0) 16.59%,
-      #161618 45.04%
-    );
+    background: linear-gradient(360deg,
+        rgba(22, 22, 24, 0) 16.59%,
+        #161618 45.04%);
   }
 }
 
@@ -241,6 +246,7 @@
 .home-content {
   background-image: url("../../assets/images/img-background.png");
   background-repeat: repeat-y;
+
   .product-title {
     display: flex;
     justify-content: center;
@@ -257,7 +263,7 @@
 
 .carousel-title {
   text-align: center;
-  color: #fff; /* Màu chữ trắng */
+  color: #fff;
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -268,12 +274,14 @@
   height: 400px;
   padding: 20px !important;
 }
+
 /* Cấu hình từng Slide */
 .carousel-slide {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #282828; /* Màu nền cho sản phẩm */
+  background-color: #282828;
+  /* Màu nền cho sản phẩm */
   border-radius: 10px;
   padding: 15px;
   text-align: center;
@@ -282,8 +290,10 @@
 
 .carousel-slide:hover {
   border-radius: 10px;
-  transform: scale(1.05); /* Phóng to khi hover */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Đổ bóng */
+  transform: scale(1.05);
+  /* Phóng to khi hover */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  /* Đổ bóng */
 }
 
 .carousel-slide img {
@@ -307,12 +317,14 @@
 
 /* Swiper Pagination (Dot Indicators) */
 .swiper-pagination-bullet {
-  background: #fff !important; /* Màu trắng cho dot */
+  background: #fff !important;
+  /* Màu trắng cho dot */
   opacity: 0.6;
 }
 
 .swiper-pagination-bullet-active {
-  background: #ff9500 !important; /* Dot màu cam khi active */
+  background: #ff9500 !important;
+  /* Dot màu cam khi active */
   opacity: 1;
 }
 
@@ -325,7 +337,8 @@
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  color: #ff9500; /* Màu cam khi hover */
+  color: #ff9500;
+  /* Màu cam khi hover */
 }
 
 .swiper-button-prev {
@@ -400,8 +413,7 @@
 
 .list-img {
   background: lightblue;
-  cursor: url("https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/Ad1_-cursor.png")
-      39 39,
+  cursor: url("https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/Ad1_-cursor.png") 39 39,
     auto;
   display: flex;
   align-items: center;
@@ -420,7 +432,7 @@
   touch-action: none;
 }
 
-.deck > div {
+.deck>div {
   background-color: white;
   background-size: auto 85%;
   background-repeat: no-repeat;
@@ -444,7 +456,7 @@
   top: 10%;
   right: 10%;
 
-  > span {
+  >span {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -512,14 +524,38 @@
     }
   }
 
-  .top-categories {
+  .list-products {
+    .title {
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 36px;
+      letter-spacing: 0.01em;
+      text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      display: flex;
+      justify-content: center;
+      color: #C6C6C6;
+
+      p {
+        width: 684px;
+      }
+    }
+
     .categories-list {
       padding: 0 40px;
       margin-bottom: 30px;
       font-weight: 500;
       color: rgb(108, 104, 104);
 
-      > div {
+      >div {
         cursor: pointer;
         transition: color 0.3s ease-in-out;
         position: relative;
@@ -552,7 +588,7 @@
   }
 }
 
-.top-categories_list {
+.list-products_list {
   padding: 20px 20px;
   background: #e6e6e6;
   width: 100%;
@@ -562,7 +598,7 @@
     width: 300px;
   }
 
-  .top-categories_item {
+  .list-products_item {
     height: auto;
     padding: 20px;
     background-color: #fff;
@@ -718,7 +754,7 @@
       padding-left: 3px;
     }
 
-    > div {
+    >div {
       line-height: 30px;
       font-weight: 400;
     }
@@ -753,8 +789,7 @@
 }
 
 /*--- Responsive Code ---*/
-@media screen and (max-width: 1920px) {
-}
+@media screen and (max-width: 1920px) {}
 
 @media screen and (max-width: 1680px) {
   .home-banner {
@@ -766,8 +801,7 @@
   }
 }
 
-@media screen and (max-width: 1600px) {
-}
+@media screen and (max-width: 1600px) {}
 
 @media screen and (max-width: 1440px) {
   .home-banner {
@@ -789,8 +823,7 @@
   }
 }
 
-@media screen and (max-width: 1080px) {
-}
+@media screen and (max-width: 1080px) {}
 
 @media screen and (max-width: 1024px) {
   .home-banner {
@@ -835,8 +868,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-}
+@media screen and (max-width: 768px) {}
 
 @media screen and (max-width: 736px) {
   .home-banner {
@@ -874,7 +906,7 @@
     }
 
     .brand_intro2 {
-      > div {
+      >div {
         width: 80%;
       }
 
@@ -883,8 +915,7 @@
   }
 }
 
-@media screen and (max-width: 568px) {
-}
+@media screen and (max-width: 568px) {}
 
 @media screen and (max-width: 480px) {
   .brand_intro1 {
@@ -904,7 +935,7 @@
   .brand_intro2 {
     top: 0% !important;
 
-    > div {
+    >div {
       font-size: 15px !important;
     }
   }
@@ -920,8 +951,7 @@
   }
 }
 
-@media screen and (max-width: 384px) {
-}
+@media screen and (max-width: 384px) {}
 
 @media screen and (max-width: 375px) {
   .home-banner {
@@ -935,7 +965,7 @@
     .brand_intro2 {
       top: 2% !important;
 
-      > div {
+      >div {
         width: 85%;
       }
 
@@ -948,8 +978,7 @@
   }
 }
 
-@media screen and (max-width: 320px) {
-}
+@media screen and (max-width: 320px) {}
 
 @-webkit-keyframes OpeningSequence {
   0% {

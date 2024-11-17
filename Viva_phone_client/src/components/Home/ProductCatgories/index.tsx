@@ -66,11 +66,16 @@ export const ProductCatgories = () => {
       <main>
         <section className="home-cl section-padding">
           <section className="popular-location section-padding">
-            <div className="top-categories">
+            <div className="list-products">
               <div className="title justify-content-center mt-5">
                 Các sản phẩm của chúng tôi
               </div>
-              <div className="categories-list d-flex justify-content-between col-6 offset-3">
+              <div className="text-center description">
+                <p>
+                  Tìm hiểu thêm nhiều thông tin chi tiết hơn về các sản phẩm mà chúng tôi hiện nay đang có
+                </p>
+              </div>
+              <div className="categories-list d-flex justify-content-between col-6 offset-3 mt-4">
                 <div
                   className={activeIndex === 0 ? "active" : ""}
                   onClick={() => handleClick(0)}
@@ -96,12 +101,14 @@ export const ProductCatgories = () => {
                   Product Name
                 </div>
               </div>
-              {activeIndex === 0 && (
-                <ListProduct handleQuickView={handleQuickView} />
-              )}
-              {activeIndex === 1 && (
-                <ListProduct handleQuickView={handleQuickView} />
-              )}
+              <div className="mt-5">
+                {activeIndex === 0 && (
+                  <ListProduct handleQuickView={handleQuickView} />
+                )}
+                {activeIndex === 1 && (
+                  <ListProduct handleQuickView={handleQuickView} />
+                )}
+              </div>
             </div>
           </section>
         </section>
