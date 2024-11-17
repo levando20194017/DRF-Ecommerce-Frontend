@@ -3,7 +3,8 @@
   background-position: center;
   height: 110vh;
   position: relative;
-  background-color: #000000;
+  background: rgba(0, 0, 0, 0.6);
+
   padding: 32px;
 
   img {
@@ -29,9 +30,8 @@
   }
 
   .frame-banner {
-    width: 700px;
+    width: 720px;
     height: 299px !important;
-    border-radius: 8px;
     z-index: 99;
     color: #fff;
     position: absolute;
@@ -41,53 +41,70 @@
     flex-direction: column;
     justify-content: center;
     gap: 32px;
-    background: rgba(4, 4, 4, 0.56);
-    -webkit-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.72);
-    -moz-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.72);
-    box-shadow: 0px 35px 44px -22px #1f181b;
 
-    text-shadow: 0 1px 0 #000;
+    /* Nền với độ trong suốt cao */
+    background: rgba(10, 10, 10, 0.4); /* Gần đen, rất trong suốt */
+    -webkit-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.5); /* Đổ bóng trong suốt */
+    -moz-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 35px 44px -22px rgba(20, 20, 20, 0.6);
 
-    --border-angle: 0turn; // For animation.
-    --main-bg: conic-gradient(from var(--border-angle),
-        #213,
-        #112 5%,
-        #112 60%,
-        #213 95%);
+    /* Hiệu ứng chữ nổi bật hơn */
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 
-    border: solid 5px transparent;
-    border-radius: 2em;
-    --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, #08f, #f03 99%, transparent);
-
-    background:
-      // padding-box clip this background in to the overall element except the border.
-      var(--main-bg) padding-box,
-      // border-box extends this background to the border space
-      var(--gradient-border) border-box,
-      // Duplicate main background to fill in behind the gradient border. You can remove this if you want the border to extend "outside" the box background.
-      var(--main-bg) border-box;
-
-    background-position: center center;
-
-    animation: bg-spin 3s linear infinite;
-
-    @keyframes bg-spin {
-      to {
-        --border-angle: 1turn;
-      }
-    }
-
+    /* Gradient tối trong suốt */
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(25, 25, 25, 0.3)
+    );
 
     &:hover {
       animation-play-state: paused;
     }
-
   }
 
-  @property --border-angle {
-    syntax: "<angle>";
-    inherits: true;
-    initial-value: 0turn;
+  .frame-banner:before,
+  .frame-banner:after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+
+    /* Gradient cho viền, sáng hơn một chút */
+    background: linear-gradient(
+      45deg,
+      rgba(40, 40, 40, 0.3),
+      /* Xám đậm trong suốt */ rgba(60, 60, 60, 0.2),
+      /* Xám trung bình trong suốt */ rgba(90, 90, 90, 0.15),
+      /* Xám sáng, rất trong */ rgba(50, 50, 50, 0.3),
+      /* Xám đậm hơn */ rgba(30, 30, 30, 0.4) /* Gần đen, nhưng trong hơn */
+    );
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+
+    /* Hiệu ứng động cho viền */
+    animation: steam 20s linear infinite;
+
+    /* Viền ngoài sáng nhưng trong suốt */
+    border: 2px solid rgba(100, 100, 100, 0.2);
+  }
+
+  @keyframes steam {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  .frame-banner:after {
+    filter: blur(50px);
   }
 
   @mixin brandIntroduce($top) {
@@ -123,7 +140,8 @@
 
   .frame-banner {
     position: relative;
-    height: 100%
+    height: 100%;
+    padding: 20px;
   }
 
   .brand_intro1 {
@@ -139,7 +157,7 @@
     transition: transform 1s ease, opacity 0.8s ease;
     animation: slide-up 0.8s ease 0.5s forwards;
     font-size: 20px;
-    top: 120px
+    top: 120px;
   }
 
   .home-banner_button {
@@ -216,7 +234,6 @@
     letter-spacing: 1px;
     font-size: 90px;
     color: #ff652f;
-
   }
 }
 
@@ -293,7 +310,8 @@
 
 .list-img {
   background: lightblue;
-  cursor: url("https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/Ad1_-cursor.png") 39 39,
+  cursor: url("https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/Ad1_-cursor.png")
+      39 39,
     auto;
   display: flex;
   align-items: center;
@@ -312,7 +330,7 @@
   touch-action: none;
 }
 
-.deck>div {
+.deck > div {
   background-color: white;
   background-size: auto 85%;
   background-repeat: no-repeat;
@@ -336,7 +354,7 @@
   top: 10%;
   right: 10%;
 
-  >span {
+  > span {
     margin-top: 20px;
     display: flex;
     justify-content: center;
@@ -427,7 +445,7 @@
       font-weight: 500;
       color: rgb(108, 104, 104);
 
-      >div {
+      > div {
         cursor: pointer;
         transition: color 0.3s ease-in-out;
         position: relative;
@@ -626,7 +644,7 @@
       padding-left: 3px;
     }
 
-    >div {
+    > div {
       line-height: 30px;
       font-weight: 400;
     }
@@ -661,7 +679,8 @@
 }
 
 /*--- Responsive Code ---*/
-@media screen and (max-width: 1920px) {}
+@media screen and (max-width: 1920px) {
+}
 
 @media screen and (max-width: 1680px) {
   .home-banner {
@@ -673,7 +692,8 @@
   }
 }
 
-@media screen and (max-width: 1600px) {}
+@media screen and (max-width: 1600px) {
+}
 
 @media screen and (max-width: 1440px) {
   .home-banner {
@@ -695,7 +715,8 @@
   }
 }
 
-@media screen and (max-width: 1080px) {}
+@media screen and (max-width: 1080px) {
+}
 
 @media screen and (max-width: 1024px) {
   .home-banner {
@@ -740,7 +761,8 @@
   }
 }
 
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 768px) {
+}
 
 @media screen and (max-width: 736px) {
   .home-banner {
@@ -778,7 +800,7 @@
     }
 
     .brand_intro2 {
-      >div {
+      > div {
         width: 80%;
       }
 
@@ -787,7 +809,8 @@
   }
 }
 
-@media screen and (max-width: 568px) {}
+@media screen and (max-width: 568px) {
+}
 
 @media screen and (max-width: 480px) {
   .brand_intro1 {
@@ -807,7 +830,7 @@
   .brand_intro2 {
     top: 0% !important;
 
-    >div {
+    > div {
       font-size: 15px !important;
     }
   }
@@ -823,7 +846,8 @@
   }
 }
 
-@media screen and (max-width: 384px) {}
+@media screen and (max-width: 384px) {
+}
 
 @media screen and (max-width: 375px) {
   .home-banner {
@@ -837,7 +861,7 @@
     .brand_intro2 {
       top: 2% !important;
 
-      >div {
+      > div {
         width: 85%;
       }
 
@@ -850,11 +874,11 @@
   }
 }
 
-@media screen and (max-width: 320px) {}
-
+@media screen and (max-width: 320px) {
+}
 
 .os-phrases h2 {
-  font-family: 'Dosis', 'Lato', sans-serif;
+  font-family: "Dosis", "Lato", sans-serif;
   font-size: 70px;
   font-weight: 200;
   width: 100%;
@@ -870,7 +894,7 @@
 }
 
 .os-phrases h2,
-.os-phrases h2>span {
+.os-phrases h2 > span {
   height: 100%;
   /* Centering with flexbox */
   display: -webkit-box;
@@ -893,11 +917,11 @@
   align-items: center;
 }
 
-.os-phrases h2>span {
+.os-phrases h2 > span {
   margin: 0 15px;
 }
 
-.os-phrases h2>span>span {
+.os-phrases h2 > span > span {
   display: inline-block;
   -webkit-perspective: 1000px;
   -moz-perspective: 1000px;
@@ -907,7 +931,7 @@
   transform-origin: 50% 50%;
 }
 
-.os-phrases h2>span>span>span {
+.os-phrases h2 > span > span > span {
   display: inline-block;
   color: hsla(0, 0%, 0%, 0);
   -webkit-transform-style: preserve-3d;
@@ -921,25 +945,25 @@
   animation: OpeningSequence 5.2s linear forwards;
 }
 
-.os-phrases h2:nth-child(2)>span>span>span {
+.os-phrases h2:nth-child(2) > span > span > span {
   -webkit-animation-delay: 5s;
   -moz-animation-delay: 5s;
   animation-delay: 5s;
 }
 
-.os-phrases h2:nth-child(3)>span>span>span {
+.os-phrases h2:nth-child(3) > span > span > span {
   -webkit-animation-delay: 10s;
   -moz-animation-delay: 10s;
   animation-delay: 10s;
 }
 
-.os-phrases h2:nth-child(4)>span>span>span {
+.os-phrases h2:nth-child(4) > span > span > span {
   -webkit-animation-delay: 15s;
   -moz-animation-delay: 15s;
   animation-delay: 15s;
 }
 
-.os-phrases h2:nth-child(5)>span>span>span {
+.os-phrases h2:nth-child(5) > span > span > span {
   font-size: 150px;
   -webkit-animation-delay: 21s;
   -moz-animation-delay: 21s;
@@ -949,13 +973,13 @@
   animation-duration: 8s;
 }
 
-.os-phrases h2:nth-child(6)>span>span>span {
+.os-phrases h2:nth-child(6) > span > span > span {
   -webkit-animation-delay: 30s;
   -moz-animation-delay: 30s;
   animation-delay: 30s;
 }
 
-.os-phrases h2:nth-child(7)>span>span>span {
+.os-phrases h2:nth-child(7) > span > span > span {
   -webkit-animation-delay: 34s;
   -moz-animation-delay: 34s;
   animation-delay: 34s;
@@ -1048,7 +1072,7 @@
   }
 }
 
-.os-phrases h2:nth-child(8)>span>span>span {
+.os-phrases h2:nth-child(8) > span > span > span {
   font-size: 30px;
   -webkit-animation: FadeIn 4s linear 40s forwards;
   -moz-animation: FadeIn 4s linear 40s forwards;

@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "BT Beau Sans";
+  src: url("../../public/fonts/BTBeauSans-Regular.woff2") format("woff2"),
+    url("../../public/fonts/BTBeauSans-Regular.woff") format("woff"),
+    url("../../public/fonts/BTBeauSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

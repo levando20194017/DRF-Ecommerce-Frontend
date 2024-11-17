@@ -1,5 +1,6 @@
 import { Header } from "./components/Header";
 import "./App.css";
+import "../src/styles/fonts.css";
 
 function App() {
   //...render

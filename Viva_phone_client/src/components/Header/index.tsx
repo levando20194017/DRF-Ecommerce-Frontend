@@ -78,7 +78,7 @@ export const Header = () => {
                 className={activeIndex === 2 ? "active" : ""}
                 onClick={() => handleClick(2)}
               >
-                BLOG
+                TIN TỨC
               </li>
               <li
                 className={activeIndex === 3 ? "active" : ""}
@@ -149,7 +149,7 @@ export const Header = () => {
                 className={activeIndex === 2 ? "active" : ""}
                 onClick={() => handleClick(2)}
               >
-                BLOG
+                TIN TỨC
               </li>
               <li
                 className={activeIndex === 3 ? "active" : ""}
@@ -172,7 +172,6 @@ export const Header = () => {
           </div>
         </Navbar>
       </header>
-
     </div>
   );
 };
