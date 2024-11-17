@@ -7,36 +7,38 @@ export const Footer = () => {
     <footer className="footer text-light pt-4 pb-3">
       <hr className="text-light" />
       <div className="d-flex form-footer">
-        <div className="col-lg-3 col-md-6 mb-4">
+        <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">
           <h5 className="footer-title">Trụ sở</h5>
           <div>
-            <p>Văn phòng đại diện</p>
+            <p className="footer-title_title">Văn phòng đại diện</p>
             <p>Tầng 5, 152 Khuất Duy Tiến, Quận Thanh Xuân, Tp. Hà Nội</p>
           </div>
           <div>
-            <p>Văn phòng miền Nam</p>
+            <p className="footer-title_title">Văn phòng miền Nam</p>
             <p>192 - Phạm Ngũ Lão - P. 7 - Q. Gò Vấp - TP.HCM</p>
           </div>
           <div>
-            <p>Văn phòng miền Trung</p>
+            <p className="footer-title_title">Văn phòng miền Trung</p>
             <p>A3-30 - KDT Minh Khang - TP.Vinh, Nghệ An</p>
           </div>
           <div>
-            <p>Địa chỉ nhà máy</p>
+            <p className="footer-title_title">Địa chỉ nhà máy</p>
             <p>CCN Đắc Sở, Hoài Đức, Tp. Hà Nội</p>
           </div>
         </div>
 
-        <div className="col-lg-3 col-md-6 mb-4">
+        <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">
           <h5 className="footer-title">Liên hệ</h5>
-          <p>Điện thoại: (+84) 036 964 8868</p>
-          <p>Email: painticks@paint.com.vn</p>
-          <p>Website: www.painticks.com.vn</p>
+          <div className="d-flex flex-column gap-2">
+            <p className="d-flex"><div className="contact-title">Điện thoại:</div> <div>(+84) 036 964 8868</div></p>
+            <p className="d-flex"><div className="contact-title">Email:</div> <div>levando20194017@gmail.com</div></p>
+            <p className="d-flex"><div className="contact-title">Website:</div> <div>www.painticks.com.vn</div></p>
+          </div>
         </div>
 
-        <div className="col-lg-3 col-md-6 mb-4">
+        <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">
           <h5 className="footer-title">Truy cập nhanh</h5>
-          <ul className="list-unstyled">
+          <ul className="list-unstyled d-flex flex-column gap-3">
             <li>Trang chủ</li>
             <li>Giới thiệu</li>
             <li>Sản phẩm</li>

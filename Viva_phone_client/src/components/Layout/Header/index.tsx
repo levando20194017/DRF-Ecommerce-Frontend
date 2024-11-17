@@ -2,7 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { useEffect, useState } from "react";
-import logo4 from "../../assets/images/logo4.png";
+import logo4 from "../../../assets/images/logo4.png";
 export const Header = () => {
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);

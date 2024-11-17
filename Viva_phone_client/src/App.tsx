@@ -1,4 +1,4 @@
-import { Header } from "./components/Header";
+import { Header } from "./components/Layout/Header";
 import "./App.css";
 import "../src/styles/fonts.css";
 
