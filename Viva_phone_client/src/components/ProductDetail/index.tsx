@@ -58,13 +58,13 @@ export const ProductDetail = () => {
   return (
     <div className="pro-form">
       <div className="div-empty"></div>
-      <div className="pro-header gap-xl-3">
+      {/* <div className="pro-header gap-xl-3">
         <div style={{ fontWeight: "bold", fontSize: "30px" }}>
           <i className="bi bi-house-fill"></i>
         </div>
         <div className="vr"></div>
         <div className="text-secondary">VIVA FLOWER</div>
-      </div>
+      </div> */}
       <div className="pro-body mt-5 container">
         <div className="d-flex">
           <div className="col-5 images-of-pro">

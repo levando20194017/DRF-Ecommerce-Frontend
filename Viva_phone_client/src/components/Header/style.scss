@@ -1,6 +1,5 @@
 .headerContainer {
   color: black;
-  z-index: 10000;
 
   @mixin headerCommon($Color, $BorderColor, $iconColor) {
     .header_content {
@@ -131,6 +130,7 @@
   .header1 {
     height: 44px;
     padding: 0 40px;
+    z-index: 9999;
 
     .location {
       color: gray;
@@ -146,6 +146,7 @@
     position: absolute;
     width: 100%;
     z-index: 1;
+    z-index: 9999;
 
     .navbar_header2 {
       height: 80px;

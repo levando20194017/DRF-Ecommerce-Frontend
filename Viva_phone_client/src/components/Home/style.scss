@@ -1,19 +1,93 @@
 .home-banner {
-  // background-image: url("../../assets/images/header_image.png");
   background-size: contain;
   background-position: center;
-  height: 80vh;
+  height: 110vh;
   position: relative;
   background-color: #000000;
   padding: 32px;
 
   img {
     position: absolute;
-    right: 10%;
-    height: 70vh;
+    right: 0;
+    height: 100vh;
     top: 0;
     bottom: 0;
     margin: auto;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  video {
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+  }
+
+  .frame-banner {
+    width: 700px;
+    height: 299px !important;
+    border-radius: 8px;
+    z-index: 99;
+    color: #fff;
+    position: absolute;
+    top: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+    background: rgba(4, 4, 4, 0.56);
+    -webkit-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.72);
+    -moz-box-shadow: 0px 35px 44px -22px rgba(0, 0, 0, 0.72);
+    box-shadow: 0px 35px 44px -22px #1f181b;
+
+    text-shadow: 0 1px 0 #000;
+
+    --border-angle: 0turn; // For animation.
+    --main-bg: conic-gradient(from var(--border-angle),
+        #213,
+        #112 5%,
+        #112 60%,
+        #213 95%);
+
+    border: solid 5px transparent;
+    border-radius: 2em;
+    --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, #08f, #f03 99%, transparent);
+
+    background:
+      // padding-box clip this background in to the overall element except the border.
+      var(--main-bg) padding-box,
+      // border-box extends this background to the border space
+      var(--gradient-border) border-box,
+      // Duplicate main background to fill in behind the gradient border. You can remove this if you want the border to extend "outside" the box background.
+      var(--main-bg) border-box;
+
+    background-position: center center;
+
+    animation: bg-spin 3s linear infinite;
+
+    @keyframes bg-spin {
+      to {
+        --border-angle: 1turn;
+      }
+    }
+
+
+    &:hover {
+      animation-play-state: paused;
+    }
+
+  }
+
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
   }
 
   @mixin brandIntroduce($top) {
@@ -28,6 +102,7 @@
     display: flex;
     align-items: center;
     text-align: center;
+    z-index: 1;
   }
 
   @mixin button($fontweight) {
@@ -46,6 +121,11 @@
     }
   }
 
+  .frame-banner {
+    position: relative;
+    height: 100%
+  }
+
   .brand_intro1 {
     @include brandIntroduce(-10%);
     transition: transform 0.8s ease, opacity 0.8s ease;
@@ -56,14 +136,14 @@
 
   .brand_intro2 {
     @include brandIntroduce(2%);
-    margin-top: 50px;
     transition: transform 1s ease, opacity 0.8s ease;
     animation: slide-up 0.8s ease 0.5s forwards;
     font-size: 20px;
+    top: 120px
   }
 
   .home-banner_button {
-    @include brandIntroduce(20%);
+    @include brandIntroduce(90%);
     transition: transform 1s ease, opacity 0.8s ease;
     animation: slide-up 0.8s ease 1s forwards;
 
@@ -137,51 +217,7 @@
     font-size: 90px;
     color: #ff652f;
 
-    @keyframes wave {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      50% {
-        transform: translateY(-10px);
-        opacity: 0.7;
-      }
-
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
   }
-}
-
-.product-title span:nth-child(1) {
-  animation: wave 1s ease-in-out infinite;
-}
-
-.product-title span:nth-child(2) {
-  animation: wave 1s ease-in-out 0.1s infinite;
-}
-
-.product-title span:nth-child(3) {
-  animation: wave 1s ease-in-out 0.2s infinite;
-}
-
-.product-title span:nth-child(4) {
-  animation: wave 1s ease-in-out 0.3s infinite;
-}
-
-.product-title span:nth-child(5) {
-  animation: wave 1s ease-in-out 0.4s infinite;
-}
-
-.product-title span:nth-child(6) {
-  animation: wave 1s ease-in-out 0.5s infinite;
-}
-
-.product-title span:nth-child(7) {
-  animation: wave 1s ease-in-out 0.6s infinite;
 }
 
 .wrapper {
@@ -815,3 +851,249 @@
 }
 
 @media screen and (max-width: 320px) {}
+
+
+.os-phrases h2 {
+  font-family: 'Dosis', 'Lato', sans-serif;
+  font-size: 70px;
+  font-weight: 200;
+  width: 100%;
+  overflow: hidden;
+  text-transform: uppercase;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  letter-spacing: 14px;
+  text-align: center;
+}
+
+.os-phrases h2,
+.os-phrases h2>span {
+  height: 100%;
+  /* Centering with flexbox */
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.os-phrases h2>span {
+  margin: 0 15px;
+}
+
+.os-phrases h2>span>span {
+  display: inline-block;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  perspective: 1000px;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+
+.os-phrases h2>span>span>span {
+  display: inline-block;
+  color: hsla(0, 0%, 0%, 0);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-animation: OpeningSequence 5.2s linear forwards;
+  -moz-animation: OpeningSequence 5.2s linear forwards;
+  animation: OpeningSequence 5.2s linear forwards;
+}
+
+.os-phrases h2:nth-child(2)>span>span>span {
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+  animation-delay: 5s;
+}
+
+.os-phrases h2:nth-child(3)>span>span>span {
+  -webkit-animation-delay: 10s;
+  -moz-animation-delay: 10s;
+  animation-delay: 10s;
+}
+
+.os-phrases h2:nth-child(4)>span>span>span {
+  -webkit-animation-delay: 15s;
+  -moz-animation-delay: 15s;
+  animation-delay: 15s;
+}
+
+.os-phrases h2:nth-child(5)>span>span>span {
+  font-size: 150px;
+  -webkit-animation-delay: 21s;
+  -moz-animation-delay: 21s;
+  animation-delay: 21s;
+  -webkit-animation-duration: 8s;
+  -moz-animation-duration: 8s;
+  animation-duration: 8s;
+}
+
+.os-phrases h2:nth-child(6)>span>span>span {
+  -webkit-animation-delay: 30s;
+  -moz-animation-delay: 30s;
+  animation-delay: 30s;
+}
+
+.os-phrases h2:nth-child(7)>span>span>span {
+  -webkit-animation-delay: 34s;
+  -moz-animation-delay: 34s;
+  animation-delay: 34s;
+}
+
+@-webkit-keyframes OpeningSequence {
+  0% {
+    text-shadow: 0 0 50px #fff;
+    letter-spacing: 80px;
+    opacity: 0;
+    -webkit-transform: rotateY(-90deg);
+  }
+
+  50% {
+    text-shadow: 0 0 1px #fff;
+    letter-spacing: 14px;
+    opacity: 0.8;
+    -webkit-transform: rotateY(0deg);
+  }
+
+  85% {
+    text-shadow: 0 0 1px #fff;
+    opacity: 0.8;
+    -webkit-transform: rotateY(0deg) translateZ(100px);
+  }
+
+  100% {
+    text-shadow: 0 0 10px #fff;
+    opacity: 0;
+    -webkit-transform: translateZ(130px);
+    pointer-events: none;
+  }
+}
+
+@-moz-keyframes OpeningSequence {
+  0% {
+    text-shadow: 0 0 50px #fff;
+    letter-spacing: 80px;
+    opacity: 0.2;
+    -moz-transform: rotateY(-90deg);
+  }
+
+  50% {
+    text-shadow: 0 0 1px #fff;
+    letter-spacing: 14px;
+    opacity: 0.8;
+    -moz-transform: rotateY(0deg);
+  }
+
+  85% {
+    text-shadow: 0 0 1px #fff;
+    opacity: 0.8;
+    -moz-transform: rotateY(0deg) translateZ(100px);
+  }
+
+  100% {
+    text-shadow: 0 0 10px #fff;
+    opacity: 0;
+    -moz-transform: translateZ(130px);
+    pointer-events: none;
+  }
+}
+
+@keyframes OpeningSequence {
+  0% {
+    text-shadow: 0 0 50px #fff;
+    letter-spacing: 80px;
+    opacity: 0.2;
+    transform: rotateY(-90deg);
+  }
+
+  50% {
+    text-shadow: 0 0 1px #fff;
+    letter-spacing: 14px;
+    opacity: 0.8;
+    transform: rotateY(0deg);
+  }
+
+  85% {
+    text-shadow: 0 0 1px #fff;
+    opacity: 0.8;
+    transform: rotateY(0deg) translateZ(100px);
+  }
+
+  100% {
+    text-shadow: 0 0 10px #fff;
+    opacity: 0;
+    transform: translateZ(130px);
+    pointer-events: none;
+  }
+}
+
+.os-phrases h2:nth-child(8)>span>span>span {
+  font-size: 30px;
+  -webkit-animation: FadeIn 4s linear 40s forwards;
+  -moz-animation: FadeIn 4s linear 40s forwards;
+  animation: FadeIn 4s linear 40s forwards;
+}
+
+@-webkit-keyframes FadeIn {
+  0% {
+    opacity: 0;
+    text-shadow: 0 0 50px #fff;
+  }
+
+  100% {
+    opacity: 0.8;
+    text-shadow: 0 0 1px #fff;
+  }
+}
+
+@-moz-keyframes FadeIn {
+  0% {
+    opacity: 0;
+    text-shadow: 0 0 50px #fff;
+  }
+
+  100% {
+    opacity: 0.8;
+    text-shadow: 0 0 1px #fff;
+  }
+}
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+    text-shadow: 0 0 50px #fff;
+  }
+
+  100% {
+    opacity: 0.8;
+    text-shadow: 0 0 1px #fff;
+  }
+}
+
+/* Bold words */
+.os-phrases h2:first-child .word3,
+.os-phrases h2:nth-child(2) .word2,
+.os-phrases h2:nth-child(4) .word2 {
+  font-weight: 600;
+}
