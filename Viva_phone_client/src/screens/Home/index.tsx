@@ -1,11 +1,11 @@
 import { HomeBanner } from "../../components/Home/HomeBanner";
-import { HomeContentDiscount } from "../../components/Home/HomeContentDiscount";
 import { ProductCatgories } from "../../components/Home/ProductCatgories";
+import TopCategories from "../../components/Home/TopCategories";
 export const HomePage = () => {
   return (
     <div>
       <HomeBanner />
-      <HomeContentDiscount />
+      <TopCategories />
       <ProductCatgories />
     </div>
   );

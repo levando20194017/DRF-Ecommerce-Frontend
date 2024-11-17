@@ -1,7 +1,5 @@
 import "../../style.scss";
 import "animate.css";
-import { useSpring, animated } from "@react-spring/web";
-import React, { useState, useEffect } from "react";
 import img1 from "../../../../assets/images/content.jpg";
 export const ListProduct = (props: any) => {
   const handleModalQuickView = () => {
@@ -9,9 +7,7 @@ export const ListProduct = (props: any) => {
   };
   return (
     <div className="top-categories_list row">
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up">
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -48,10 +44,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -83,10 +76,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -118,10 +108,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -153,10 +140,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -188,10 +172,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -223,10 +204,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />
@@ -258,10 +236,7 @@ export const ListProduct = (props: any) => {
           <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
         </div>
       </div>
-      <div
-        className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item"
-        data-aos="zoom-out-up"
-      >
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
         <div className="single-location mb-20">
           <div className="location-img">
             <img src={img1} alt="" />

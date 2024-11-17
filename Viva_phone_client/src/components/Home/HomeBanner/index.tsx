@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSpring, animated } from "@react-spring/web";
+import { GrLinkNext } from "react-icons/gr";
 import "../style.scss";
-
 const videoSource: string = require("../../../assets/video/videoBanner.mp4");
 
 export const HomeBanner = () => {
   const textTitle =
-    "Chào mừng bạn đến với VIVA PHONE - Điểm đến lý tưởng cho tín đồ công nghệ!".split(
+    "Chào mừng bạn đến với VIVA PHONE Điểm đến lý tưởng cho tín đồ công nghệ!".split(
       " "
     );
   const textDes =
@@ -91,7 +91,7 @@ export const HomeBanner = () => {
         {/* Animated Button */}
         <div className="home-banner_button">
           <div
-            className="container"
+            className=""
             onClick={() => {
               toggle(!state);
             }}
@@ -108,12 +108,14 @@ export const HomeBanner = () => {
               <button
                 className={`contact-button ${isAnimating ? "animating" : ""}`}
               >
-                Liên hệ ngay
+                <span>Liên hệ ngay</span>
+                <GrLinkNext />
               </button>
             </animated.div>
           </div>
         </div>
       </div>
+      <div className="div-linear"></div>
       <div>
         <video
           src={videoSource}
