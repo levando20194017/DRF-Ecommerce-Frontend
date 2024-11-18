@@ -51,17 +51,17 @@ export const ProductCatgories = () => {
             <p className="ab">Lorem ipsum is simply</p>
           </div>
         </div>
-        <div className="vr"></div>
-        <div className="d-flex">
-          <div className="icon-service">
-            <Icon path={mdiCog} size={2} />
-          </div>
-          <div>
-            <p className="service-name">Ours Services</p>
-            <p className="ab">Lorem ipsum is simply</p>
-          </div>
-        </div>
-      </div> */}
+            <div className="vr"></div>
+              <div className="d-flex">
+              <div className="icon-service">
+              <Icon path={mdiCog} size={2} />
+                  </div>
+                  <div>
+                    <p className="service-name">Ours Services</p>
+                    <p className="ab">Lorem ipsum is simply</p>
+                  </div>
+                </div>
+              </div> */}
 
       <main>
         <section className="home-cl section-padding">
@@ -75,33 +75,33 @@ export const ProductCatgories = () => {
                   Tìm hiểu thêm nhiều thông tin chi tiết hơn về các sản phẩm mà chúng tôi hiện nay đang có
                 </p>
               </div>
-              <div className="categories-list d-flex justify-content-between col-6 offset-3 mt-4">
+              <div className="categories-list d-flex mt-4">
                 <div
                   className={activeIndex === 0 ? "active" : ""}
                   onClick={() => handleClick(0)}
                 >
-                  Product Name
+                 Iphone
                 </div>
                 <div
                   className={activeIndex === 1 ? "active" : ""}
                   onClick={() => handleClick(1)}
                 >
-                  Product Name
+                  Samsung
                 </div>
                 <div
                   className={activeIndex === 2 ? "active" : ""}
                   onClick={() => handleClick(2)}
                 >
-                  Product Name
+                  Realme
                 </div>
                 <div
                   className={activeIndex === 3 ? "active" : ""}
                   onClick={() => handleClick(3)}
                 >
-                  Product Name
+                  Xiaomi
                 </div>
               </div>
-              <div className="mt-5">
+              <div className="mt-3">
                 {activeIndex === 0 && (
                   <ListProduct handleQuickView={handleQuickView} />
                 )}

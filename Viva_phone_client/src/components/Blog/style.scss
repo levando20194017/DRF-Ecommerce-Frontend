@@ -1,0 +1,56 @@
+.list-blogs{
+    .title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+  
+    .description {
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 36px;
+        letter-spacing: 0.01em;
+        text-align: center;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        display: flex;
+        justify-content: center;
+        color: #C6C6C6;
+  
+        p {
+          width: 684px;
+        }
+    }
+    .frame-blog-item{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        .blog-title{
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 30px;
+            text-align: left;
+            text-underline-position: from-font;
+            text-decoration-skip-ink: none;
+        }
+        .blog-description{
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 21px;
+            text-align: left;
+            text-underline-position: from-font;
+            text-decoration-skip-ink: none;
+            color: #9A9A9A
+        }
+        .blog-date{
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 18px;
+            text-align: left;
+            text-underline-position: from-font;
+            text-decoration-skip-ink: none;    
+            color: #626262;        
+        }
+    }
+}

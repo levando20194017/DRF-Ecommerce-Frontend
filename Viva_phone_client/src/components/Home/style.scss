@@ -258,7 +258,7 @@
 
 /* Bố cục tổng thể của Carousel */
 .carousel-container {
-  padding: 70px 96px 0 96px !important;
+  padding: 70px 0 0 0 !important;
 }
 
 .carousel-title {
@@ -550,11 +550,10 @@
     }
 
     .categories-list {
-      padding: 0 40px;
-      margin-bottom: 30px;
+      justify-content: center;
       font-weight: 500;
       color: rgb(108, 104, 104);
-
+      gap: 32px;
       >div {
         cursor: pointer;
         transition: color 0.3s ease-in-out;
@@ -617,13 +616,14 @@
 
 .single-location {
   position: relative;
-
+  cursor: pointer;
   .item-actions {
     position: absolute;
     top: 45%;
     left: 35%;
     display: flex;
     opacity: 0;
+    z-index: 9999;
 
     @mixin backGroundIcon {
       transition: all 0.4s ease-in-out;

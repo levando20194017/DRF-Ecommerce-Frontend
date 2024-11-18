@@ -5,7 +5,7 @@
   font-weight: 500;
 
   .form-footer {
-    padding: 48px 96px;
+    padding: 48px 0;
 
     .footer-title {
       font-size: 20px;
@@ -28,9 +28,9 @@
     }
   }
 
-  .footer-copy-right {
-    padding: 0 96px;
-  }
+  // .footer-copy-right {
+  //   padding: 0 96px;
+  // }
 }
 
 .footer-title {

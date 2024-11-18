@@ -1,273 +1,55 @@
 import "../../style.scss";
 import "animate.css";
 import img1 from "../../../../assets/images/content.jpg";
+import { ProductItem } from "./ProductItem";
 export const ListProduct = (props: any) => {
   const handleModalQuickView = () => {
     props.handleQuickView();
   };
+  const products = [
+    {
+        id: 1,
+        name: "Painticks U Primer",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+    {
+        id: 2,
+        name: "Painticks Clear Primer",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+    {
+        id: 3,
+        name: "Painticks 800",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+    {
+        id: 4,
+        name: "Painticks Water Primer",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+    {
+        id: 5,
+        name: "Painticks Water Primer",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+    {
+        id: 6,
+        name: "Painticks Water Primer",
+        description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+        image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+    },
+];
+
   return (
     <div className="top-categories_list row">
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div
-              className="quick-view"
-              onClick={() => {
-                handleModalQuickView();
-              }}
-            >
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item">
-        <div className="single-location mb-20">
-          <div className="location-img">
-            <img src={img1} alt="" />
-          </div>
-          <div className="item-actions">
-            <div className="quick-view">
-              <i className="bi bi-eye-fill"></i>
-            </div>
-            <div className="add-to-cart">
-              <i className="bi bi-cart4"></i>
-            </div>
-          </div>
-        </div>
-        <div className="top-categories_item_detail">
-          <div className="d-flex justify-content-between mt-3">
-            <div>
-              4.9
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-              <i className="bi bi-star-fill"></i>
-            </div>
-            <div>249 Đã bán</div>
-          </div>
-          <h6 className="mt-2" style={{ fontSize: "20px" }}>
-            Viva flower
-          </h6>
-          <h6 style={{ color: "red", fontWeight: "bold" }}>299.000đ</h6>
-        </div>
-      </div>
+      {products.map(product => (
+        <ProductItem product={product} handleModalQuickView={handleModalQuickView}/>
+      ))}
     </div>
   );
 };

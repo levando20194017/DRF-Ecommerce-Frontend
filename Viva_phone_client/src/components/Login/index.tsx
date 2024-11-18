@@ -3,6 +3,7 @@ import "./style.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link } from "react-router-dom";
 import logo4 from "../../assets/images/logo4.png"
+import { Routes } from "../../screens/Routes";
 interface Props {
   title: string; // required
   btnLabel: string; // optional
@@ -76,11 +77,11 @@ export const LoginForm = ({ title, btnLabel }: Props) => {
                   </div>
                   <p className="p-bottom-w3ls">
                     Quên mật khẩu?
-                    <Link to="/forgotpassword"> Nhấn vào đây</Link>
+                    <Link to={Routes.ForgotPassword.path}> Nhấn vào đây</Link>
                   </p>
                   <p className="p-bottom-w3ls1">
                     Tạo tài khoản mới?
-                    <Link to="/signup"> Đăng ký ngay</Link>
+                    <Link to={Routes.SignUp.path}> Đăng ký ngay</Link>
                   </p>
                   <div className="clear"></div>
                   <div className="submit-w3l">

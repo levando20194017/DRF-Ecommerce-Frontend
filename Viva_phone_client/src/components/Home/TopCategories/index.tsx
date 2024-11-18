@@ -47,7 +47,7 @@ const TopCategories = () => {
     ];
 
     return (
-        <div className="carousel-container">
+        <div className="carousel-container container">
             <h2 className="carousel-title">Các sản phẩm bán chạy nhất</h2>
             <Swiper
                 className="product-swiper mt-5"
