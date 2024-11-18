@@ -240,6 +240,15 @@
         rgba(22, 22, 24, 0) 16.59%,
         #161618 45.04%);
   }
+  .div-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%; // Điều chỉnh chiều cao của hiệu ứng mờ dần
+    background: linear-gradient(to top, rgba(22, 22, 24, 1), transparent);
+    pointer-events: none; // Đảm bảo lớp phủ không ảnh hưởng đến các hành động tương tác
+  }
 }
 
 //Home content
@@ -316,6 +325,9 @@
 }
 
 /* Swiper Pagination (Dot Indicators) */
+.swiper-pagination{
+  margin-bottom: 20px;
+}
 .swiper-pagination-bullet {
   background: #fff !important;
   /* Màu trắng cho dot */
@@ -331,6 +343,7 @@
 /* Swiper Navigation (Arrow Buttons) */
 .swiper-button-next,
 .swiper-button-prev {
+  margin-top: -4% !important;
   color: #fff;
   transition: color 0.3s;
 }

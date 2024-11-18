@@ -126,6 +126,9 @@ export const HomeBanner = () => {
           className="video-banner"
         />
       </div>
+      <div className="div-shadow">
+
+      </div>
     </div>
   );
 };
