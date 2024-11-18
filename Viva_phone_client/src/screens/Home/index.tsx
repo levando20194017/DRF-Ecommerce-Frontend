@@ -6,15 +6,9 @@ export const HomePage = () => {
   return (
     <div>
       <HomeBanner />
-      <div data-aos="slide-up">
         <TopCategories />
-      </div>
-      <div data-aos="slide-up">
         <ProductCatgories />
-      </div>
-      <div data-aos="slide-up">
         <ListBlog />
-      </div>
     </div>
   );
 };
