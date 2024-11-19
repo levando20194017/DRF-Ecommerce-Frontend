@@ -29,18 +29,10 @@ export const ListBlog = () => {
         },
     ]
   return (
-    <div className="list-blogs container mt-5">
-        <div className="title">Tin tức gần đây</div>
-        <div className="text-center description">
-            <p>
-                Tìm hiểu thêm nhiều thông tin về các sản phẩm mới nhất được cập nhật dưới đây
-            </p>
-        </div>
         <div className="row">
             {listBlogs.map(blog => (
                 <BlogItem blog={blog} />
             ))}
         </div>
-    </div>
   );
 };

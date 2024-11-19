@@ -54,3 +54,39 @@
         }
     }
 }
+
+.news-card {
+    background-color: #1e1e1e;
+    color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+  
+.news-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+  
+.news-content {
+    padding: 20px;
+}
+  
+.news-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+  
+.news-description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+  
+.news-date {
+    font-size: 14px;
+    color: #aaa;
+}

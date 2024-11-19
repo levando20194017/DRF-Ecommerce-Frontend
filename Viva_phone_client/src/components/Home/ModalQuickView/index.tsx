@@ -21,7 +21,7 @@ export const ModalQuickView = (props: any) => {
             <img src={img1} />
           </div>
           <div className="col-6 item-detail">
-            <h6 className="d-flex justify-content-center">Viva flower</h6>
+            <h6 className="d-flex justify-content-center">Viva phone</h6>
             <hr />
             <div>
               {" "}

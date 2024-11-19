@@ -16,6 +16,8 @@ import "./index.css";
 import { OrderStatus } from "./components/OrderStatus";
 import NotFound from "./screens/NotFound";
 import { Routes } from "./screens/Routes";
+import StorePage from "./screens/Store"; 
+import BlogPage from "./screens/Blog";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
       {
         path: Routes.HomePage.path,
         element: <HomePage />,
+      },
+      {
+        path: Routes.Store.path,
+        element: <StorePage />,
+      },
+      {
+        path: Routes.News.path,
+        element: <BlogPage />,
       },
       {
         path: Routes.AddToCart.path,

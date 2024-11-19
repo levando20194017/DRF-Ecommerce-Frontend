@@ -20,7 +20,7 @@ export const RelatedProduct = () => {
                 isOpen={isOpenModal}
                 toggleFromParent={toggleModal}
             />
-            <div className="title justify-content-center mt-5">Related Product</div>
+            <div className="title justify-content-center">Các sản phẩm gợi ý</div>
             <ListProduct handleQuickView={handleQuickView} />
         </div>
     );
