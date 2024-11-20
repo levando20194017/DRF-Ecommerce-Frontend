@@ -1,40 +1,8 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus, faPaperclip } from "@fortawesome/free-solid-svg-icons";
-import { Card, Button, Image, Form } from "@themesberg/react-bootstrap";
-
-import Profile1 from "../../assets/img/team/profile-picture-1.jpg";
-import ProfileCover from "../../assets/img/profile-cover.jpg";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import { Card, Image, Form } from "@themesberg/react-bootstrap";
 import Select from "react-select";
-export const ProfileCardWidget = () => {
-  return (
-    <Card border="light" className="text-center p-0 mb-4">
-      <div
-        style={{ backgroundImage: `url(${ProfileCover})` }}
-        className="profile-cover rounded-top"
-      />
-      <Card.Body className="pb-5">
-        <Card.Img
-          src={Profile1}
-          alt="Neil Portrait"
-          className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
-        />
-        <Card.Title>Neil Sims</Card.Title>
-        <Card.Subtitle className="fw-normal">
-          Senior Software Engineer
-        </Card.Subtitle>
-        <Card.Text className="text-gray mb-4">New York, USA</Card.Text>
-
-        <Button variant="primary" size="sm" className="me-2">
-          <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Connect
-        </Button>
-        <Button variant="secondary" size="sm">
-          Send Message
-        </Button>
-      </Card.Body>
-    </Card>
-  );
-};
 
 export const ChoosePhotoWidget = (props) => {
   const { title, photo } = props;

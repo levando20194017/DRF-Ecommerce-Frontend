@@ -9,8 +9,10 @@
     font-weight: 700;
   }
 }
+
 .modal-header {
   border-top: 3px solid #f37a27;
+
   .modal-title {
     h4 {
       color: #f37a27;
@@ -18,11 +20,14 @@
     }
   }
 }
+
 .modal-footer {
   border-bottom: 3px solid #f37a27;
 }
+
 .modal-body {
   color: black;
+
   .status-order {
     width: 80px;
     color: #fff;
@@ -39,35 +44,43 @@
   font-size: 18px;
   background-color: #fff;
   color: #111827;
+
   @mixin ItemCenter() {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   &_title {
     min-height: 200px;
     justify-content: space-between;
     border-bottom: 1px solid rgb(232, 230, 230);
+
     img {
       border-radius: 5px;
       height: 150px;
       width: auto;
     }
+
     h4 {
       font-size: 25px !important;
       font-weight: 700 !important;
     }
+
     div {
       line-height: 2;
       font-weight: 400;
     }
   }
+
   &_content {
     &_header {
       @include ItemCenter();
+
       h1 {
         font-weight: 700;
       }
+
       h3 {
         margin-left: 20px;
         @include ItemCenter();
@@ -77,16 +90,19 @@
         color: #fff;
       }
     }
+
     &_info {
       justify-content: space-between;
       display: flex;
     }
+
     .table {
       font-size: 16px;
       color: #111827 !important;
     }
   }
 }
+
 .btn-export {
   height: 35px;
   width: 120px;
@@ -95,4 +111,28 @@
   color: #fff;
   font-weight: bold;
   border-radius: 5px;
+}
+
+.badge-pending {
+  background-color: #ffc107;
+}
+
+.badge-confirmed {
+  background-color: #28a745;
+}
+
+.badge-shipped {
+  background-color: #007bff;
+}
+
+.badge-delivered {
+  background-color: #17a2b8;
+}
+
+.badge-cancelled {
+  background-color: #dc3545;
+}
+
+.badge-returned {
+  background-color: #6c757d;
 }

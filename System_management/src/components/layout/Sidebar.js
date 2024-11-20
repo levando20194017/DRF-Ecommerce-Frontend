@@ -30,13 +30,13 @@ import { Routes } from "../../routes";
 import ReactHero from "../../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../../assets/img/team/profile-picture-3.jpg";
 
-const initialState = [false, false, false];
+const initialState = [false, false, false, false, false];
 function reducer(state, { type, index }) {
   switch (type) {
     case "expand-all":
-      return [true, true, true];
+      return [true, true, true, true, true];
     case "collapse-all":
-      return [false, false, false];
+      return [false, false, false, false, false];
     case "toggle":
       let newState = [...state];
       newState[index] = !newState[index];
@@ -185,15 +185,47 @@ export default () => {
                     title="Create Product"
                     link={Routes.ProductCreate.path}
                   />
-                  <NavItem title="List Product" link={Routes.Product.path} />
-                  <NavItem title="Catalog" link={Routes.Catalog.path} />
+                  <NavItem title="List Products" link={Routes.Product.path} />
+                  <NavItem title="List Catalogs" link={Routes.Catalog.path} />
+                  <NavItem title="Create Catalog" link={Routes.CatalogCreate.path} />
+                  <NavItem title="List Promotions" link={Routes.Promotion.path} />
+                  <NavItem title="Create Promotion" link={Routes.PromotionCreate.path} />
                 </div>
               </Block>
+
+              <Block
+                title="Store"
+                icon={faShoppingBag}
+                isOpen={state[1]}
+                onToggle={() => dispatch({ type: "toggle", index: 1 })}
+              >
+                <div style={{ marginLeft: "33px" }}>
+                  <NavItem title="List Products In Store" link={Routes.ProductInStore.path} />
+                  <NavItem
+                    title="Add Product to Inventory"
+                    link={Routes.ProductIncomingAdd.path}
+                  />
+                  <NavItem title="List Products Incoming" link={Routes.ProductIncoming.path} />
+                  <NavItem title="List Products Sold" link={Routes.ProductSold.path} />
+                </div>
+              </Block>
+
+              {/* <Block
+                title="Products Sold"
+                icon={faShoppingBag}
+                isOpen={state[2]}
+                onToggle={() => dispatch({ type: "toggle", index: 2 })}
+              >
+                <div style={{ marginLeft: "33px" }}>
+                  <NavItem title="List Products Sold" link={Routes.Product.path} />
+                </div>
+              </Block> */}
+
               <Block
                 title="Order"
-                isOpen={state[1]}
+                isOpen={state[2]}
                 icon={faCartPlus}
-                onToggle={() => dispatch({ type: "toggle", index: 1 })}
+                onToggle={() => dispatch({ type: "toggle", index: 2 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="List Order" link={Routes.Order.path} />
@@ -210,16 +242,20 @@ export default () => {
               />
               <Block
                 title="Blogs"
-                isOpen={state[2]}
+                isOpen={state[3]}
                 icon={faNewspaper}
-                onToggle={() => dispatch({ type: "toggle", index: 2 })}
+                onToggle={() => dispatch({ type: "toggle", index: 3 })}
               >
                 <div style={{ marginLeft: "36px" }}>
                   <NavItem title="New blog" link={Routes.BlogCreate.path} />
                   <NavItem title="Blogs" link={Routes.Blog.path} />
                   <NavItem
-                    title="Categories"
+                    title="List Categories"
                     link={Routes.BlogCategory.path}
+                  />
+                  <NavItem
+                    title="New Category"
+                    link={Routes.BlogCategoryCreate.path}
                   />
                   <NavItem title="Tags" link={Routes.BlogTag.path} />
                 </div>

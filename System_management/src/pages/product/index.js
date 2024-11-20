@@ -4,60 +4,46 @@ import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import Button from "../../components/common/Button";
 import { useHistory } from "react-router-dom";
-
 import { ProductTable } from "../../components/product/Tables";
-import ProductSearch from "../../components/product/ProductSearch";
-import { apiProductSearch } from "../../services/product";
-import { NUMBER_ITEM_PAGE_PRODUCT } from "../../enums";
+import { apiGetProductList } from "../../services/product";
+import SearchInput from "../../components/common/SearchInput";
+import PaginationCommon from "../../components/common/PaginationCommon";
 
 export default () => {
   const history = useHistory();
-  const [page, setPage] = useState(1);
-  const [listProducts, setListProducts] = useState([]);
-  const [pageMax, setPageMax] = useState(1);
-  const [searchName, setSearchName] = useState("");
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setToalRecords] = useState();
+  const [search, setSearch] = useState("");
+  const [listData, setListData] = useState([])
+  const [totalPages, setTotalPages] = useState(1);
 
-  const getListProducts = async () => {
-    const params = {
-      PageIndex: page,
-      PageSize: NUMBER_ITEM_PAGE_PRODUCT,
-      data: {
-        catalogId: 0,
-        name: searchName,
-        label: "",
-        productType: "",
-      },
-    };
+  const handleGetListProducts = async () => {
     try {
-      await apiProductSearch(params).then((response) => {
-        if (response.data.data) {
-          if (response.data.data.source.length === 0 && page - 1 > 0) {
-            setPage(page - 1);
-          } else {
-            setListProducts(response?.data?.data?.source);
-            setPageMax(response?.data.data.totalPages);
-          }
-        } else {
-          setListProducts([]);
-          setPageMax(1);
-        }
-      });
+      const response = await apiGetProductList({
+        pageIndex, pageSize, searchName: search
+      })
+      if (response.status === 200) {
+        setListData(response.data.products)
+        setToalRecords(response.data.total_items)
+        setTotalPages(response.data.total_pages)
+      }
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    getListProducts();
-  }, [page, searchName]);
+    handleGetListProducts();
+  }, [pageIndex, pageSize, search])
 
   return (
-    <>
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4">
+    <div className="page-content">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2">
         <div className="w-100 mb-xl-0">
           <Breadcrumb
-            className="d-none d-md-inline-block"
-            listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}
+            listProps={{ className: "breadcrumb-primary breadcrumb-text-light text-white" }}
+            style={{ width: "290px" }}
           >
             <Breadcrumb.Item>
               <FontAwesomeIcon icon={faHome} />
@@ -78,18 +64,25 @@ export default () => {
           </div>
         </div>
       </div>
-      <div className="mt-2">
-        <ProductSearch setSearchName={setSearchName} searchName={searchName} />
-      </div>
-      <div className="mt-2">
+      <SearchInput search={search} setSearch={setSearch} />
+      <div className="table-content">
         <ProductTable
-          page={page}
-          setPage={setPage}
-          pageMax={pageMax}
-          listProducts={listProducts}
-          getListProducts={getListProducts}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
+          listData={listData}
+          handleGetListProducts={handleGetListProducts}
         />
       </div>
-    </>
+      {totalPages > 1 &&
+        <div className="bottom-pagination">
+          <PaginationCommon
+            totalRecords={totalRecords}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            setPageSize={setPageSize} />
+        </div>
+      }
+    </div>
   );
 };

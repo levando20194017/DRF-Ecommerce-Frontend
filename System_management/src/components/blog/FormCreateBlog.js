@@ -4,14 +4,16 @@ import { TinyMce } from "../product/catalog/TinyMce";
 import { apiCreateBlog, apiUpdateBlog } from "../../services/blog";
 import Spinner from "react-bootstrap/Spinner";
 import { useParams, useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toastFailed, toastSuccess } from "../../utils";
+import { Routes } from "../../routes";
 
 export const FormCreateBlog = ({
   formBlogData,
   setFormBlogData,
-  setSelectedOptionCategory,
+  setSelectedOptionCategory
 }) => {
   const { id } = useParams();
+  const userData = JSON.parse(localStorage.getItem("mintadmin_userData"))?.user_infor
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
@@ -35,94 +37,37 @@ export const FormCreateBlog = ({
     e.preventDefault();
     if (
       !formBlogData.title ||
-      !formBlogData.categoryId ||
-      formBlogData.tagIds.length === 0
+      !formBlogData.slug ||
+      !formBlogData.categoryId
     ) {
       setFormBlogData((prevState) => ({
         ...prevState,
         titleError: !formBlogData.title ? "Title is required!" : "",
         categoryError: !formBlogData.categoryId ? "Category is required!" : "",
-        tagIdsError: formBlogData.tagIds.length === 0 ? "Tag is required!" : "",
       }));
       return;
     }
     setLoading(true);
     try {
       const dataBlog = {
-        adminId: 1,
+        admin_id: userData.id,
         title: formBlogData.title,
         slug: formBlogData.slug,
-        shortDescription: formBlogData.shortDes,
+        short_description: formBlogData.shortDes,
         content: formBlogData.content,
-        categoryId: formBlogData.categoryId,
-        blogStatus: formBlogData.status,
-        imageUrl: formBlogData.imgUrl,
-        tagIds: formBlogData.tagIds,
+        category_id: formBlogData.categoryId,
+        image: formBlogData.imgUrl,
+        tag_ids: formBlogData.tagIds,
       };
       const response = await apiCreateBlog(dataBlog);
-      if (response.data.statusCode === 200) {
-        history.push("/blogs");
-        setTimeout(() => {
-          toast.success(
-            <span onClick={() => toast.dismiss()}>
-              Create Blog successfully
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }, 0);
-        setFormBlogData({
-          adminId: "",
-          title: "",
-          titleError: "",
-          shortDes: "",
-          content: "",
-          status: "Published",
-          categoryId: "",
-          categoryError: "",
-          tags: "",
-          slug: "",
-          imgUrl: "",
-          tagIds: [],
-        });
-        setSelectedOptionCategory(null);
+      if (response.status === 200) {
+        history.push(Routes.Blog.path);
+        toastSuccess(response.message)
       } else {
-        toast.error(
-          <span onClick={() => toast.dismiss()}> Create Blog failed!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
+        toastFailed(response.message)
       }
     } catch (e) {
-      toast.error(
-        <span onClick={() => toast.dismiss()}>Create Blog failed!</span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
+      toastFailed("Create Blog failed!")
     } finally {
       setLoading(false);
     }
@@ -131,14 +76,13 @@ export const FormCreateBlog = ({
     e.preventDefault();
     if (
       !formBlogData.title ||
-      !formBlogData.categoryId ||
-      formBlogData.tagIds.length === 0
+      !formBlogData.slug ||
+      !formBlogData.categoryId
     ) {
       setFormBlogData((prevState) => ({
         ...prevState,
         titleError: !formBlogData.title ? "Title is required!" : "",
         categoryError: !formBlogData.categoryId ? "Category is required!" : "",
-        tagIdsError: formBlogData.tagIds.length === 0 ? "Tag is required!" : "",
       }));
       return;
     }
@@ -146,84 +90,25 @@ export const FormCreateBlog = ({
 
     try {
       const dataBlog = {
-        adminId: formBlogData.adminId,
+        admin_id: userData.id,
+        blog_id: id,
         title: formBlogData.title,
         slug: formBlogData.slug,
-        shortDescription: formBlogData.shortDes,
+        short_description: formBlogData.shortDes,
         content: formBlogData.content,
-        categoryId: formBlogData.categoryId,
-        blogStatus: formBlogData.status,
-        imageUrl: formBlogData.imgUrl,
-        tagIds: formBlogData.tagIds,
+        category_id: formBlogData.categoryId,
+        image: formBlogData.imgUrl,
+        tag_ids: formBlogData.tagIds,
       };
-      const response = await apiUpdateBlog(id, dataBlog);
-      if (response.data.statusCode === 200) {
-        setTimeout(() => {
-          toast.success(
-            <span onClick={() => toast.dismiss()}>Edit Blog successfully</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }, 0);
-        history.push("/blogs");
+      const response = await apiUpdateBlog(dataBlog);
+      if (response.status === 200) {
+        toastSuccess(response.message)
+        history.push(Routes.Blog.path);
       } else {
-        if (
-          response.data.statusCode === 400 &&
-          response.data.message === "Get record with prameter not found."
-        ) {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              This Blog is not found!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } else {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>Edit blog failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+        toastFailed(response.message)
       }
     } catch (e) {
-      toast.error(
-        <span onClick={() => toast.dismiss()}>Edit blog failed!</span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
+      toastFailed("Edit blog failed!")
     } finally {
       setLoading(false);
     }
@@ -253,7 +138,7 @@ export const FormCreateBlog = ({
             <Col md={12}>
               <Col md={12} className="mb-3">
                 <Form.Group id="slug">
-                  <Form.Label>Slug</Form.Label>
+                  <Form.Label>Slug <span className="text-danger">*</span> </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Blog slug"

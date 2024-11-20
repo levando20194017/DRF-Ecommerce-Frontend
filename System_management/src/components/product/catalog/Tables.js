@@ -1,190 +1,176 @@
-import React, {useEffect, useRef, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faSearch, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-import {Card, Form, Image, InputGroup, Table} from "@themesberg/react-bootstrap";
-import {Link} from "react-router-dom";
-import ImageLink from "../../../assets/img/no-image.png"
-import {Routes} from "../../../routes";
-import ModalDeleteItem from "../../../components/common/ModalDelete";
-import {useHistory} from "react-router-dom";
-import {formatTime, toastFailed, toastSuccess} from "../../../utils";
-import {changeTextToThreeDot} from "../../../utils";
-import {status} from "../../../enums";
-import {apiDeleteCatalog, apiDetailCatalog, apiGetListCatalogs} from "../../../services/catalog";
-import ListPagination from "../../common/ListPagination";
-import {ToastContainer} from "react-toastify";
-import { useMsal } from "@azure/msal-react";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Card, Image, Table } from "@themesberg/react-bootstrap";
+import { Link } from "react-router-dom";
+import ImageLink from "../../../assets/img/no-image.png";
+import { Routes } from "../../../routes";
+import { useHistory } from "react-router-dom";
+import { formatTime, toastFailed, toastSuccess } from "../../../utils";
+import { apiDeleteCatalog, apiDetailCatalog, apiRestoreCatalog } from "../../../services/catalog";
+import { Popconfirm } from "antd";
+import { ToastContainer } from "react-toastify";
+import { UndoOutlined } from '@ant-design/icons';
 
-export const CatalogTable = (props) => {
-    const [catalogs, setCatalogs] = useState([])
-    const [pageIndex, setPageIndex] = useState(1)
-    const [totalPages, setTotalPages] = useState(1)
-    const modalDeleteCatalog = useRef(null);
-    const [deleteCatalog, setDeleteCatalog] = useState(null);
-    const history = useHistory();    
-    const { instance, accounts } = useMsal();
+export const CatalogTable = ({ pageIndex, pageSize, listData, getListCatalogs }) => {
+    const history = useHistory();
 
-    useEffect(() => {
-        getListCatalogs();    
-    }, [pageIndex])
-
-    const getListCatalogs = async () => {
-        try {
-            const params = {
-                PageIndex: pageIndex,
-                PageSize: 10,
-                parentId: '',
-                token: accounts[0].idToken,
-            }
-            const response = await apiGetListCatalogs(params, accounts[0].idToken)
-            if (response?.data.statusCode === status.SUCCESS)
-                setCatalogs(flattenArray(response?.data?.data?.source))
-            setTotalPages(response?.data?.data?.totalPages)
-        } catch (e) {
-        }
-    }
-
-    const flattenArray = (tree, level = 0) => {
+    // Flatten the catalog tree with indentation based on the level
+    const flattenArray = (tree, level = 1) => {
         const flatArray = [];
 
         for (const item of tree) {
-            flatArray.push(item);
+            // Add item with level for indentation
+            flatArray.push({ ...item, level });
 
-            if (item.subCatalogs.length > 0) {
-                flatArray.push(...flattenArray(item.subCatalogs));
+            // Recursively flatten children
+            if (item.children && item.children.length > 0) {
+                flatArray.push(...flattenArray(item.children, level + 1));
             }
         }
 
         return flatArray;
-    }
-    const handleOpenModalDeleteCatalog = (id) => {
-        setDeleteCatalog(id)
-        modalDeleteCatalog.current.open();
     };
 
-    const handleDeleteItem = async () => {
+    const handleDeleteItem = async (id) => {
         try {
-            const response = await apiDeleteCatalog(deleteCatalog, accounts[0].idToken);
-            if (response?.data.statusCode === status.SUCCESS) {
-                toastSuccess('Delete catalog successfully', '',)
-                modalDeleteCatalog.current.close();
-                setCatalogs(catalogs.filter(item => item.id !== deleteCatalog))
-            } else if (response?.data.statusCode === status.ERROR_SUB) {
-                modalDeleteCatalog.current.close();
-                toastFailed(response.data.message)
-            } else if (response?.data.statusCode === 404) {
-                modalDeleteCatalog.current.close();
-                toastFailed('This Catalog is not found')
+            const response = await apiDeleteCatalog(id);
+            if (response.status === 200) {
+                toastSuccess(response?.message);
+                getListCatalogs(); // Refresh the list
             } else {
-                modalDeleteCatalog.current.close();
-                toastFailed('This catalog can not be deleted because of having products')
+                toastFailed(response?.message);
             }
         } catch (e) {
-            toastFailed('Delete catalog failed')
-        }      
-    }
-    const styleLevel = (level) => {
-        return level === 0 ? 'fw-800' : ''
-    }
+            toastFailed('Delete catalog failed');
+        }
+    };
+
+    const handleRestoreItem = async (id) => {
+        try {
+            const response = await apiRestoreCatalog({ id });
+            if (response.status === 200) {
+                toastSuccess(response?.message);
+                getListCatalogs(); // Refresh the list
+            } else {
+                toastFailed(response?.message);
+            }
+        } catch (e) {
+            toastFailed('Delete catalog failed');
+        }
+    };
 
     const handleClick = async (id) => {
-        const response = await apiDetailCatalog(id, accounts[0].idToken)
-        if (response?.data?.statusCode === 404) {
-            toastFailed('This Catalog is not found')
+        const response = await apiDetailCatalog(id);
+        if (response.status === 200) {
+            history.push(`/product/update-catalog/${id}`);
         } else {
-            history.push(`/product/update-catalog/${id}`)
-        }       
-    }
+            toastFailed(response.message);
+        }
+    };
 
     const TableRow = (props) => {
-        const {id, name, index, createdAt, level, imageUrl} = props;
+        const { index, id, name, created_at, level, delete_at, image } = props;
+
+        // Style level for indentation
+        // const rowStyle = { paddingLeft: `${(level - 1) * 20 + 10}px` }; // Indentation
+        const indentation = '--- '.repeat(level - 1);
         return (
-            <tr>
+            <tr style={{ opacity: delete_at ? 0.5 : 1, backgroundColor: delete_at ? "#d1d5d8" : "#fff" }}>
                 <td>
                     <Card.Link href="#" className="text-primary fw-bold">
-                        {index + 1}
+                        {index + (pageIndex - 1) * pageSize + 1}
                     </Card.Link>
                 </td>
                 <td>
-                    <Image src={props.imageUrl === "" ? ImageLink : `${process.env.REACT_APP_IMAGE_URL}${imageUrl}`}
-                           className="product-thunmbnail me-2"/>
+                    <Image src={image ? `${process.env.REACT_APP_IMAGE_URL}${image}` : ImageLink}
+                        height={50} width={50}
+                        className="product-thumbnail me-2" />
                 </td>
-                <td className={styleLevel(level)}>{level === 0 ? changeTextToThreeDot(name, 40) : (level === 1 ? '----- ' + changeTextToThreeDot(name, 40) : '---------- ' + changeTextToThreeDot(name, 40))}</td>
-                <td>{formatTime(createdAt)}</td>
+                {/* <td style={rowStyle}>{name}</td> */}
+                <td>{`${indentation}${name}`}</td>
+                <td>{formatTime(created_at)}</td>
+                <td>{delete_at ? formatTime(delete_at) : "---"}</td>
                 <td>
-                    <Link
-                        to={Routes.NullLink.path}
-                        className="text-primary fw-bold"
-                    >
-                        <FontAwesomeIcon
-                            icon={faEdit}
-                            className="me-2 fs-5"
-                            onClick={() => handleClick(id)}
-                        />
-                    </Link>
-                    <Link
-                        to={Routes.NullLink.path}
-                        className="text-primary fw-bold"
-                    >
-                        <FontAwesomeIcon
-                            icon={faTrashAlt}
-                            className="me-2 fs-5 text-danger"
-                            onClick={() => handleOpenModalDeleteCatalog(id)}
-                        />
-                    </Link>
+                    {delete_at ?
+                        <div className="text-center">
+                            <Popconfirm
+                                title="Are you sure you want to restore this item?"
+                                okText="Yes"
+                                cancelText="No"
+                                onConfirm={() => handleRestoreItem(id)}
+                                className="cursor-pointer text-center"
+                            >
+                                <UndoOutlined style={{ color: "green", opacity: 1, fontSize: "25px" }} className="cursor-pointer" />
+                            </Popconfirm>
+                        </div>
+                        :
+                        <div className="d-flex gap-3">
+                            <Link
+                                to={Routes.NullLink.path}
+                                className="text-primary fw-bold"
+                            >
+                                <FontAwesomeIcon
+                                    icon={faEdit}
+                                    className="me-2 fs-5"
+                                    onClick={() => handleClick(id)}
+                                    style={{ color: "blue" }}
+                                />
+                            </Link>
+                            <Popconfirm
+                                title="Are you sure you want to delete this item?"
+                                okText="Yes"
+                                cancelText="No"
+                                onConfirm={() => handleDeleteItem(id)}
+                                className="cursor-pointer"
+                            >
+                                <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    className="me-2 fs-5 text-danger"
+                                />
+                            </Popconfirm>
+                        </div>
+                    }
+
                 </td>
             </tr>
         );
     };
-    const handlePageChange = (newPage) => {
-        if (newPage <= totalPages) {
-            setPageIndex(newPage);
-        }
-    };
+
+    // Flatten the listData for rendering
+    const flatCatalogs = flattenArray(listData);
 
     return (
         <>
-            <ToastContainer/>
+            <ToastContainer />
             <Card border="light" className="shadow-sm mb-4">
-                <Card.Body className="pb-0">
+                <Card.Body className="">
                     <Table
                         responsive
                         className="table-centered table-nowrap rounded mb-0"
                     >
                         <thead className="thead-light">
-                        <tr>
-                            <th className="border-0" style={{width: "5%"}}>#</th>
-                            <th className="border-0" style={{width: "15%"}}>IMAGE</th>
-                            <th className="border-0" style={{width: "40%"}}>NAME</th>
-                            <th className="border-0" style={{width: "35%"}}>DATE CREATED</th>
-                            <th className="border-0" style={{width: "5%"}}>ACTION</th>
-                        </tr>
+                            <tr>
+                                <th className="border-0" style={{ width: "5%" }}>#</th>
+                                <th className="border-0" style={{ width: "15%" }}>IMAGE</th>
+                                <th className="border-0">NAME</th>
+                                <th className="border-0">DATE CREATED</th>
+                                <th className="border-0">DATE DELETED</th>
+                                <th className="border-0" style={{ width: "5%" }}>ACTION</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {catalogs && catalogs.length > 0 ? catalogs.map((catalog, index) => (
-                            <TableRow
-                                index={index}
-                                key={`page-traffic-${catalog.id}`}
-                                {...catalog}
-                            />
-                        )) : <></>}
+                            {flatCatalogs && flatCatalogs.length > 0 ? flatCatalogs.map((catalog, index) => (
+                                <TableRow
+                                    index={index}
+                                    key={`catalog-${catalog.id}`}
+                                    {...catalog}
+                                />
+                            )) : <tr><td colSpan="5">No catalogs found.</td></tr>}
                         </tbody>
                     </Table>
                 </Card.Body>
             </Card>
-            {totalPages > 1 && (
-                <ListPagination
-                    page={pageIndex}
-                    pageMax={totalPages}
-                    onPageChange={handlePageChange}
-                ></ListPagination>
-            )}
-            <ModalDeleteItem
-                ref={modalDeleteCatalog}
-                title={"Delete Catalog"}
-                item={"catalog"}
-                handleDeleteItem={handleDeleteItem}
-            />
         </>
     );
-};
+}

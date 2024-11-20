@@ -1,70 +1,44 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Col, Row, Card, Form, Button, Image} from "@themesberg/react-bootstrap";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPaperclip} from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useRef, useState } from "react";
+import { Col, Row, Card, Form, Button, Image } from "@themesberg/react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import CatalogImage from "../../../assets/img/no-image.png";
-import {apiGetListCatalogs, apiUploadImage} from "../../../services/catalog";
-import {NUMBER_ITEM_PAGE, status} from "../../../enums";
-import {TinyMce} from "./TinyMce";
-import {changeTextToThreeDot, toastFailed, toastSuccess} from "../../../utils";
-import {ToastContainer} from "react-toastify";
-import { useMsal} from '@azure/msal-react';
+import { apiGetListCatalogsWithNoDeleted, apiUploadImage } from "../../../services/catalog";
+import { TinyMce } from "./TinyMce";
+import { changeTextToThreeDot, toastFailed, toastSuccess } from "../../../utils";
+import { ToastContainer } from "react-toastify";
+import { TreeSelect } from "antd";
 
 export const CreateCatalog = (props) => {
-
-
-    const {handleCreateCatalog} = props
+    const { handleCreateCatalog } = props
 
     const [form, setForm] = useState({
         name: '',
         description: '',
-        imageUrl: '',
-        parentId: ''
+        image: '',
+        parent_id: ''
     })
-    const [catalogs, setCatalogs] = useState([])
     const [error, setError] = useState('')
     const [errorImage, setErrorImage] = useState('')
     const [currentImage, setCurrentImage] = useState('')
     const [errorCount, setErrorCount] = useState(0);
-    const { instance,  accounts} = useMsal();
+    const [treeData, setTreeData] = useState([]);
 
-    useEffect(() => {
-        getListCatalogs()
-    }, [])
-    const getListCatalogs = async () => {
-        try {
-            const params = {
-                PageIndex: 1,
-                PageSize: 200,
-                parentId: '',
-                token: accounts[0].idToken
-            }
-            const response = await apiGetListCatalogs(params)
-            if (response?.data.statusCode === status.SUCCESS)
-                setCatalogs(response?.data?.data?.source)
-            setCatalogs(flattenArray(response?.data?.data?.source))
-        } catch (e) {
-        }
-    }
-    const flattenArray = (tree, level = 0) => {
-        const flatArray = [];
-
-        for (const item of tree) {
-            flatArray.push(item);
-
-            if (item.subCatalogs.length > 0) {
-                flatArray.push(...flattenArray(item.subCatalogs));
-            }
-        }
-
-        return flatArray;
-    }
-
+    // Function to map catalog data to tree data format
+    const mapCatalogToTreeData = (catalogs) => {
+        return catalogs.map(catalog => {
+            return {
+                title: catalog.name,
+                value: catalog.id,
+                children: mapCatalogToTreeData(catalog.children), // Recursive mapping for children
+            };
+        });
+    };
 
     const handleInput = (e) => {
         setError('')
-        const {name, value} = e.target
-        const newForm = {...form, [name]: value}
+        const { name, value } = e.target
+        const newForm = { ...form, [name]: value }
         setForm(newForm)
     }
 
@@ -94,12 +68,12 @@ export const CreateCatalog = (props) => {
         if (!isValidFileUploaded(e.target.files[0])) {
             toastFailed('Please select PNG, GIF or JPG file.')
             setCurrentImage(CatalogImage)
-            setForm({...form, imageUrl: ''})
+            setForm({ ...form, image: '' })
             setErrorCount((prevCount) => prevCount + 1);
         } else if (e.target.files[0]?.size > maxSize) {
             toastFailed('Please upload photos smaller than 3MB.')
             setCurrentImage(CatalogImage)
-            setForm({...form, imageUrl: ''})
+            setForm({ ...form, image: '' })
             setErrorCount((prevCount) => prevCount + 1);
         } else {
             setCurrentImage(URL.createObjectURL(e.target.files[0]))
@@ -111,11 +85,13 @@ export const CreateCatalog = (props) => {
     const handleUploadImage = async (file) => {
         try {
             let formData = new FormData()
-            formData.append('files', file)
+            formData.append('file', file)
             const response = await apiUploadImage(formData)
-            if (response?.data?.statusCode === status.SUCCESS) {
-                setForm({...form, imageUrl: response?.data?.data[0]})
+            if (response.status === 200) {
+                setForm({ ...form, image: response.img_url })
                 toastSuccess('Upload Image successfully', '')
+            } else {
+                toastFailed(response?.message)
             }
         } catch (e) {
             setCurrentImage('')
@@ -128,16 +104,32 @@ export const CreateCatalog = (props) => {
     }
 
     const handleChangeEditor = (value) => {
-        setForm({...form, description: value})
+        setForm({ ...form, description: value })
     }
 
-    const handleSelectCatalog = (e) => {
-        setForm({...form, parentId: e.target.value})
+    const onChange = (newValue) => {
+        setForm({ ...form, parent_id: newValue })
+    };
+
+    const getListCatalogs = async () => {
+        try {
+            const response = await apiGetListCatalogsWithNoDeleted({ pageIndex: 1, pageSize: 10000, textSearch: "" })
+            if (response.status === 200) {
+                const mappedData = mapCatalogToTreeData(response.data.data); // Gọi hàm mapping
+                setTreeData(mappedData);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
+
+    useEffect(() => {
+        getListCatalogs()
+    }, [])
 
     return (
         <>
-            <ToastContainer/>
+            <ToastContainer />
             <Col xs={12} xl={9}>
                 <Card border="light" className="bg-white shadow-sm mb-4">
                     <Card.Body>
@@ -146,7 +138,7 @@ export const CreateCatalog = (props) => {
                                 <Col md={12} className="mb-3">
                                     <Form.Group id="catalog_name">
                                         <Form.Label>Name<span className="text-danger"
-                                                              style={{paddingLeft: "1px"}}>*</span></Form.Label>
+                                            style={{ paddingLeft: "1px" }}>*</span></Form.Label>
                                         <Form.Control
                                             required
                                             type="text"
@@ -197,14 +189,14 @@ export const CreateCatalog = (props) => {
                                     <div className="file-field mt-3">
                                         <div className="d-flex justify-content-xl-center ms-xl-3">
                                             <div className="d-flex">
-                                                    <span className="icon icon-md">
-                                                        <FontAwesomeIcon
-                                                            icon={faPaperclip}
-                                                            className="me-3"
-                                                        />
-                                                    </span>
+                                                <span className="icon icon-md">
+                                                    <FontAwesomeIcon
+                                                        icon={faPaperclip}
+                                                        className="me-3"
+                                                    />
+                                                </span>
                                                 <input key={errorCount} type="file" onClick={() => handleClickInput()}
-                                                       onChange={(e) => handleChooseFile(e)}/>
+                                                    onChange={(e) => handleChooseFile(e)} />
                                                 <div className="d-md-block text-start">
                                                     <div className="fw-normal text-dark mb-1">
                                                         Choose Image
@@ -231,18 +223,19 @@ export const CreateCatalog = (props) => {
                                 </Form.Label>
                                 <div>
                                     <Form.Group id="category">
-                                        <Form.Select
-                                            onChange={(e) => handleSelectCatalog(e)}
-                                        >
-                                            <option value="" selected disabled hidden>Choose catalog</option>
-                                            {catalogs.length > 0 &&
-                                                catalogs.map((catalog) =>
-                                                    <option disabled={catalog.level === 2 ? 'disabled' : ''}
-                                                            value={catalog.id}>{catalog.level === 0 ? changeTextToThreeDot(catalog.name, 20) : (
-                                                        catalog.level === 1 ? '\u00A0\u00A0\u00A0\u00A0' + changeTextToThreeDot(catalog.name, 20) : '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0' + changeTextToThreeDot(catalog.name, 20))
-                                                    }</option>
-                                                )}
-                                        </Form.Select>
+                                        <TreeSelect
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            dropdownStyle={{
+                                                maxHeight: 400,
+                                                overflow: 'auto',
+                                            }}
+                                            treeData={treeData}
+                                            placeholder="Please select"
+                                            treeDefaultExpandAll
+                                            onChange={onChange}
+                                        />
                                     </Form.Group>
                                 </div>
                             </Card.Body>

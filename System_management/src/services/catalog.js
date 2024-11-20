@@ -1,32 +1,47 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
-const apiGetListCatalogs = function ({ PageIndex, PageSize, parentId, token }) {
-  return axios.get(`/Catalogs?pageIndex=${PageIndex}&pageSize=${PageSize}&parentId=${parentId}`, { headers: {"Authorization" : `Bearer ${token}`} });
-};
-const apiCreateCatalog = function ({ params }, token) {
-  return axios.post("/Catalogs", params, { headers: {"Authorization" : `Bearer ${token}`} });
-};
-const apiUploadImage = function (data) {
-  return axios.post("/Uploads/upload-images", data);
+const apiGetListCatalogs = function ({ pageIndex, pageSize, textSearch }) {
+  return axios.get(`/api/catalog/admin/get-list-catalogs/?page_index=${pageIndex}&page_size=${pageSize}&textSearch=${textSearch}`);
 };
 
-const apiDetailCatalog = function (id, token) {
-  return axios.get(`/Catalogs/${id}`, { headers: {"Authorization" : `Bearer ${token}`} });
+const apiGetListCatalogsWithNoDeleted = function ({ pageIndex, pageSize, textSearch }) {
+  return axios.get(`api/catalog/get-list-catalogs/?page_index=${pageIndex}&page_size=${pageSize}&textSearch=${textSearch}`);
 };
 
-const apiUpdateCatalog = function ({ params, id, token }) {
-  return axios.put(`/Catalogs/${id}`, params, { headers: {"Authorization" : `Bearer ${token}`} });
+const apiCreateCatalog = function (data) {
+  return axios.post("/api/catalog/admin/create-new-catalog/", data);
+};
+const apiUploadImage = function (formData) {
+  return axios.post("/api/admin/upload-image/", formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 };
 
-const apiDeleteCatalog = function (id, token) {
-  return axios.delete(`/Catalogs/${id}`, { headers: {"Authorization" : `Bearer ${token}`} });
+const apiDetailCatalog = function (id) {
+  return axios.get(`/api/catalog/admin/get-detail-catalog/?id=${id}`);
+};
+
+const apiUpdateCatalog = function (data) {
+  return axios.put(`/api/catalog/admin/edit-catalog/`, data);
+};
+
+const apiDeleteCatalog = function (id) {
+  return axios.delete(`/api/catalog/admin/delete-catalog/?id=${id}`);
+};
+
+const apiRestoreCatalog = function (data) {
+  return axios.put("/api/catalog/admin/restore-catalog/", data);
 };
 
 export {
   apiGetListCatalogs,
+  apiGetListCatalogsWithNoDeleted,
   apiCreateCatalog,
   apiUploadImage,
   apiDetailCatalog,
   apiUpdateCatalog,
   apiDeleteCatalog,
+  apiRestoreCatalog
 };

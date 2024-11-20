@@ -1,14 +1,14 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
-const apiGetSetting = function ({PageIndex, PageSize}) {
+const apiGetSetting = function ({ PageIndex, PageSize }) {
     return axios.get(
         `/Setting?PageIndex=${PageIndex}&PageSize=${PageSize}`
     );
 };
 
-const apiUpdateSetting = function ({params, id}) {
+const apiUpdateSetting = function ({ params, id }) {
     return axios.put(`/Setting/${id}`, params);
 };
 
 
-export {apiGetSetting, apiUpdateSetting};
+export { apiGetSetting, apiUpdateSetting };

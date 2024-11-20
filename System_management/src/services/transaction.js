@@ -1,11 +1,11 @@
-import axios from "../api/axios";
+import axios from "../api/axiosClient";
 
-const apiGetListTransaction = ({PageIndex, PageSize, merchantReference}) => {
-    return axios.post(`/Transactions?PageIndex=${PageIndex}&PageSize=${PageSize}`, {merchantReference})
+const apiGetListTransaction = ({ pageIndex, pageSize, textSearch, startDate, endDate }) => {
+    return axios.get(`/api/transaction/admin/get-list-transactions/?page_index=${pageIndex}&page_size=${pageSize}&text_search=${textSearch}&start_date=${startDate}&end_date=${endDate}`)
 }
 
 const apiDetailTransaction = (id) => {
-    return axios.get(`/Transactions/${id}`)
+    return axios.get(`/api/transaction/admin/get-detail-transaction/?id=${id}`)
 }
 
-export {apiGetListTransaction, apiDetailTransaction};
+export { apiGetListTransaction, apiDetailTransaction };

@@ -12,19 +12,19 @@ import { apiGetListCategories } from "../../services/category";
 import { apiDetailBlog } from "../../services/blog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Select from "react-select";
+import { Select } from "antd";
 import { useParams } from "react-router-dom";
 import { apiGetListTags } from "../../services/tag";
+import { toastFailed, toastSuccess } from "../../utils";
 
 export default () => {
   const { id } = useParams();
+
   const [formBlogData, setFormBlogData] = useState({
-    adminId: 1,
     title: "",
     titleError: "",
     shortDes: "",
     content: "",
-    status: "Published",
     categoryId: "",
     categoryError: "",
     tags: "",
@@ -33,7 +33,6 @@ export default () => {
     tagIds: [],
     tagIdsError: "",
   });
-  const [blogImg, setBlogImg] = useState({});
   const [listCategories, setListCategories] = useState([]);
   const [options, setOptions] = useState([]);
   const [selectedOptionCategory, setSelectedOptionCategory] = useState(null);
@@ -43,26 +42,26 @@ export default () => {
   const [selectedTags, setSelectedTags] = useState([]);
 
   const handleTagChange = (selectedOptions) => {
-    setSelectedTags(selectedOptions);
-    const selectedIds = selectedOptions.map((option) => option.value);
-    setFormBlogData({ ...formBlogData, tagIds: selectedIds, tagIdsError: "" });
+    setFormBlogData({ ...formBlogData, tagIds: selectedOptions, tagIdsError: "" });
   };
 
   const handleGetListCategories = async () => {
     try {
       const params = {
-        PageIndex: 1,
-        PageSize: 1000,
+        pageIndex: 1,
+        pageSize: 10000,
+        searchName: ""
       };
       const response = await apiGetListCategories(params);
-      if (response.data.statusCode === 200) {
-        setListCategories(response.data.data.source);
+      if (response.status === 200) {
+        const categories = response.data.categories
+        setListCategories(categories);
         if (!id) {
           //Set initial value of category
-          if (response.data.data.source.length !== 0) {
+          if (categories.length !== 0) {
             setSelectedOptionCategory({
-              value: response.data.data.source[0].id,
-              label: response.data.data.source[0].name,
+              value: categories[0].id,
+              label: categories[0].name,
             });
           }
         }
@@ -74,12 +73,13 @@ export default () => {
   const handleGetListTags = async () => {
     try {
       const params = {
-        PageIndex: 1,
-        PageSize: 1000,
+        pageIndex: 1,
+        pageSize: 10000,
+        searchName: ""
       };
       const response = await apiGetListTags(params);
-      if (response.data.statusCode === 200) {
-        setListTags(response.data.data.source);
+      if (response.status === 200) {
+        setListTags(response.data.tags);
       }
     } catch (e) {
       console.log(e);
@@ -118,79 +118,30 @@ export default () => {
     if (id) {
       const fetchData = async () => {
         const response = await apiDetailBlog(id);
-        if (response.data.statusCode === 200) {
-          const data = response.data.data;
+        if (response.status === 200) {
+          const data = response.data;
           if (data) {
             setFormBlogData({
               title: data.title,
-              adminId: data.adminId,
-              status: data.blogStatus,
-              categoryId: data.categoryId,
+              adminId: data.admin_id,
+              categoryId: data.category,
               content: data.content,
               slug: data.slug,
-              imgUrl: data.imageUrl,
-              tags: data.blogTag,
-              shortDes: data.shortDescription,
-              tagIds: data.blogTag.map((tag) => {
-                return tag.tagId;
-              }),
+              imgUrl: data.image,
+              tags: data.tag_names,
+              shortDes: data.short_description,
+              tagIds: data.tags.split(",").map(Number)
             });
-
-            const resOfListTags = await apiGetListTags({
-              PageIndex: 1,
-              PageSize: 1000,
-            });
-
-            if (resOfListTags.data.statusCode === 200) {
-              const dataOfTags = resOfListTags.data.data.source;
-              let newSelectedTags = [];
-
-              data.blogTag
-                .map((tag) => {
-                  return tag.tagId;
-                })
-                .forEach((item) => {
-                  const tagItemOfId = dataOfTags.find((tag) => {
-                    return tag.id === item;
-                  });
-                  newSelectedTags.push({
-                    value: tagItemOfId?.id,
-                    label: tagItemOfId?.name,
-                  });
-                });
-
-              setSelectedTags(newSelectedTags);
-            }
-
-            const resOfListCategories = await apiGetListCategories({
-              PageIndex: 1,
-              PageSize: 1000,
-            });
-            if (resOfListCategories.data.statusCode === 200) {
-              const dataOfCategory = resOfListCategories.data.data.source;
-
-              if (dataOfCategory.length !== 0) {
-                const categoryDataOfId = dataOfCategory.find((category) => {
-                  return category.id === data.categoryId;
-                });
-                setSelectedOptionCategory({
-                  value: categoryDataOfId?.id,
-                  label: categoryDataOfId?.name,
-                });
-              }
-            }
           }
         }
       };
       fetchData();
     } else {
       setFormBlogData({
-        adminId: "",
         title: "",
         titleError: "",
         shortDes: "",
         content: "",
-        status: "Published",
         categoryId: "",
         categoryError: "",
         tags: "",
@@ -212,169 +163,62 @@ export default () => {
   }, [id]);
 
   const handleChangeCategory = (selectedOption) => {
-    setSelectedOptionCategory(selectedOption);
-  };
-  useEffect(() => {
-    const selectedCategory = selectedOptionCategory?.value;
+    // setSelectedOptionCategory(selectedOption);
     setFormBlogData({
       ...formBlogData,
-      categoryId: selectedCategory,
+      categoryId: selectedOption,
       categoryError: "",
     });
-  }, [selectedOptionCategory]);
+  };
   useEffect(() => {
     if (formBlogData.categoryId) {
       setFormBlogData({ ...formBlogData, categoryError: "" });
     }
-    if (id) {
-      if (listCategories.length !== 0) {
-        const categoryOfId = listCategories.find((category) => {
-          return category.id === formBlogData.categoryId;
-        });
-        setSelectedOptionCategory({
-          value: categoryOfId.id,
-          label: categoryOfId.name,
-        });
-      }
-    }
   }, [formBlogData.categoryId]);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  const isValidFileUploaded = (file) => {
     if (file) {
-      const maxSize = 3 * 1024 * 1024; // 3MB
-      if (file?.size > maxSize) {
-        // Kích thước vượt quá giới hạn
-        toast.error(
-          <span onClick={() => toast.dismiss()}>
-            Please upload photos smaller than 3MB.
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-        setErrorCount((prevCount) => prevCount + 1);
-        return;
-      }
-      if (
-        !(
-          file.type === "image/jpeg" ||
-          file.type === "image/jpg" ||
-          file.type === "image/png" ||
-          file.type === "image/gif"
-        )
-      ) {
-        toast.error(
-          <span onClick={() => toast.dismiss()}>
-            Please select PNG, GIF or JPG file.
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-        setErrorCount((prevCount) => prevCount + 1);
-        return;
-      }
-
-      setBlogImg({
-        name: file.name,
-        url: URL.createObjectURL(file),
-        file: file,
-      });
-      setErrorCount((prevCount) => prevCount + 1);
+      const validExtensions = ['png', 'jpeg', 'jpg', 'gif']
+      const fileExtension = file.type.split('/')[1]
+      return validExtensions.includes(fileExtension)
     }
-  };
-  const handleGetImageBlogUrl = async () => {
+  }
+
+  const handleChooseFile = (e) => {
+    const maxSize = 3 * 1024 * 1024;
+    if (!isValidFileUploaded(e.target.files[0])) {
+      toastFailed('Please select PNG, GIF or JPG file.')
+      setErrorCount((prevCount) => prevCount + 1);
+    } else if (e.target.files[0]?.size > maxSize) {
+      toastFailed('Please upload photos smaller than 3MB.')
+      setErrorCount((prevCount) => prevCount + 1);
+    } else {
+      handleUploadImage(e.target.files[0])
+    }
+  }
+  const handleUploadImage = async (file) => {
     try {
-      const formData = new FormData();
-      if (blogImg?.file) {
-        formData.append("files", blogImg.file);
-        const response = await apiUploadImage(formData);
-        if (response.data.statusCode === 200) {
-          setFormBlogData({ ...formBlogData, imgUrl: response.data.data[0] });
-          toast.success(
-            <span onClick={() => toast.dismiss()}>
-              Upload image successfully!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } else {
-          toast.error(
-            <span onClick={() => toast.dismiss()}> Upload image failed!</span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        }
+      let formData = new FormData()
+      formData.append('file', file);
+      const response = await apiUploadImage(formData)
+      if (response.status === 200) {
+        setFormBlogData({ ...formBlogData, imgUrl: response.img_url });
+        toastSuccess(response.message)
+      } else {
+        toastFailed(response.message)
       }
     } catch (e) {
-      console.log(e);
-      toast.error(
-        <span onClick={() => toast.dismiss()}>
-          Something went wrong, please try again!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
+      toastFailed('Something went wrong, please try again !')
     }
-  };
-  useEffect(() => {
-    handleGetImageBlogUrl();
-  }, [blogImg]);
-
-  const handleStatusChange = (event) => {
-    const selectedStatus = event.target.value;
-    setFormBlogData({ ...formBlogData, status: selectedStatus });
-  };
+  }
 
   return (
     <>
       <ToastContainer />
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="d-block mb-4 mb-xl-0">
           <Breadcrumb
-            className="d-none d-md-inline-block"
-            listProps={{
-              className: "breadcrumb-dark breadcrumb-transparent",
-            }}
+            listProps={{ className: "breadcrumb-primary    breadcrumb-text-light text-white" }}
           >
             <Breadcrumb.Item>
               <FontAwesomeIcon icon={faHome} />
@@ -428,7 +272,7 @@ export default () => {
                           <input
                             type="file"
                             key={errorCount}
-                            onChange={handleImageChange}
+                            onChange={handleChooseFile}
                           />
                           <div className="d-md-block text-start">
                             <div className="fw-normal text-dark mb-1">
@@ -448,35 +292,17 @@ export default () => {
             <Col xs={12}>
               <Card border="light" className="bg-white shadow-sm mb-4">
                 <Card.Body>
-                  <Form.Label>Status</Form.Label>
-                  <div className="mt-3">
-                    <Form.Group id="status">
-                      <Form.Select
-                        value={formBlogData.status}
-                        onChange={handleStatusChange}
-                      >
-                        <option value="Published">Published</option>
-                        <option value="Draft">Draft</option>
-                        <option value="Pending">Pending</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col xs={12}>
-              <Card border="light" className="bg-white shadow-sm mb-4">
-                <Card.Body>
                   <Form.Label>
                     Category <span className="text-danger">*</span>
                   </Form.Label>
-                  <div className="mt-3">
+                  <div className="mt-2">
                     <div className="text-left">
                       <Select
-                        value={selectedOptionCategory}
+                        showSearch
+                        placeholder="Select a category"
+                        value={formBlogData.categoryId}
                         onChange={handleChangeCategory}
                         options={options}
-                        isSearchable
                       />
                     </div>
                   </div>
@@ -489,14 +315,27 @@ export default () => {
               </Card>
             </Col>
             <Col xs={12}>
-              <ChooseTagWidget
-                title="Tags"
-                listTags={listTags}
-                optionsTag={optionsTag}
-                handleTagChange={handleTagChange}
-                formBlogData={formBlogData}
-                selectedTags={selectedTags}
-              />
+              <Card border="light" className="bg-white shadow-sm mb-4">
+                <Card.Body>
+                  <Form.Label>
+                    Tags
+                  </Form.Label>
+                  <div className="mt-2">
+                    <div className="text-left"></div>
+                    <Select
+                      mode="multiple"
+                      placeholder="Select tags"
+                      // value={optionsTag}
+                      value={formBlogData.tagIds.length > 0 ? formBlogData.tagIds : undefined}
+                      options={optionsTag}
+                      onChange={handleTagChange}
+                      style={{
+                        width: '100%',
+                      }}
+                    />
+                  </div>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </Col>

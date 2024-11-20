@@ -12,21 +12,28 @@ import Login from "./auth/login";
 import Register from "./auth/register";
 import Contact from "./contact";
 import Blog from "./blog";
+import ListPromotions from "./product/promotion"
 import BlogCreate from "./blog/create";
 import BlogTag from "./blog/tag/index";
 import BlogCategory from "./blog/category/index";
 import BlogCategoryCreate from "./blog/category/create";
-import Transaction from "./product/order/transaction/index";
-import TransactionDetail from "./product/order/transaction/detail/index";
+import Transaction from "./order/transaction/index";
+import TransactionDetail from "./order/transaction/detail/index";
 import ListOrder from "./order";
 import Setting from "./setting";
 import NotFound from "./notFound/NotFound";
 // components
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
+// import Footer from "../components/layout/Footer";
 import Preloader from "../components/layout/Preloader";
 import InvalidPermission from "./invalidPermission/InvalidPermission";
+import UpdatePromotion from "./product/promotion/UpdatePromotion";
+import CreatePromotion from "./product/promotion/CreatePromotion";
+import ListProductsIncoming from "./product/product_incoming";
+import CreateProductIncoming from "./product/product_incoming/CreateProductIncoming";
+import ListProductInStore from "./product/product_in_store/ListProductInStore";
+import ListProductsSold from "./product/product_sold/ListProductsSold";
 
 const PublicRouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -75,10 +82,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
               <Navbar />
               <div style={{ padding: "0 1rem 0 1rem" }}>
                 <Component {...props} />
-                <Footer
-                  toggleSettings={toggleSettings}
-                  showSettings={showSettings}
-                />
               </div>
             </main>
           </>
@@ -87,44 +90,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
     />
   );
 };
-
-const RouteWithSidebarStaff = ({ component: Component, ...rest }) => {
-  const localStorageIsSettingsVisible = () => {
-    return localStorage.getItem("settingsVisible") !== "false";
-  };
-
-  const [showSettings, setShowSettings] = useState(
-    localStorageIsSettingsVisible
-  );
-
-  const toggleSettings = () => {
-    setShowSettings(!showSettings);
-    localStorage.setItem("settingsVisible", !showSettings);
-  };
-
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        <>
-          <Sidebar />
-
-          <main className="content">
-            <Navbar />
-            <div style={{ padding: "0 1rem 0 1rem" }}>
-              <Component {...props} />
-              <Footer
-                toggleSettings={toggleSettings}
-                showSettings={showSettings}
-              />
-            </div>
-          </main>
-        </>
-      }}
-    />
-  );
-};
-
 export default () => (
   <Switch>
     <PublicRouteWithLoader
@@ -138,7 +103,7 @@ export default () => (
       component={InvalidPermission}
     />
 
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.DashboardOverview.path}
       component={DashboardOverview}
@@ -155,34 +120,46 @@ export default () => (
       path={Routes.CatalogUpdate.path}
       component={CatalogCreate}
     />
-    <RouteWithSidebarStaff exact path={Routes.Blog.path} component={Blog} />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar exact path={Routes.PromotionCreate.path} component={CreatePromotion} />
+    <RouteWithSidebar exact path={Routes.PromotionUpdate.path} component={UpdatePromotion} />
+    <RouteWithSidebar exact path={Routes.Promotion.path} component={ListPromotions} />
+
+    <RouteWithSidebar exact path={Routes.ProductIncoming.path} component={ListProductsIncoming} />
+    <RouteWithSidebar exact path={Routes.ProductIncomingAdd.path} component={CreateProductIncoming} />
+    <RouteWithSidebar exact path={Routes.ProductIncomingUpdate.path} component={CreateProductIncoming} />
+
+    <RouteWithSidebar exact path={Routes.ProductInStore.path} component={ListProductInStore} />
+
+    <RouteWithSidebar exact path={Routes.ProductSold.path} component={ListProductsSold} />
+
+    <RouteWithSidebar exact path={Routes.Blog.path} component={Blog} />
+    <RouteWithSidebar
       exact
       path={Routes.BlogCreate.path}
       component={BlogCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogUpdate.path}
       component={BlogCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategoryCreate.path}
       component={BlogCategoryCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategoryUpdate.path}
       component={BlogCategoryCreate}
     />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogCategory.path}
       component={BlogCategory}
     />
     <RouteWithSidebar exact path={Routes.Order.path} component={ListOrder} />
-    <RouteWithSidebarStaff
+    <RouteWithSidebar
       exact
       path={Routes.BlogTag.path}
       component={BlogTag}

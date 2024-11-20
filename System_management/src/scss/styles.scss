@@ -1,1 +1,40 @@
+.page-content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 90px);
 
+  .table-content {
+    flex-grow: 1;
+  }
+
+  .bottom-pagination {
+    text-align: end;
+    margin-bottom: 12px;
+  }
+}
+
+input {
+  color: black !important;
+
+  &::placeholder {
+    color: rgb(187, 186, 186) !important;
+    font-weight: 400 !important;
+  }
+}
+
+.card-body {
+  .ant-space {
+    width: 100% !important;
+  }
+
+  .ant-space-item {
+    .ant-picker {
+      height: 43.59px;
+      width: 100% !important;
+    }
+  }
+}
+
+.text-gray {
+  color: #666;
+}

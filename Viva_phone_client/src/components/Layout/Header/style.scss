@@ -1,0 +1,348 @@
+.headerContainer {
+  color: black;
+
+  @mixin headerCommon($Color, $BorderColor, $iconColor) {
+    .header_content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ul {
+        display: flex;
+        li {
+          color: $Color;
+          position: relative;
+          display: flex;
+          width: 130px;
+          font-size: 20px;
+          font-weight: 500;
+          margin-top: 16px;
+          height: 80px;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          transition: color 0.3s ease-in-out;
+
+          &:hover {
+            color: orange;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background-color: orange;
+            transition: width 0.4s ease-in-out;
+          }
+
+          &:hover::after {
+            width: 100%;
+          }
+
+          &.active {
+            color: orange;
+          }
+        }
+      }
+    }
+
+    .header_left {
+      display: flex;
+
+      h2 {
+        font-size: 28px;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 1.5em;
+        letter-spacing: 1px;
+        font-family: "Tektur", cursive;
+        text-shadow: 1px 1px;
+        color: #ff652f;
+        padding: 40px 0 0 10px;
+      }
+
+      .brand {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          border: 1px solid $BorderColor;
+          animation: rotation 3s linear infinite;
+        }
+
+        @keyframes rotation {
+          from {
+            transform: rotateY(0deg);
+          }
+
+          to {
+            transform: rotateY(360deg);
+          }
+        }
+      }
+    }
+
+    .header_right {
+      i {
+        font-size: 25px;
+        // margin-right: 30px;
+        color: $iconColor;
+      }
+
+      i.bi-bell-fill:hover {
+        animation: shake 0.5s ease-in-out;
+        cursor: pointer;
+      }
+    }
+
+    .icon-navbar {
+      display: none;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-2px);
+      }
+
+      50% {
+        transform: translateX(2px);
+      }
+
+      75% {
+        transform: translateX(-2px);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .header1 {
+    height: 44px;
+    padding: 0 40px;
+    z-index: 9999;
+
+    .location {
+      color: gray;
+      margin-right: 50px;
+    }
+
+    .welcome {
+      color: white;
+    }
+  }
+
+  .header2 {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    z-index: 9999;
+
+    .navbar_header2 {
+      height: 80px;
+      padding: 0 20px;
+      @include headerCommon(#fff, #fff, #fff);
+
+      // .header_content ul li {
+      //   &.active::after {
+      //     width: 100%;
+      //   }
+      // }
+    }
+  }
+
+  .navbar_header3 {
+    border-bottom: 1px solid rgb(217, 212, 212);
+    -webkit-box-shadow: 0px 1px 6px 0px #c5c5c5;
+    background-color: #fff;
+    height: 80px;
+    padding: 0 20px;
+    @include headerCommon(black, #ff652f, black);
+  }
+
+  .header {
+    color: blue;
+    position: fixed;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  .header.visible {
+    top: 0;
+    transition: top 0.4s linear;
+    /* Hiệu ứng tuyến tính khi header xuất hiện */
+  }
+
+  .header.hidden {
+    top: -200px;
+    transition: top 1s ease-in-out;
+    /* Hiệu ứng giãn nở khi header biến mất */
+  }
+}
+
+/*--- Responsive Code ---*/
+@media screen and (max-width: 1920px) {
+}
+
+@media screen and (max-width: 1680px) {
+}
+
+@media screen and (max-width: 1600px) {
+}
+
+@media screen and (max-width: 1440px) {
+}
+
+@media screen and (max-width: 1200px) {
+  .header2 .navbar_header2 {
+    height: 70px !important;
+    justify-content: space-between;
+  }
+
+  .header_content > ul > li {
+    width: 100px !important;
+    font-size: 18px !important;
+  }
+
+  .header_left {
+    h2 {
+      font-size: 25px !important;
+    }
+
+    .brand {
+      img {
+        height: 70px;
+        width: 70px;
+      }
+    }
+  }
+
+  .header_right {
+    i {
+      font-size: 22px !important;
+      margin-right: 25px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1080px) {
+}
+
+@media screen and (max-width: 1024px) {
+  .header_right {
+    i {
+      margin-right: 20px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .header_content {
+    display: none !important;
+  }
+
+  .header_right {
+    display: none !important;
+  }
+
+  .icon-navbar {
+    display: block !important;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 800px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 736px) {
+}
+
+@media screen and (max-width: 640px) {
+  .header1 {
+    height: 44px;
+    padding: 0 40px;
+
+    .location {
+      display: none;
+    }
+
+    .welcome {
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+}
+
+@media screen and (max-width: 568px) {
+}
+
+@media screen and (max-width: 480px) {
+  .header2 .navbar_header2 {
+    height: 60px !important;
+    justify-content: space-between;
+  }
+
+  .header_left {
+    h2 {
+      font-size: 22px !important;
+    }
+
+    .brand {
+      img {
+        height: 60px;
+        width: 60px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+}
+
+@media screen and (max-width: 384px) {
+}
+
+@media screen and (max-width: 375px) {
+  .header2 .navbar_header2 {
+    height: 50px !important;
+    justify-content: space-between;
+  }
+
+  .header_left {
+    h2 {
+      font-size: 20px !important;
+    }
+
+    .brand {
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+}

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
 import { apiOrderDetail } from "../../../services/order";
-import { formatTime } from "../../../utils";
+import { formatFullTime, formatTime } from "../../../utils";
 import { Badge } from "@themesberg/react-bootstrap";
 import generatePDF from "react-to-pdf";
 
 export default function ModalOrderDetail(props) {
-  const { isOpenModal, setIsOpenModal, orderId, setOrderId } = props;
-  const [orderDetail, setOrderDetail] = useState([]);
+  const { isOpenModal, orderDetail, setIsOpenModal } = props;
   const [listProducts, setListProducts] = useState([]);
 
   const options = {
-    filename: `invoice${orderId}.pdf`,
+    filename: `invoice${orderDetail.id}.pdf`,
     page: {
       margin: 20,
     },
@@ -43,40 +42,13 @@ export default function ModalOrderDetail(props) {
     }
   };
 
-  const handleGetOrderDetail = async () => {
-    try {
-      const response = await apiOrderDetail(orderId);
-      if (response.data.statusCode === 200) {
-        setOrderDetail(response.data.data);
-        setListProducts(response.data.data.orderDetails);
-      }
-    } catch (e) {
-      console.log();
-    }
-  };
-  useEffect(() => {
-    if (orderId) {
-      handleGetOrderDetail();
-    }
-  }, [orderId]);
 
-  const toggle = () => {
-    props.toggleFromParent();
-  };
-
-  const handleOk = () => {
-    setIsOpenModal(false);
-  };
   const handleCancel = () => {
     setIsOpenModal(false);
-    setOrderId(null);
   };
   return (
     <Modal
       isOpen={isOpenModal}
-      toggle={() => {
-        toggle();
-      }}
       className={"modal-user-container"}
       size="xl"
       centered
@@ -96,22 +68,14 @@ export default function ModalOrderDetail(props) {
                 <div className="invoice_content_info mt-5">
                   <div className="col-7">
                     <h5 className="fw-bolder">CLIENT INFORMATION</h5>
-                    <div style={{ color: "#4a5073" }}>
-                      <div>Name: {orderDetail.customerName}</div>
-                      {/* <div>
-                        Address: 
-                      </div> */}
-                      {orderDetail.email && (
-                        <div>Email: {orderDetail.email}</div>
+                    <div style={{ color: "#222222" }}>
+                      <div>Name: {orderDetail.guest_last_name + " " + orderDetail.guest_first_name}</div>
+                      {orderDetail.guest_email && (
+                        <div>Email: {orderDetail.guest_email}</div>
                       )}
-                      {orderDetail.nric && <div>NRIC: {orderDetail.nric}</div>}
-
-                      {orderDetail.paymentMode && (
-                        <div>Payment Mode: {orderDetail.paymentMode}</div>
-                      )}
-                      {orderDetail.contactPerson && (
-                        <div>Contact Person: {orderDetail.contactPerson}</div>
-                      )}
+                      {orderDetail.guest_address &&
+                        <div>Address: {orderDetail.guest_address}</div>
+                      }
                     </div>
                   </div>
                   <div className="justify-content-between d-flex col-5 me-6">
@@ -120,29 +84,17 @@ export default function ModalOrderDetail(props) {
                         <span className="fw-bolder">INVOICE ID:</span>{" "}
                         {orderDetail?.id}
                       </div>
-                      <div style={{ color: "#4a5073" }}>
+                      <div style={{ color: "#222222" }}>
                         <div>
                           <span>Order Date:</span>{" "}
-                          {formatTime(orderDetail?.orderDate)}
+                          {formatFullTime(orderDetail?.order_date)}
                         </div>
-                        <div>
-                          <span>Location Pickup:</span>{" "}
-                          {orderDetail?.locationPickup
-                            ? orderDetail.locationPickup
-                            : "--"}
-                        </div>
-                        {orderDetail.transactionType && (
+                        {orderDetail.details?.length > 0 &&
                           <div>
-                            <span>Transaction Type:</span>{" "}
-                            {orderDetail.transactionType}
+                            <span>Location Pickup:</span>{" "}
+                            {orderDetail.details[0].location_pickup}
                           </div>
-                        )}
-                        {orderDetail.collectionMode && (
-                          <div>
-                            <span>Collection Mode:</span>{" "}
-                            {orderDetail.collectionMode}
-                          </div>
-                        )}
+                        }
                       </div>
                     </div>
                   </div>
@@ -152,107 +104,21 @@ export default function ModalOrderDetail(props) {
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">Phone 0</th>
-                        <th scope="col">Phone H</th>
-                        <th scope="col">Hand Phone</th>
-                        <th scope="col">Pager</th>
-                        <th scope="col">Fax</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Receipient name</th>
+                        <th scope="col">Phone number</th>
+                        <th scope="col">Address</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>
-                          {orderDetail.phone0 ? orderDetail.phone0 : "--"}
+                          {orderDetail.recipient_name ? orderDetail.recipient_name : "--"}
                         </td>
                         <td>
-                          {orderDetail.phoneH ? orderDetail.phoneH : "--"}
+                          {orderDetail.recipient_phone ? orderDetail.recipient_phone : "--"}
                         </td>
                         <td>
-                          {orderDetail.handphone ? orderDetail.handphone : "--"}
-                        </td>
-                        <td>{orderDetail.pager ? orderDetail.pager : "--"}</td>
-                        <td>{orderDetail.fax ? orderDetail.fax : "--"}</td>
-                        <td>{orderDetail.email ? orderDetail.email : "--"}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-4">
-                  <h5 className="fw-bolder">SHIPPING ADDRESS</h5>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Shipping Address Line 1</th>
-                        <th scope="col">Shipping Address Line 2</th>
-                        <th scope="col">Shipping Address Line 3</th>
-                        <th scope="col">Shipping Country</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          {orderDetail.shippingAddressLine1
-                            ? orderDetail.shippingAddressLine1
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.shippingAddressLine2
-                            ? orderDetail.shippingAddressLine2
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.shippingAddressLine3
-                            ? orderDetail.shippingAddressLine3
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.shippingCountry
-                            ? orderDetail.shippingCountry
-                            : "--"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-4">
-                  <h5 className="fw-bolder">USER ADDRESS</h5>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">User Address Line 1</th>
-                        <th scope="col">User Address Line 2</th>
-                        <th scope="col">User Address Line 3</th>
-                        <th scope="col">User Country Code</th>
-                        <th scope="col">User Postal Code</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          {orderDetail.userAddressLine1
-                            ? orderDetail.userAddressLine1
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.userAddressLine2
-                            ? orderDetail.userAddressLine2
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.userAddressLine3
-                            ? orderDetail.userAddressLine3
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.userCountryCode
-                            ? orderDetail.userCountryCode
-                            : "--"}
-                        </td>
-                        <td>
-                          {orderDetail.userPostalCode
-                            ? orderDetail.userPostalCode
-                            : "--"}
+                          {orderDetail.shipping_address ? orderDetail.shipping_address : "--"}
                         </td>
                       </tr>
                     </tbody>
@@ -263,76 +129,44 @@ export default function ModalOrderDetail(props) {
                   <table class="table">
                     <thead>
                       <tr>
+                        <th scope="col">IMAGE</th>
                         <th scope="col">NAME</th>
-                        <th scope="col">CODE</th>
-                        <th scope="col">PART NUMBER</th>
-                        <th scope="col">SKU</th>
+                        <th scope="col">COLOR</th>
+                        <th scope="col">RATE</th>
                         <th scope="col">PRICE</th>
                         <th scope="col">QTY</th>
                         <th scope="col">TOTAL</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {listProducts &&
-                        listProducts.map((product) => {
+                      {orderDetail.details?.length > 0 &&
+                        orderDetail.details.map((product) => {
                           return (
                             <tr>
-                              <td>{product.productName}</td>
-                              <td>{product.productCode}</td>
-                              <td>{product.productPartNumber}</td>
-                              <td>{product.sku ? product.sku : "---"}</td>
-                              <td>{product.unitPrice} SGD</td>
+                              <td><img src={`${process.env.REACT_APP_IMAGE_URL + product.product_image}`} width={80} height={80} style={{ borderRadius: "4px" }} /></td>
+                              <td>{product.product_name}</td>
+                              <td>{product.product_color}</td>
+                              <td>{product.promotion_rate ? `${product.promotion_rate}%` : "---"}</td>
+                              <td>{product.unit_price}</td>
                               <td>{product.quantity}</td>
-                              <td>
-                                {product.quantity * product.unitPrice} SGD
+                              <td>{product.promotion_rate ? Math.round(product.quantity * product.unit_price * product.promotion_rate / 100) : product.quantity * product.unit_price}
                               </td>
                             </tr>
                           );
                         })}
-                      {/* <tr>
-                              <td>{product.product.name}</td>
-                              <td>{product.product.code}</td>
-                              <td>{product.product.partNumber}</td>
-                              <td>
-                                {product.product.sku
-                                  ? product.product.sku
-                                  : "---"}
-                              </td>
-                              <td>{product.product.price} SGD</td>
-                              <td>{product.product.memberPrice} SGD</td>
-                              <td>{product.product.quantity}</td>
-                              <td>
-                                {product.product.quantity *
-                                  product.product.price}{" "}
-                                SGD
-                              </td>
-                            </tr> */}
                     </tbody>
                   </table>
                 </div>
                 <div className="d-flex justify-content-end  mt-5">
-                  <div className="col-4">
-                    <table class="table-clear table">
+                  <div className="col-6">
+                    <table class="table">
                       <tbody>
-                        <tr>
-                          <td className="text-right px-5">
-                            <strong className="fw-bolder">SUBTOTAL</strong>
-                          </td>
-                          <td className="text-left">
-                            {listProducts.reduce((total, product) => {
-                              return (
-                                total + product.quantity * product.unitPrice
-                              );
-                            }, 0)}{" "}
-                            SGD
-                          </td>
-                        </tr>
                         <tr>
                           <td className="text-right px-5">
                             <strong className="fw-bolder">SHIPPING COST</strong>
                           </td>
                           <td className="text-left">
-                            {orderDetail?.shippingCost} SGD
+                            <span className="text-danger">{orderDetail?.shipping_cost}</span><span className="fw-bold ms-2">VND</span>
                           </td>
                         </tr>
                         <tr>
@@ -340,7 +174,7 @@ export default function ModalOrderDetail(props) {
                             <strong className="fw-bolder">GST AMOUNT </strong>
                           </td>
                           <td className="text-left">
-                            {orderDetail?.gstAmount} SGD
+                            <span className="text-danger">{orderDetail?.gst_amount}</span><span className="fw-bold ms-2">VND</span>
                           </td>
                         </tr>
                         <tr>
@@ -348,7 +182,7 @@ export default function ModalOrderDetail(props) {
                             <strong className="fw-bolder">TOTAL</strong>
                           </td>
                           <td className="text-left">
-                            {orderDetail?.totalCost} SGD
+                            <span className="text-danger">{orderDetail?.total_cost}</span><span className="fw-bold ms-2">VND</span>
                           </td>
                         </tr>
                       </tbody>

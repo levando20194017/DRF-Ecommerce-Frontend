@@ -3,6 +3,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { apiUploadImage } from "../../../services/image";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toastFailed } from "../../../utils";
 
 export const TinyMce = (props) => {
   const editorRef = useRef(null);
@@ -25,11 +26,11 @@ export const TinyMce = (props) => {
   const handleUploadImage = async (file) => {
     try {
       const formData = new FormData();
-      formData.append("files", file);
+      formData.append("file", file);
       const response = await apiUploadImage(formData);
 
       if (response.data.statusCode === 200) {
-        const imageUrl = `${process.env.REACT_APP_IMAGE_URL}${response.data.data[0]}`;
+        const imageUrl = `${process.env.REACT_APP_IMAGE_URL}${response.img_url}`;
 
         // Chèn URL ảnh vào trình soạn thảo TinyMCE
         const editor = editorRef.current;
@@ -82,21 +83,7 @@ export const TinyMce = (props) => {
                 const maxSize = 3 * 1024 * 1024; // 3MB
                 if (file?.size > maxSize) {
                   // Kích thước vượt quá giới hạn
-                  toast.error(
-                    <span onClick={() => toast.dismiss()}>
-                      Please upload photos smaller than 3MB.
-                    </span>,
-                    {
-                      position: "top-right",
-                      autoClose: 2000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "colored",
-                    }
-                  );
+                  toastFailed("Please upload photos smaller than 3MB.")
                   return;
                 }
                 if (
@@ -107,21 +94,7 @@ export const TinyMce = (props) => {
                     file.type === "image/gif"
                   )
                 ) {
-                  toast.error(
-                    <span onClick={() => toast.dismiss()}>
-                      Please select PNG, GIF or JPG file.
-                    </span>,
-                    {
-                      position: "top-right",
-                      autoClose: 2000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "colored",
-                    }
-                  );
+                  toastFailed("Please select PNG, GIF or JPG file.")
                   return;
                 }
                 handleUploadImage(file);

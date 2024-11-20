@@ -1,23 +1,23 @@
-import React, {useEffect, useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHome, faPaperclip} from "@fortawesome/free-solid-svg-icons";
-import {Breadcrumb} from "@themesberg/react-bootstrap";
-import {Col, Row} from "@themesberg/react-bootstrap";
-import {CreateCategory} from "../../../components/blog/category/CreateCategory";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import { Breadcrumb } from "@themesberg/react-bootstrap";
+import { Col, Row } from "@themesberg/react-bootstrap";
+import { CreateCategory } from "../../../components/blog/category/CreateCategory";
 import {
     apiCreateCategory,
     apiDetailCategory,
-    apiGetListCategories,
     apiUpdateCategory
 } from "../../../services/category";
-import {status} from "../../../enums";
-import {toast, ToastContainer} from "react-toastify";
-import {toastFailed, toastSuccess} from "../../../utils";
-import {useHistory, useParams} from "react-router-dom";
-import {UpdateCategory} from "../../../components/blog/category/UpdateCategory";
+import { status } from "../../../enums";
+import { toast, ToastContainer } from "react-toastify";
+import { toastFailed, toastSuccess } from "../../../utils";
+import { useHistory, useParams } from "react-router-dom";
+import { UpdateCategory } from "../../../components/blog/category/UpdateCategory";
+import { Routes } from "../../../routes";
 
 export default () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [category, setCategory] = useState()
     const history = useHistory()
 
@@ -28,35 +28,22 @@ export default () => {
     const getCatagory = async () => {
         try {
             const response = await apiDetailCategory(id)
-            if (response?.data.statusCode === status.SUCCESS) {
-                setCategory(response?.data?.data)
+            if (response.status === 200) {
+                setCategory(response.data)
             }
         } catch (e) {
 
         }
     }
 
-    const handleCreateCategory = async (params) => {
-        if (params.name !== '') {
+    const handleCreateCategory = async (data) => {
+        if (data.name !== '') {
             try {
-                const response = await apiCreateCategory({params})
-                if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Create Category successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
+                const response = await apiCreateCategory(data)
+                if (response.status === 200) {
                     history.push('/blogs/categories')
-                }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed('Category is duplicated')
+                } else {
+                    toastFailed(response.message)
                 }
             } catch (e) {
                 toastFailed('Create Category Failed')
@@ -64,30 +51,15 @@ export default () => {
         }
     }
 
-    const handleUpdateCategory = async (params, id) => {
-        if (params.name !== '') {
+    const handleUpdateCategory = async (data) => {
+        if (data.name !== '') {
+            const formData = { ...data, category_id: id }
             try {
-                const response = await apiUpdateCategory({params, id})
-                if (response?.data.statusCode === status.SUCCESS) {
-                    setTimeout(() => {
-                        toast.success(<span onClick={() => toast.dismiss()}>Edit Category successfully</span>, {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }, 0);
-                    history.push('/blogs/categories')
-                }
-                if (response?.data.statusCode === status.ERROR) {
-                    toastFailed('Category is duplicated')
-                }
-                if (response?.data.statusCode === 404) {
-                    toastFailed('This category is not found')
+                const response = await apiUpdateCategory(formData)
+                if (response.status === 200) {
+                    history.push(Routes.BlogCategory.path)
+                } else {
+                    toastFailed(response.message)
                 }
             } catch (e) {
                 toastFailed('Edit Category Failed')
@@ -97,17 +69,14 @@ export default () => {
 
     return (
         <>
-            <ToastContainer/>
-            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <ToastContainer />
+            <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
                 <div className="d-block mb-4 mb-xl-0">
                     <Breadcrumb
-                        className="d-none d-md-inline-block"
-                        listProps={{
-                            className: "breadcrumb-dark breadcrumb-transparent",
-                        }}
+                        listProps={{ className: "breadcrumb-primary    breadcrumb-text-light text-white" }}
                     >
                         <Breadcrumb.Item>
-                            <FontAwesomeIcon icon={faHome}/>
+                            <FontAwesomeIcon icon={faHome} />
                         </Breadcrumb.Item>
                         <Breadcrumb.Item onClick={() => history.push("/blogs/categories")}>Category</Breadcrumb.Item>
                         <Breadcrumb.Item active>
@@ -119,9 +88,12 @@ export default () => {
             </div>
             <Row>
                 <Col xs={12} xl={9}>
-                    {id ? <UpdateCategory handleUpdateCategory={handleUpdateCategory}
-                                          category={category}/> :
-                        <CreateCategory handleCreateCategory={handleCreateCategory}/>}
+                    {id ?
+                        <UpdateCategory
+                            handleUpdateCategory={handleUpdateCategory}
+                            category={category} />
+                        :
+                        <CreateCategory handleCreateCategory={handleCreateCategory} />}
 
                 </Col>
             </Row>

@@ -1,813 +1,131 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Col, Row, Card, Form, Button } from "@themesberg/react-bootstrap";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import {
   apiCreateProduct,
   apiDetailProduct,
   apiUpdateProduct,
 } from "../../services/product";
-import { apiUploadImage } from "../../services/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "react-bootstrap/Spinner";
 import { useHistory, useParams } from "react-router-dom";
 import { TinyMce } from "./catalog/TinyMce";
-import { listMaterials } from "../../enums";
+import { toastFailed, toastSuccess } from "../../utils";
+import FormInputText from "../common/FormInputText";
+import FormInputFloat from "../common/FormInputFloat";
+import FormInputNumber from "../common/FormInputNumber";
+import ListGallery from "./ListGallery";
+import FormInputDate from "../common/FormInputDate";
 
 export const FormCreateProduct = ({
-  // status,
-  catalog,
-  promotion,
-  labels,
-  avtProduct,
-  proType,
-  setStatus,
-  setCatalog,
-  setAvtProduct,
-  setLabels,
-  setProType,
-  setPromotion,
-  mainAvatar,
-  setMainAvatar,
-  listProductType,
+  formData,
+  setFormData,
+  errors,
+  setErrors
 }) => {
   const history = useHistory();
+  const [dataDetail, setDataDetail] = useState()
   const { id } = useParams();
-  const [effectShow, setEffectShow] = useState(true);
-  const [isEmptyImages, setIsEmptyImages] = useState(false);
-  const fileInputRef = useRef();
-
-  //images when upload from devices
-  const [images, setImages] = useState([]);
-  const [imagesStorage, setImagesStorage] = useState([]);
-  //Get the list containing the blob url when uploaded successfully
-  const [shortDes, setShortDes] = useState("");
-  const [memberPrice, setMemberPrice] = useState("");
-  const [quantity, setQuantity] = useState(undefined);
-  const [weight, setWeight] = useState("");
-  const [diameter, setDiameter] = useState("");
-  const [dimensions, setDimensions] = useState("");
-  const [material, setMaterial] = useState(listMaterials[0]);
-  const [title, setTitle] = useState("");
-  const [sku, setSku] = useState("");
-  const [proCode, setProcode] = useState("");
-  const [partNumber, setPartNumber] = useState("");
-  const [price, setPrice] = useState("");
-  const [priority, setPriority] = useState("");
-  const [finishing, setFinishing] = useState("");
-  const [countryOfIssue, setCountryOfIssue] = useState("");
-  const [faceValue, setFaceValue] = useState("");
-  const [specialEffects, setSpecialEffects] = useState("");
-  const [mintage, setMintage] = useState("");
-  const [year, setYear] = useState("");
-
-  const [formContent, setFormContent] = useState({
-    content: "",
-  });
-
-  const [titleError, setTitleError] = useState("");
-  const [skuError, setSkuError] = useState("");
-  const [proCodeError, setProCodeError] = useState("");
-  const [partNumberError, setPartNumberError] = useState("");
-  const [quantityError, setQuantityError] = useState("");
-  const [priceError, setPriceError] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [listGallery, setListGallery] = useState([]);
-  const [lengthOfListGallery, setLengthOfListGallery] = useState(0);
-  const [errorCount, setErrorCount] = useState(0);
-
-  const getAvtProductLink = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("files", avtProduct.file);
-      const response = await apiUploadImage(formData);
-      if (response.data.statusCode === 200) {
-        setMainAvatar(response.data.data);
-        toast.success(
-          <span onClick={() => toast.dismiss()}>
-            Upload image successfully!
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      } else {
-        toast.error(
-          <span onClick={() => toast.dismiss()}> Upload image failed!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error(
-        <span onClick={() => toast.dismiss()}>
-          Something went wrong, please try again!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
-    }
-  };
-
-  const getListGallery = async () => {
-    try {
-      const formData = new FormData();
-      for (let i = 0; i < images.length; i++) {
-        formData.append("files", images[i].file);
-      }
-      const response = await apiUploadImage(formData);
-      if (response.data.statusCode === 200) {
-        setListGallery([...listGallery, ...response.data.data]);
-        setImages([]);
-        toast.success(
-          <span onClick={() => toast.dismiss()}>
-            Upload image successfully!
-          </span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      } else {
-        toast.error(
-          <span onClick={() => toast.dismiss()}> Upload image failed!</span>,
-          {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          }
-        );
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error(
-        <span onClick={() => toast.dismiss()}>
-          Something went wrong, please try again!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
-    }
-  };
 
   const getDetailProduct = async () => {
     try {
       const response = await apiDetailProduct(id);
-      if (response.data.statusCode === 200) {
-        const data = response.data.data;
-        setShortDes(data.shortDescription ? data.shortDescription : "");
-        setMemberPrice(data.memberPrice ? data.memberPrice : "");
-        setQuantity(data.quantity);
-        setWeight(data.weight ? data.weight : "");
-        setDiameter(data.diameter ? data.diameter : "");
-        setDimensions(data.dimensions);
-        setTitle(data.name);
-        setSku(data.sku);
-        setProcode(data.code);
-        setPartNumber(data.partNumber);
-        setPrice(data.price);
-        setPriority(data.priority ? data.priority : "");
-        setFormContent({ content: data.description });
-        setCatalog(data.catalogId);
-        setLabels(data.label.split(","));
-        setProType(data.productType);
-        setPromotion(data.promotionId);
-        setMaterial(data.material);
-        setMainAvatar(data.imageUrl.split(","));
-        setFinishing(data.finishing ? data.finishing : "");
-        setCountryOfIssue(data.countryOfIssue ? data.countryOfIssue : "");
-        setFaceValue(data.faceValue ? data.faceValue : "");
-        setSpecialEffects(data.specialEffects ? data.specialEffects : "");
-        setMintage(data.mintage ? data.mintage : "");
-        setYear(data.year ? data.year : "");
-        if (data.gallery) {
-          setListGallery(data.gallery.split(","));
-          setLengthOfListGallery(data.gallery.split(",").length);
-        } else {
-          setListGallery([]);
-          setLengthOfListGallery(0);
+      if (response.status === 200) {
+        setDataDetail(response.data)
+        if (response.data.gallery) {
+          setListGallery(response.data.gallery.split(","))
         }
       }
     } catch (e) {
       console.log(e);
     }
   };
-  useEffect(() => {
-    if (images.length !== 0) {
-      getListGallery();
-    }
-  }, [images]);
-
-  useEffect(() => {
-    if (avtProduct) {
-      getAvtProductLink();
-    }
-  }, [avtProduct]);
-
-  useEffect(() => {
-    if (images.length === 0) {
-      setIsEmptyImages(true);
-    } else {
-      setIsEmptyImages(false);
-    }
-  }, [images]);
 
   useEffect(() => {
     if (id) {
       getDetailProduct();
-    } else {
-      setImages([]);
-      setImagesStorage([]);
-      setShortDes("");
-      setMemberPrice("");
-      setQuantity("");
-      setWeight("");
-      setDiameter("");
-      setDimensions("");
-      setTitle("");
-      setSku("");
-      setProcode("");
-      setPartNumber("");
-      setPrice("");
-      setPriority("");
-      setFormContent({ content: "" });
-      setStatus("Published");
-      setCatalog(1);
-      setAvtProduct("");
-      setLabels([]);
-      setProType(listProductType[0]);
-      setPromotion(1);
-      setMaterial(listMaterials[0]);
-      setListGallery([]);
-      setLengthOfListGallery(0);
-      setMainAvatar([]);
-      setFinishing("");
-      setCountryOfIssue("");
-      setFaceValue("");
-      setSpecialEffects("");
-      setMintage("");
-      setYear("");
     }
   }, [id]);
 
   useEffect(() => {
-    setEffectShow(false);
-    setTimeout(() => {
-      setEffectShow(true);
-    }, 200); // Thời gian 0.5 giây (500 milliseconds)
-  }, [isEmptyImages]);
+    if (id) {
+      setFormData({ ...dataDetail })
+    }
+  }, [id, dataDetail])
 
+  const handleOnChangeInput = (e, name) => {
+    setFormData({ ...formData, [name]: e.target.value })
+    setErrors({ ...errors, [name]: "" })
+  }
+
+  const handleBlur = (name) => {
+    setFormData({ ...formData, [name]: formData[name].trim() })
+  }
   const handleChangeEditor = (value) => {
-    const newForm = Object.assign(formContent);
-    newForm.content = value;
-    setFormContent(newForm);
+    const newForm = Object.assign(formData);
+    newForm.description = value;
+    setFormData(newForm);
   };
 
-  function onFileSelect(event) {
-    const files = event.target.files;
-    if (files.length === 0) return;
 
-    const remainingSlots = 10 - listGallery.length;
-    const filesToAdd = Array.from(files).slice(0, remainingSlots);
-    const selectedFilesCount = files.length;
-    const totalFilesCount = listGallery.length + selectedFilesCount;
-
-    if (totalFilesCount > 10 || listGallery.length + files.length > 10) {
-      // Số lượng tệp đã chọn vượt quá 10
-      // setMessageOfGallery("Only upload a maximum of 10 photos.");
-      toast.warning(
-        <span onClick={() => toast.dismiss()}>
-          Only upload a maximum of 10 photos!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
-    }
-
-    for (let i = 0; i < filesToAdd.length; i++) {
-      const file = filesToAdd[i];
-
-      if (file) {
-        const maxSize = 3 * 1024 * 1024; // 3MB
-        if (file?.size > maxSize) {
-          // Kích thước vượt quá giới hạn
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              Please upload photos smaller than 3MB.
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-          setErrorCount((prevCount) => prevCount + 1);
-          continue;
-        }
-        if (
-          !(
-            file.type === "image/jpeg" ||
-            file.type === "image/jpg" ||
-            file.type === "image/png" ||
-            file.type === "image/gif"
-          )
-        ) {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              Please select PNG, GIF or JPG file.
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-          setErrorCount((prevCount) => prevCount + 1);
-          continue;
-        }
-      }
-
-      // if (file.type.split("/")[0] !== "image") continue;
-      if (!imagesStorage.some((e) => e.name === file.name)) {
-        setImages((prevImages) => [
-          ...prevImages,
-          {
-            name: file.name,
-            url: URL.createObjectURL(file),
-            file: file,
-          },
-        ]);
-        setImagesStorage((prevImages) => [
-          ...prevImages,
-          {
-            name: file.name,
-            url: URL.createObjectURL(file),
-            file: file,
-          },
-        ]);
-      }
-    }
-  }
-
-  function deleteImage(index) {
-    setListGallery((preListGallery) => {
-      return preListGallery.filter((_, i) => i !== index);
-    });
-    if (index - lengthOfListGallery >= 0) {
-      setImagesStorage((images) => {
-        return images.filter((_, i) => i !== index - lengthOfListGallery);
-      });
-    }
-  }
-  function onDragOver(event) {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "copy";
-  }
-  function onDragLeave(event) {
-    event.preventDefault();
-  }
-  function onDrop(event) {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-
-    const remainingSlots = 10 - listGallery.length;
-    const filesToAdd = Array.from(files).slice(0, remainingSlots);
-
-    const selectedFilesCount = files.length;
-    const totalFilesCount = listGallery.length + selectedFilesCount;
-    if (totalFilesCount > 10 || listGallery.length + files.length > 10) {
-      // Số lượng tệp đã chọn vượt quá 10
-      // setMessageOfGallery("Only upload a maximum of 10 photos.");
-      toast.warning(
-        <span onClick={() => toast.dismiss()}>
-          Only upload a maximum of 10 photos!
-        </span>,
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        }
-      );
-    }
-
-    for (let i = 0; i < filesToAdd.length; i++) {
-      const file = filesToAdd[i];
-
-      if (file) {
-        const maxSize = 3 * 1024 * 1024; // 3MB
-        if (file?.size > maxSize) {
-          // Kích thước vượt quá giới hạn
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              Please upload photos smaller than 3MB.
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-          setErrorCount((prevCount) => prevCount + 1);
-          continue;
-        }
-        if (
-          !(
-            file.type === "image/jpeg" ||
-            file.type === "image/jpg" ||
-            file.type === "image/png" ||
-            file.type === "image/gif"
-          )
-        ) {
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              Please select PNG, GIF or JPG file.
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-          setErrorCount((prevCount) => prevCount + 1);
-          continue;
-        }
-      }
-      // if (file.type.split("/")[0] !== "image") continue;
-      if (!imagesStorage.some((e) => e.name === file.name)) {
-        setImages((prevImages) => [
-          ...prevImages,
-          {
-            name: file.name,
-            url: URL.createObjectURL(file),
-            file: file,
-          },
-        ]);
-        setImagesStorage((prevImages) => [
-          ...prevImages,
-          {
-            name: file.name,
-            url: URL.createObjectURL(file),
-            file: file,
-          },
-        ]);
-      }
-    }
-  }
-  const handleRemoveAll = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setImages([]);
-    setListGallery([]);
-    setImagesStorage([]);
-  };
+    const newErrors = {
+      name: formData.name ? "" : "Name is required!",
+      launch_date: formData.launch_date ? "" : "Launch date is required!",
+      image: formData.image ? "" : "Image is required!",
+      color: formData.color ? "" : "Color is required!",
+      gallery: formData.gallery ? "" : "Gallery is required!",
+      price: formData.price ? "" : "Price is required!",
+      product_type: formData.product_type ? "" : "Product type is required!",
+      screen_size: formData.screen_size ? "" : "Screen size is required!",
+      main_camera: formData.main_camera ? "" : "Main camera is required!",
+      front_camera: formData.front_camera ? "" : "Front camera is required!",
+      chipset: formData.chipset ? "" : "Chipset is required!",
+      gpu: formData.gpu ? "" : "GPU is required!",
+      storage_capacity: formData.storage_capacity ? "" : "Storage capacity is required!",
+      dimensions: formData.dimensions ? "" : "Dimensions is required!",
+      weight: formData.weight ? "" : "Weight is required!",
+      catalog: formData.catalog ? "" : "Catalog is required!"
+    }
+    setErrors(newErrors)
 
-  const handleMaterialChange = (event) => {
-    const selectedPromotion = event.target.value;
-    setMaterial(selectedPromotion);
-  };
-
-  const handleCreateProduct = async (e) => {
-    e.preventDefault();
-    const dataSend = {
-      sku,
-      code: proCode,
-      partNumber,
-      catalogId: catalog,
-      name: title,
-      shortDescription: shortDes,
-      description: formContent.content,
-      productType: proType,
-      promotionId: promotion,
-      imageUrl: mainAvatar[0],
-      price: parseFloat(price),
-      memberPrice: parseFloat(memberPrice) ? parseFloat(memberPrice) : "",
-      quantity: parseInt(quantity, 10),
-      gallery: listGallery.length !== 0 ? listGallery.join(",") : "",
-      weight: parseFloat(weight) ? parseFloat(weight) : "",
-      diameter: parseFloat(diameter) ? parseFloat(diameter) : "",
-      dimensions,
-      material,
-      label: labels.length !== 0 ? labels.join(",") : "",
-      year: parseInt(year, 10) ? parseInt(year, 10) : "",
-      mintage: parseInt(mintage, 10) ? parseInt(mintage, 10) : "",
-      countryOfIssue,
-      finishing,
-      faceValue,
-      specialEffects,
-      priority: parseInt(priority, 10) ? parseInt(priority, 10) : "",
-    };
-    if (
-      !price === "" ||
-      title === "" ||
-      !quantity ||
-      sku === "" ||
-      proCode === "" ||
-      partNumber === ""
-    ) {
-      if (!price) {
-        setPriceError("Price is required!");
-      }
-      if (title === "") {
-        setTitleError("Title is required!");
-      }
-      if (!quantity) {
-        setQuantityError("Quantity is required!");
-      }
-      if (sku === "") {
-        setSkuError("SKU is required!");
-      }
-      if (proCode === "") {
-        setProCodeError("Product Code is required!");
-      }
-      if (partNumber === "") {
-        setPartNumberError("Part Number is required!");
+    if (Object.values(newErrors).some(error => error)) {
+      return;
+    }
+    setLoading(true);
+    if (id) {
+      try {
+        const response = await apiUpdateProduct(formData);
+        if (response.status === 200) {
+          history.push("/product");
+          toastSuccess(response.message)
+        } else {
+          toastFailed(response.message)
+        }
+      } catch (e) {
+        console.log(e);
+        toastFailed("Update Product failed!")
+      } finally {
+        setLoading(false);
       }
     } else {
-      setLoading(true);
-      if (id) {
-        try {
-          const response = await apiUpdateProduct(id, dataSend);
-          if (response.data.statusCode === 200) {
-            setTimeout(() => {
-              toast.success(
-                <span onClick={() => toast.dismiss()}>
-                  Update Product successfully!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
-            history.push("/product");
-          } else {
-            if (
-              response.data.statusCode === 400 &&
-              response.data.message === "Get record with prameter not found."
-            ) {
-              toast.error(
-                <span onClick={() => toast.dismiss()}>
-                  This Product is not found!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            } else {
-              toast.error(
-                <span onClick={() => toast.dismiss()}>
-                  {" "}
-                  Update Product failed!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            }
-          }
-        } catch (e) {
-          console.log(e);
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              {" "}
-              Update Product failed!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } finally {
-          setLoading(false);
+      try {
+        const response = await apiCreateProduct(formData);
+        if (response.status === 200) {
+          history.push("/product");
+          toastSuccess(response.message)
+        } else {
+          toastFailed(response.message)
         }
-      } else {
-        try {
-          const response = await apiCreateProduct(dataSend);
-          if (response.data.statusCode === 200) {
-            setTimeout(() => {
-              toast.success(
-                <span onClick={() => toast.dismiss()}>
-                  Create Product successfully!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            });
-            history.push("/product");
-          } else {
-            if (response.data.statusCode === 400) {
-              if (
-                response.data.message ===
-                "Product code already exist. Please type another product code."
-              ) {
-                setProCodeError("Product code is duplicated");
-                toast.error(
-                  <span onClick={() => toast.dismiss()}>
-                    Product code is duplicated
-                  </span>,
-                  {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                  }
-                );
-              }
-              if (
-                response.data.message ===
-                "Product SKU already exist. Please type another product SKU."
-              ) {
-                setSkuError("SKU is duplicated");
-                toast.error(
-                  <span onClick={() => toast.dismiss()}>
-                    SKU is duplicated
-                  </span>,
-                  {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                  }
-                );
-              }
-              if (
-                response.data.message ===
-                "Product part number already exist. Please type another product part number."
-              ) {
-                setPartNumberError("Part Number is duplicated");
-                toast.error(
-                  <span onClick={() => toast.dismiss()}>
-                    Part Number is duplicated
-                  </span>,
-                  {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                  }
-                );
-              }
-            } else {
-              toast.error(
-                <span onClick={() => toast.dismiss()}>
-                  Create Product failed!
-                </span>,
-                {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                }
-              );
-            }
-          }
-        } catch (e) {
-          console.log(e);
-          toast.error(
-            <span onClick={() => toast.dismiss()}>
-              {" "}
-              Create Product failed!
-            </span>,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            }
-          );
-        } finally {
-          setLoading(false);
-        }
+      } catch (e) {
+        console.log(e);
+        toastFailed("Create Product failed!")
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -815,30 +133,23 @@ export const FormCreateProduct = ({
     <Card border="light" className="bg-white shadow-sm mb-4">
       <ToastContainer />
       <Card.Body>
-        <Form onSubmit={handleCreateProduct}>
+        <Form onSubmit={handleSubmit}>
           <Row>
-            <Col md={12} className="mb-3">
-              <Form.Group id="title">
-                <Form.Label>
-                  Title <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Product Title"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                    setTitleError("");
-                  }}
-                  onBlur={(e) => {
-                    if (title) {
-                      setTitle(title.trim());
-                    }
-                  }}
-                  maxLength={250}
-                />
-              </Form.Group>
-              <div className="text-danger">{titleError}</div>
+            <Col md={6} className="mb-3">
+              <FormInputText
+                title={"Name"}
+                isRequired={true}
+                value={formData.name}
+                handleBlur={handleBlur}
+                keyField={"name"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.name && <div className="text-danger">{errors.name}</div>}
+            </Col>
+            <Col md={6} className="mb-3">
+              <FormInputDate title={"Launch date"} isRequired={true} keyField={"launch_date"} formData={formData} setFormData={setFormData} />
+              {errors.launch_date && <div className="text-danger">{errors.launch_date}</div>}
             </Col>
           </Row>
           <Row>
@@ -848,521 +159,304 @@ export const FormCreateProduct = ({
                 <Form.Control
                   as="textarea"
                   rows="3"
-                  value={shortDes}
-                  onChange={(e) => setShortDes(e.target.value)}
+                  value={formData.short_description}
+                  onChange={(e) => handleOnChangeInput(e, "short_description")}
                   maxLength={100}
-                  onBlur={(e) => {
-                    if (shortDes) {
-                      setShortDes(shortDes.trim());
-                    }
-                  }}
+                  onBlur={() => handleBlur("short_description")}
                 />
               </Form.Group>
             </Col>
           </Row>
           <Row>
             <Col md={4} className="mb-3">
-              <Form.Group id="SKU">
-                <Form.Label>
-                  SKU <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={sku}
-                  onChange={(e) => {
-                    setSku(e.target.value);
-                    setSkuError("");
-                  }}
-                  onBlur={(e) => {
-                    if (sku) {
-                      setSku(sku.trim());
-                    }
-                  }}
-                  maxLength={50}
-                />
-                <div className="text-danger">{skuError}</div>
-              </Form.Group>
+              <FormInputNumber
+                title={"Price"}
+                isRequired={true}
+                value={formData.price}
+                keyField={"price"}
+                formData={formData}
+                setFormData={setFormData}
+              />
+              {errors.price && <div className="text-danger">{errors.price}</div>}
             </Col>
             <Col md={4} className="mb-3">
-              <Form.Group id="code">
-                <Form.Label>
-                  Product Code <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={proCode}
-                  onChange={(e) => {
-                    setProcode(e.target.value);
-                    setProCodeError("");
-                  }}
-                  onBlur={(e) => {
-                    if (proCode) {
-                      setProcode(proCode.trim());
-                    }
-                  }}
-                  maxLength={50}
-                />
-                <div className="text-danger">{proCodeError}</div>
-              </Form.Group>
+              <FormInputText
+                title={"Product type"}
+                isRequired={true}
+                value={formData.product_type}
+                handleBlur={handleBlur}
+                keyField={"product_type"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.product_type && <div className="text-danger">{errors.product_type}</div>}
             </Col>
             <Col md={4} className="mb-3">
-              <Form.Group id="part_number">
-                <Form.Label>
-                  Part number <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={partNumber}
-                  onChange={(e) => {
-                    setPartNumber(e.target.value);
-                    setPartNumberError("");
-                  }}
-                  onBlur={(e) => {
-                    if (partNumber) {
-                      setPartNumber(partNumber.trim());
-                    }
-                  }}
-                  maxLength={50}
-                />
-                <div className="text-danger">{partNumberError}</div>
-              </Form.Group>
+              <FormInputText
+                title={"Color"}
+                isRequired={true}
+                value={formData.color}
+                handleBlur={handleBlur}
+                keyField={"color"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.color && <div className="text-danger">{errors.color}</div>}
             </Col>
           </Row>
+
           <Row>
-            <Col md={3} className="mb-3">
-              <Form.Group id="price">
-                <Form.Label>
-                  Price <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={price}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const regex = /^\d+(\.\d*)?$/; // Biểu thức chính quy để kiểm tra số và dấu chấm chỉ xuất hiện 1 lần
-
-                    if (inputValue === "" || regex.test(inputValue)) {
-                      setPrice(inputValue);
-                      setPriceError("");
-                    }
-                  }}
-                />
-                <div className="text-danger">{priceError}</div>
-              </Form.Group>
+            <Col md={4} className="mb-3">
+              <FormInputFloat
+                title={"Screen size"}
+                isRequired={true}
+                value={formData.screen_size}
+                keyField={"screen_size"}
+                formData={formData}
+                setFormData={setFormData}
+              />
+              {errors.screen_size && <div className="text-danger">{errors.screen_size}</div>}
             </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="member_price">
-                <Form.Label>Member price</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={memberPrice}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const regex = /^\d+(\.\d*)?$/; // Biểu thức chính quy để kiểm tra số và dấu chấm chỉ xuất hiện 1 lần
-
-                    if (inputValue === "" || regex.test(inputValue)) {
-                      setMemberPrice(inputValue);
-                    }
-                  }}
-                />
-              </Form.Group>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Screen technology"}
+                isRequired={false}
+                value={formData.screen_technology}
+                handleBlur={handleBlur}
+                keyField={"screen_technology"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
             </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="quantity">
-                <Form.Label>
-                  Quantity <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="number"
-                  value={quantity}
-                  onKeyPress={(e) => {
-                    const charCode = e.which || e.keyCode;
-                    if (
-                      charCode === 43 ||
-                      charCode === 44 ||
-                      charCode === 46 ||
-                      charCode === 101 ||
-                      charCode === 69 ||
-                      charCode === 45
-                    ) {
-                      e.preventDefault(); // Ngăn chặn sự kiện nếu phím là dấu chấm, chữ cái "e", hoặc dấu "-"
-                    }
-                  }}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const sanitizedValue = inputValue.replace(/[^0-9]/g, ""); // Loại bỏ tất cả các ký tự không phải số
-
-                    if (
-                      !(sanitizedValue === "0" && inputValue.length === 1) &&
-                      !sanitizedValue.includes("-") // Kiểm tra nếu giá trị đã xử lý không chứa dấu "-"
-                    ) {
-                      setQuantity(sanitizedValue);
-                      setQuantityError("");
-                    }
-                  }}
-                />
-                <div className="text-danger">{quantityError}</div>
-              </Form.Group>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Resolution"}
+                isRequired={false}
+                value={formData.resolution}
+                handleBlur={handleBlur}
+                keyField={"resolution"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
             </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="quantity">
-                <Form.Label>Priority</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={priority}
-                  onKeyPress={(e) => {
-                    const charCode = e.which || e.keyCode;
-                    if (
-                      charCode === 43 ||
-                      charCode === 44 ||
-                      charCode === 46 ||
-                      charCode === 101 ||
-                      charCode === 69 ||
-                      charCode === 45
-                    ) {
-                      e.preventDefault(); // Ngăn chặn sự kiện nếu phím là dấu chấm, chữ cái "e", hoặc dấu "-"
-                    }
-                  }}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const sanitizedValue = inputValue.replace(/[^0-9]/g, ""); // Loại bỏ tất cả các ký tự không phải số
+          </Row>
 
-                    if (
-                      !(sanitizedValue === "0" && inputValue.length === 1) &&
-                      !sanitizedValue.includes("-") // Kiểm tra nếu giá trị đã xử lý không chứa dấu "-"
-                    ) {
-                      setPriority(sanitizedValue);
-                    }
-                  }}
+          <Row>
+            <Col md={12} className="mb-3">
+              <Form.Group id="short_desc">
+                <Form.Label>Screen features</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  value={formData.screen_features}
+                  onChange={(e) => handleOnChangeInput(e, "screen_features")}
+                  maxLength={100}
+                  onBlur={() => handleBlur("screen_features")}
                 />
               </Form.Group>
             </Col>
           </Row>
+
+          <Row>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Main camera"}
+                isRequired={true}
+                value={formData.main_camera}
+                handleBlur={handleBlur}
+                keyField={"main_camera"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.main_camera && <div className="text-danger">{errors.main_camera}</div>}
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Video recording"}
+                isRequired={false}
+                value={formData.video_recording}
+                handleBlur={handleBlur}
+                keyField={"video_recording"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Camera features"}
+                isRequired={false}
+                value={formData.camera_features}
+                handleBlur={handleBlur}
+                keyField={"camera_features"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Front camera"}
+                isRequired={true}
+                value={formData.front_camera}
+                handleBlur={handleBlur}
+                keyField={"front_camera"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.front_camera && <div className="text-danger">{errors.front_camera}</div>}
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Chipset"}
+                isRequired={true}
+                value={formData.chipset}
+                handleBlur={handleBlur}
+                keyField={"chipset"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.chipset && <div className="text-danger">{errors.chipset}</div>}
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"GPU"}
+                isRequired={true}
+                value={formData.gpu}
+                handleBlur={handleBlur}
+                keyField={"gpu"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.gpu && <div className="text-danger">{errors.gpu}</div>}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Network support"}
+                isRequired={false}
+                value={formData.network_support}
+                handleBlur={handleBlur}
+                keyField={"network_support"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Storage capacity"}
+                isRequired={true}
+                value={formData.storage_capacity}
+                handleBlur={handleBlur}
+                keyField={"storage_capacity"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.storage_capacity && <div className="text-danger">{errors.storage_capacity}</div>}
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Dimensions"}
+                isRequired={true}
+                value={formData.dimensions}
+                handleBlur={handleBlur}
+                keyField={"dimensions"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+              {errors.dimensions && <div className="text-danger">{errors.dimensions}</div>}
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Charging"}
+                isRequired={false}
+                value={formData.charging}
+                handleBlur={handleBlur}
+                keyField={"charging"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Wifi"}
+                isRequired={false}
+                value={formData.wifi}
+                handleBlur={handleBlur}
+                keyField={"wifi"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+            <Col md={4} className="mb-3">
+              <FormInputText
+                title={"Bluetooth"}
+                isRequired={false}
+                value={formData.bluetooth}
+                handleBlur={handleBlur}
+                keyField={"bluetooth"}
+                formData={formData}
+                setFormData={setFormData}
+                maxLength={255} />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12} className="mb-3">
+              <Form.Group id="short_desc">
+                <Form.Label>Security features</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  value={formData.security_features}
+                  onChange={(e) => handleOnChangeInput(e, "security_features")}
+                  maxLength={100}
+                  onBlur={() => handleBlur("security_features")}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={12} className="mb-3">
+              <Form.Group id="short_desc">
+                <Form.Label>Other information</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  value={formData.other_info}
+                  onChange={(e) => handleOnChangeInput(e, "other_info")}
+                  maxLength={100}
+                  onBlur={() => handleBlur("other_info")}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
           <Row>
             <Col md={12} className="mb-3 gallery">
-              <Form.Label>Gallery</Form.Label>
-              {listGallery.length ? (
-                <div style={{ float: "right" }}>
-                  <button className="btn-remove" onClick={handleRemoveAll}>
-                    Remove all
-                  </button>
-                  <input
-                    name="file"
-                    type="file"
-                    className="file"
-                    multiple
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    onChange={onFileSelect}
-                    key={errorCount}
-                  />
-                  <button
-                    className="btn-select"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      fileInputRef.current.click();
-                    }}
-                  >
-                    Select files
-                  </button>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {/* <div className="xl-avatar gallery-item">
-                <Image fluid rounded src={sampleImage} />
-              </div> */}
-              <Card border="light" className="bg-white shadow-sm mb-4 mt-2">
-                <Card.Body
-                  className="upload_action text-center mt-3"
-                  onDragOver={onDragOver}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                >
-                  <div className="product-gallery">
-                    {!listGallery.length ? (
-                      <div className="mt-2">
-                        <div className="d-flex justify-content-center align-items-center fw-bolder">
-                          Drag and drop images file here.
-                        </div>
-                        <div className="text-center">Or</div>
-                        <div className="text-center">
-                          <div>
-                            <input
-                              name="file"
-                              type="file"
-                              className="file"
-                              multiple
-                              ref={fileInputRef}
-                              style={{ display: "none" }}
-                              onChange={onFileSelect}
-                              key={errorCount}
-                            />
-                            <button
-                              className="btn-select-files"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                fileInputRef.current.click();
-                              }}
-                            >
-                              Select Files
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={
-                          effectShow ? "canvas-visible" : "canvas-hidden"
-                        }
-                      >
-                        <div className="images-show row">
-                          {listGallery.map((image, index) => {
-                            return (
-                              <div
-                                className="col-xl-2 col-lg-2 col-md-2 col-sm-2 image-item"
-                                key={index}
-                              >
-                                <span
-                                  className="delete fs-5"
-                                  onClick={() => deleteImage(index)}
-                                >
-                                  <RiDeleteBin6Line />
-                                </span>
-                                <div>
-                                  <img
-                                    src={`${process.env.REACT_APP_IMAGE_URL}${image}`}
-                                    alt="gallery"
-                                    draggable="false"
-                                  />
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
+              <ListGallery
+                formData={formData}
+                setFormData={setFormData}
+                errors={errors}
+                listGallery={listGallery}
+                setListGallery={setListGallery}
+              />
             </Col>
           </Row>
-          <Form.Label>Content</Form.Label>
+          <Form.Label>Description</Form.Label>
           <Row>
             <Col sm={12} className="mb-3">
               <TinyMce
                 handleChangeEditor={handleChangeEditor}
-                data={formContent.content}
+                data={formData.description}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={3} className="mb-3">
-              <Form.Group id="weight">
-                <Form.Label>Weight</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={weight}
-                  onChange={(e) => {
-                    setWeight(e.target.value);
-                  }}
-                  maxLength={200}
-                  onBlur={(e) => {
-                    if (weight) {
-                      setWeight(weight.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="diameter">
-                <Form.Label>Diameter</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={diameter}
-                  onChange={(e) => {
-                    setDiameter(e.target.value);
-                  }}
-                  maxLength={200}
-                  onBlur={(e) => {
-                    if (diameter) {
-                      setDiameter(diameter.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="dimensions">
-                <Form.Label>Dimensions</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={dimensions}
-                  onChange={(e) => setDimensions(e.target.value)}
-                  onBlur={(e) => {
-                    if (dimensions) {
-                      setDimensions(dimensions.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="material">
-                <Form.Label>Material</Form.Label>
-                <Form.Select value={material} onChange={handleMaterialChange}>
-                  {listMaterials &&
-                    listMaterials.map((material) => {
-                      return <option value={material}>{material}</option>;
-                    })}
-                </Form.Select>
-              </Form.Group>
-
-              {/* <div>
-                    <Form.Group id="promotion">
-                      <Form.Select
-                        value={promotion}
-                        onChange={handlePromotionChange}
-                      >
-                        {listPromotions &&
-                          listPromotions.map((promotion) => {
-                            return (
-                              <option value={promotion.id}>
-                                {promotion.name}
-                              </option>
-                            );
-                          })}
-                      </Form.Select>
-                    </Form.Group>
-                  </div> */}
-            </Col>
-          </Row>
-          <Row>
-            <Col md={3} className="mb-3">
-              <Form.Group id="finishing">
-                <Form.Label>Finishing</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={finishing}
-                  onChange={(e) => setFinishing(e.target.value)}
-                  onBlur={(e) => {
-                    if (finishing) {
-                      setFinishing(finishing.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="countryOfIssue">
-                <Form.Label>Country Of Issue</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={countryOfIssue}
-                  onChange={(e) => setCountryOfIssue(e.target.value)}
-                  onBlur={(e) => {
-                    if (countryOfIssue) {
-                      setCountryOfIssue(countryOfIssue.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="faceValue">
-                <Form.Label>Face Value</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={faceValue}
-                  onChange={(e) => setFaceValue(e.target.value)}
-                  onBlur={(e) => {
-                    if (faceValue) {
-                      setFaceValue(faceValue.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="specialEffects">
-                <Form.Label>Special Effects</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={specialEffects}
-                  onChange={(e) => setSpecialEffects(e.target.value)}
-                  onBlur={(e) => {
-                    if (specialEffects) {
-                      setSpecialEffects(specialEffects.trim());
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={3} className="mb-3">
-              <Form.Group id="mintage">
-                <Form.Label>Mintage</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={mintage}
-                  onKeyPress={(e) => {
-                    const charCode = e.which || e.keyCode;
-                    if (
-                      charCode === 46 ||
-                      charCode === 101 ||
-                      charCode === 69 ||
-                      charCode === 45
-                    ) {
-                      e.preventDefault(); // Ngăn chặn sự kiện nếu phím là dấu chấm, chữ cái "e", hoặc dấu "-"
-                    }
-                  }}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const sanitizedValue = inputValue.replace(/[^0-9]/g, ""); // Loại bỏ tất cả các ký tự không phải số
-
-                    if (
-                      !(sanitizedValue === "0" && inputValue.length === 1) &&
-                      !sanitizedValue.includes("-") // Kiểm tra nếu giá trị đã xử lý không chứa dấu "-"
-                    ) {
-                      setMintage(sanitizedValue);
-                    }
-                  }}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3} className="mb-3">
-              <Form.Group id="year">
-                <Form.Label>Year</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={year}
-                  onKeyPress={(e) => {
-                    const charCode = e.which || e.keyCode;
-                    if (
-                      charCode === 46 ||
-                      charCode === 101 ||
-                      charCode === 69 ||
-                      charCode === 45
-                    ) {
-                      e.preventDefault(); // Ngăn chặn sự kiện nếu phím là dấu chấm, chữ cái "e", hoặc dấu "-"
-                    }
-                  }}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    const sanitizedValue = inputValue.replace(/[^0-9]/g, ""); // Loại bỏ tất cả các ký tự không phải số
-
-                    if (
-                      !(sanitizedValue === "0" && inputValue.length === 1) &&
-                      !sanitizedValue.includes("-") // Kiểm tra nếu giá trị đã xử lý không chứa dấu "-"
-                    ) {
-                      setYear(sanitizedValue);
-                    }
-                  }}
-                />
-              </Form.Group>
             </Col>
           </Row>
           <div className="mt-3">

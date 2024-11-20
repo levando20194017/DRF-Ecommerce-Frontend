@@ -1,0 +1,81 @@
+/* Footer Styles */
+.footer {
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 500;
+
+  .form-footer {
+    padding: 48px 0;
+
+    .footer-title {
+      font-size: 20px;
+
+      &_title {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        color: #848484;
+
+      }
+    }
+
+    .contact-title {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 21px;
+      color: #848484;
+      width: 79px;
+    }
+  }
+
+  // .footer-copy-right {
+  //   padding: 0 96px;
+  // }
+}
+
+.footer-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+  /* Màu tiêu đề */
+}
+
+.footer .list-unstyled li {
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.footer .list-unstyled li:hover {
+  color: #ff9500;
+  /* Đổi màu khi hover */
+}
+
+.footer-link {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #ff9500;
+  /* Đổi màu khi hover */
+}
+
+.input-group .form-control {
+  border-radius: 0;
+}
+
+.input-group .btn-warning {
+  color: #fff;
+  background-color: #ff9500;
+  border: none;
+}
+
+.input-group .btn-warning:hover {
+  background-color: #cc7600;
+  /* Màu hover */
+}
+
+hr {
+  opacity: 0.2;
+}

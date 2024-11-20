@@ -4,39 +4,33 @@ import { faHome, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumb } from "@themesberg/react-bootstrap";
 import Button from "../../components/common/Button";
 import { useHistory } from "react-router-dom";
-
-import { BlogTable } from "../../components/blog/Tables";
-import { apiGetListBlogs } from "../../services/blog";
-import { NUMBER_ITEM_PAGE } from "../../enums";
+import TableBlog from "../../components/blog/TableBlog";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useMsal} from '@azure/msal-react';
+import SearchInput from "../../components/common/SearchInput";
+import { apiGetListBlogs } from "../../services/blog";
+import PaginationCommon from "../../components/common/PaginationCommon";
+import { Spinner } from "reactstrap";
 
 export default () => {
   const history = useHistory();
 
-  const [blogs, setBlogs] = useState([]);
-  const [page, setPage] = useState(1);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setToalRecords] = useState();
+  const [search, setSearch] = useState("");
+  const [listData, setListData] = useState([])
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const { instance,  accounts} = useMsal();
 
   const handleGetListBlogs = async () => {
-    setLoading(true);
     try {
-      const params = {
-        PageIndex: page,
-        PageSize: NUMBER_ITEM_PAGE,
-        token: accounts[0].idToken
-      };
-      const response = await apiGetListBlogs(params);
-      if (response.data.statusCode === 200) {
-        if (response.data.data.source.length === 0 && page - 1 > 0) {
-          setPage(page - 1);
-        } else {
-          setBlogs(response.data.data.source);
-          setTotalPages(response.data.data.totalPages);
-        }
+      setLoading(true);
+      const response = await apiGetListBlogs({ pageIndex, pageSize, name: search, tag: "" })
+      if (response.status === 200) {
+        setListData(response.data.blogs)
+        setToalRecords(response.data.total_items)
+        setTotalPages(response.data.total_pages)
       }
     } catch (e) {
       console.log(e);
@@ -45,25 +39,17 @@ export default () => {
     }
   };
 
-  useEffect(async () => {
-    setBlogs([]);
-    handleGetListBlogs();
-  }, [page]);
-
-  const handlePageChange = (newPage) => {
-    if (newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
-
+  useEffect(() => {
+    handleGetListBlogs()
+  }, [pageIndex, pageSize, search])
   return (
     <>
       <ToastContainer />
-      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
         <div className="w-100 mb-4 mb-xl-0">
           <Breadcrumb
-            className="d-none d-md-inline-block"
-            listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}
+            listProps={{ className: "breadcrumb-primary    breadcrumb-text-light text-white" }}
+            style={{ width: "250px" }}
           >
             <Breadcrumb.Item>
               <FontAwesomeIcon icon={faHome} />
@@ -82,17 +68,34 @@ export default () => {
               Create Blog
             </Button>
           </div>
+
         </div>
       </div>
-
-      <BlogTable
-        blogs={blogs}
-        handlePageChange={handlePageChange}
-        page={page}
-        totalPages={totalPages}
-        handleGetListBlogs={handleGetListBlogs}
-        loading={loading}
-      />
+      <SearchInput search={search} setSearch={setSearch} />
+      <div className="table-content">
+        {loading ?
+          <div className=" d-flex justify-content-center align-items-center">
+            <Spinner animation="border" variant="primary" />
+          </div>
+          :
+          <TableBlog
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            listData={listData}
+            handleGetListBlogs={handleGetListBlogs}
+          />
+        }
+      </div>
+      {totalPages > 1 &&
+        <div className="bottom-pagination">
+          <PaginationCommon
+            totalRecords={totalRecords}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+            setPageSize={setPageSize} />
+        </div>
+      }
     </>
   );
 };
