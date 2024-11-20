@@ -8,23 +8,23 @@ const ContactPage = () => {
     const breadcrumbs = [
         { label: "Trang chủ", path: Routes.HomePage.path },
         { label: "Liên hệ", path: Routes.Contact.path },
-      ];
+    ];
     return (
         <>
             <div className="div-empty"></div>
             <div className="container contact-page">
                 <div className="mt-3">
-                    <Breadcrumb breadcrumbs = {breadcrumbs} />
+                    <Breadcrumb breadcrumbs={breadcrumbs} />
                 </div>
                 <div className="mt-5">
                     <Map />
                 </div>
                 <div className="row mt-4">
                     <div className="col-md-6">
-                    <ContactInfo />
+                        <ContactInfo />
                     </div>
                     <div className="col-md-6">
-                    <ContactForm />
+                        <ContactForm />
                     </div>
                 </div>
             </div>
