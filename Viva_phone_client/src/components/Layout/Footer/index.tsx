@@ -6,12 +6,12 @@ export const Footer = () => {
   return (
     <footer className="footer container text-light pt-4 pb-3">
       <hr className="text-light" />
-      <div className="d-flex form-footer">
+      <div className="row form-footer">
         <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">
           <h5 className="footer-title">Trụ sở</h5>
           <div>
             <p className="footer-title_title">Văn phòng đại diện</p>
-            <p>Tầng 5, 152 Khuất Duy Tiến, Quận Thanh Xuân, Tp. Hà Nội</p>
+            <p>46 - Ngõ 61 - Định Công - Quận Hoàng Mai- TP Hà Nội.</p>
           </div>
           <div>
             <p className="footer-title_title">Văn phòng miền Nam</p>

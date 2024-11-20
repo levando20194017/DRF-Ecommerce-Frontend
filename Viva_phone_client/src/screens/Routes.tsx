@@ -1,14 +1,15 @@
 export const Routes = {
-    Login: { path: "/login" },
-    SignUp: { path: "/sign-up" },
-    ForgotPassword: { path: "/forgot-password" },
+    Login: { path: "/dang-nhap" },
+    SignUp: { path: "/dang-ki" },
+    ForgotPassword: { path: "/quen-mat-khau" },
 
     HomePage: { path: "/" },
-    Store: { path: "/store" },
-    News: { path: "/news" },
-    Contact: { path: "/contact" },
+    Store: { path: "/cua-hang" },
+    News: { path: "/tin-tuc" },
+    NewDetail: { path: "/tin-tuc/:slug" },
+    Contact: { path: "/lien-lac" },
 
-    AddToCart: { path: "/add-to-cart" },
+    AddToCart: { path: "/them-vao-gio-hang" },
 
-    OrderStatus: { path: "/order-status" },
+    OrderStatus: { path: "/trang-thai-don-hang" },
 }

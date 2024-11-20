@@ -16,9 +16,10 @@ import "./index.css";
 import { OrderStatus } from "./components/OrderStatus";
 import NotFound from "./screens/NotFound";
 import { Routes } from "./screens/Routes";
-import StorePage from "./screens/Store"; 
+import StorePage from "./screens/Store";
 import BlogPage from "./screens/Blog";
 import ContactPage from "./screens/Contact";
+import BlogDetail from "./screens/Blog/BlogDetail";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: Routes.News.path,
         element: <BlogPage />,
+      },
+      {
+        path: Routes.NewDetail.path,
+        element: <BlogDetail />,
       },
       {
         path: Routes.Contact.path,
