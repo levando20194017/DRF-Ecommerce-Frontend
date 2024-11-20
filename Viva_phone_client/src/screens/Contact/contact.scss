@@ -1,0 +1,65 @@
+.contact-page {
+    .breadcrumb {
+      margin-bottom: 1rem;
+      font-size: 14px;
+      color: #666;
+    }
+  
+    .contact-info {
+      h5 {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 54px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+      }
+      .form-contact{
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        &_title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #DADADA;
+          }
+        &_des{
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            text-align: left;
+            text-underline-position: from-font;
+            text-decoration-skip-ink: none;
+            color: #9A9A9A;
+          }
+      }
+    }
+  
+    .contact-form {
+      h5 {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 54px;
+        letter-spacing: -0.015em;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+      }
+  
+      p {
+        font-size: 16px;
+        color: #929292;
+        margin-bottom: 1.5rem;
+      }
+  
+      .btn {
+        background-color: #ffc107;
+        color: #000;
+        font-weight: bold;
+        &:hover {
+          background-color: #e0a800;
+        }
+      }
+    }
+  }
+  

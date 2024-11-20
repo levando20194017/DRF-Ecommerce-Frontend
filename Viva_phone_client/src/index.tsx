@@ -18,6 +18,7 @@ import NotFound from "./screens/NotFound";
 import { Routes } from "./screens/Routes";
 import StorePage from "./screens/Store"; 
 import BlogPage from "./screens/Blog";
+import ContactPage from "./screens/Contact";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: Routes.News.path,
         element: <BlogPage />,
+      },
+      {
+        path: Routes.Contact.path,
+        element: <ContactPage />,
       },
       {
         path: Routes.AddToCart.path,
