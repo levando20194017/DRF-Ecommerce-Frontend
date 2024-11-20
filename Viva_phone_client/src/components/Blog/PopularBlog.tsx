@@ -5,7 +5,7 @@ const PopularBlog = () => {
     <div className="news-card">
       <img
         className="news-image"
-        src="https://via.placeholder.com/800x400"
+        src="https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"
         alt="Hội nghị khách hàng 2024"
       />
       <div className="news-content">

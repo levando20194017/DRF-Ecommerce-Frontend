@@ -11,7 +11,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ breadcrumbs }) => {
   return (
     <nav className="breadcrumb">
       {breadcrumbs.map((breadcrumb, index) => (
-        <span key={index} className="breadcrumb-item">
+        <span key={index}>
           {breadcrumb.path && index !== breadcrumbs.length - 1 ? (
             <Link to={breadcrumb.path}>{breadcrumb.label}</Link>
           ) : (
