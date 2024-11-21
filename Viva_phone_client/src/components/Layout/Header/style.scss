@@ -192,6 +192,39 @@
     /* Hiệu ứng giãn nở khi header biến mất */
   }
 }
+.search-container {
+  position: relative;
+  transition: all 0.3s ease;
+}
+.form-search{
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  transition: all 0.3s ease;
+}
+.form-search.active{
+  opacity: 1;
+  height: 40px;
+  pointer-events: visible;
+}
+
+.ant-auto-complete {
+  width: 250px; // Có thể thay đổi tùy theo nhu cầu
+  transition: width 0.3s ease; 
+}
+
+.ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}
+
+.ant-select-item-option-content img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
 
 /*--- Responsive Code ---*/
 @media screen and (max-width: 1920px) {

@@ -1,19 +1,35 @@
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom"; // Import useLocation
+import { Input, AutoComplete } from "antd"; // Import các component cần thiết cho tìm kiếm
 import "./style.scss";
-import { useEffect, useState, FC } from "react";
+import { useEffect, useState, FC, useRef } from "react";
 import logo4 from "../../../assets/images/logo4.png";
 import { Routes } from "../../../screens/Routes";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [searchResults, setSearchResults] = useState<any[]>([]); // Kết quả tìm kiếm
+  const [searchInputVisible, setSearchInputVisible] = useState(false); // New state to control search input visibility
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Điều khiển mở/đóng search
+  const searchRef = useRef<HTMLDivElement | null>(null); // Thêm kiểu cho ref
   const location = useLocation(); // Lấy thông tin location hiện tại
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.pageYOffset > 150);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const menuItems = [
@@ -45,6 +61,23 @@ const Header: FC = () => {
       </Link>
     ));
 
+  const handleSearch = (value: string) => {
+    // Giả sử bạn có một hàm fetch dữ liệu tìm kiếm sản phẩm từ API
+    if (value) {
+      setSearchResults([
+        { id: 1, name: "Sản phẩm A", image: "https://via.placeholder.com/150", price: "200,000 VND" },
+        { id: 2, name: "Sản phẩm B", image: "https://via.placeholder.com/150", price: "300,000 VND" },
+        // Thêm các sản phẩm vào đây...
+      ]);
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const toggleSearchInput = () => {
+    setSearchInputVisible(!searchInputVisible); // Toggle search input visibility
+  };
+
   const renderHeaderContent = (isSticky = false) => (
     <Navbar className={`d-flex ${isSticky ? "navbar_header3" : "navbar_header2"}`}>
       <Link to={Routes.HomePage.path}>
@@ -69,6 +102,36 @@ const Header: FC = () => {
         <ul>{renderMenu()}</ul>
       </div>
       <div className="header_right col-xl-2 col-lg-2 d-flex justify-content-end gap-4">
+        <div className="search-container" style={{ position: "relative" }} ref={searchRef}>
+          <i
+            className="bi bi-search"
+            style={{ cursor: "pointer" }}
+            onClick={toggleSearchInput} // Toggle search input visibility
+          />
+            <AutoComplete
+              style={{ width: 300, position: "absolute", top: "40px", right: "0" }}
+              onSearch={handleSearch}
+              className={`${searchInputVisible ? "active form-search": "form-search"}`}
+              placeholder="Tìm kiếm sản phẩm"
+            >
+              {searchResults.map((result) => (
+                <AutoComplete.Option key={result.id} value={result.name}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src={result.image}
+                      alt={result.name}
+                      style={{ width: 50, height: 50, marginRight: 10 }}
+                    />
+                    <div>
+                      <strong>{result.name}</strong>
+                      <div className="text-danger">{result.price}</div>
+                    </div>
+                  </div>
+                </AutoComplete.Option>
+              ))}
+            </AutoComplete>
+
+        </div>
         <i className="bi bi-bell-fill"></i>
         <i className="bi bi-cart4"></i>
         <img
@@ -97,9 +160,7 @@ const Header: FC = () => {
         </div>
       </Navbar>
       <div className="header2">{renderHeaderContent()}</div>
-      <header className={visible ? "header visible" : "header"}>
-        {renderHeaderContent(true)}
-      </header>
+      <header className={visible ? "header visible" : "header"}>{renderHeaderContent(true)}</header>
     </div>
   );
 };
