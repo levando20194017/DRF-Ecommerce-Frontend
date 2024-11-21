@@ -9,6 +9,7 @@
 
       ul {
         display: flex;
+
         li {
           color: $Color;
           position: relative;
@@ -140,9 +141,11 @@
       color: white;
     }
   }
-.navbar-expand{
-  justify-content: space-between;
-}
+
+  .navbar-expand {
+    justify-content: space-between;
+  }
+
   .header2 {
     position: absolute;
     width: 100%;
@@ -172,12 +175,16 @@
   }
 
   .header {
-    color: blue;
+    color: black !important;
     position: fixed;
     top: -100px;
     left: 0;
     width: 100%;
     z-index: 9999;
+
+    .icon-noti {
+      color: black;
+    }
   }
 
   .header.visible {
@@ -191,18 +198,40 @@
     transition: top 1s ease-in-out;
     /* Hiệu ứng giãn nở khi header biến mất */
   }
+
 }
+
+.frame-cart-icon {
+  background-color: transparent;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.frame-cart-icon.active {
+  background-color: #FF6600;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
 .search-container {
   position: relative;
   transition: all 0.3s ease;
 }
-.form-search{
+
+.form-search {
   opacity: 0;
   pointer-events: none;
   height: 0;
   transition: all 0.3s ease;
 }
-.form-search.active{
+
+.form-search.active {
   opacity: 1;
   height: 40px;
   pointer-events: visible;
@@ -210,7 +239,7 @@
 
 .ant-auto-complete {
   width: 250px; // Có thể thay đổi tùy theo nhu cầu
-  transition: width 0.3s ease; 
+  transition: width 0.3s ease;
 }
 
 .ant-select-item-option-content {
@@ -227,17 +256,13 @@
 
 
 /*--- Responsive Code ---*/
-@media screen and (max-width: 1920px) {
-}
+@media screen and (max-width: 1920px) {}
 
-@media screen and (max-width: 1680px) {
-}
+@media screen and (max-width: 1680px) {}
 
-@media screen and (max-width: 1600px) {
-}
+@media screen and (max-width: 1600px) {}
 
-@media screen and (max-width: 1440px) {
-}
+@media screen and (max-width: 1440px) {}
 
 @media screen and (max-width: 1200px) {
   .header2 .navbar_header2 {
@@ -245,7 +270,7 @@
     justify-content: space-between;
   }
 
-  .header_content > ul > li {
+  .header_content>ul>li {
     width: 100px !important;
     font-size: 18px !important;
   }
@@ -271,8 +296,7 @@
   }
 }
 
-@media screen and (max-width: 1080px) {
-}
+@media screen and (max-width: 1080px) {}
 
 @media screen and (max-width: 1024px) {
   .header_right {
@@ -299,14 +323,11 @@
   }
 }
 
-@media screen and (max-width: 800px) {
-}
+@media screen and (max-width: 800px) {}
 
-@media screen and (max-width: 768px) {
-}
+@media screen and (max-width: 768px) {}
 
-@media screen and (max-width: 736px) {
-}
+@media screen and (max-width: 736px) {}
 
 @media screen and (max-width: 640px) {
   .header1 {
@@ -327,11 +348,9 @@
   }
 }
 
-@media screen and (max-width: 600px) {
-}
+@media screen and (max-width: 600px) {}
 
-@media screen and (max-width: 568px) {
-}
+@media screen and (max-width: 568px) {}
 
 @media screen and (max-width: 480px) {
   .header2 .navbar_header2 {
@@ -353,11 +372,9 @@
   }
 }
 
-@media screen and (max-width: 414px) {
-}
+@media screen and (max-width: 414px) {}
 
-@media screen and (max-width: 384px) {
-}
+@media screen and (max-width: 384px) {}
 
 @media screen and (max-width: 375px) {
   .header2 .navbar_header2 {
@@ -379,5 +396,4 @@
   }
 }
 
-@media screen and (max-width: 320px) {
-}
+@media screen and (max-width: 320px) {}

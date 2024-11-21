@@ -5,6 +5,7 @@ import "./style.scss";
 import { useEffect, useState, FC, useRef } from "react";
 import logo4 from "../../../assets/images/logo4.png";
 import { Routes } from "../../../screens/Routes";
+import Notification from "../../Notification";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
@@ -65,8 +66,8 @@ const Header: FC = () => {
     // Giả sử bạn có một hàm fetch dữ liệu tìm kiếm sản phẩm từ API
     if (value) {
       setSearchResults([
-        { id: 1, name: "Sản phẩm A", image: "https://via.placeholder.com/150", price: "200,000 VND" },
-        { id: 2, name: "Sản phẩm B", image: "https://via.placeholder.com/150", price: "300,000 VND" },
+        { id: 1, name: "Sản phẩm A", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "22,200,000 VND" },
+        { id: 2, name: "Sản phẩm B", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "13,300,000 VND" },
         // Thêm các sản phẩm vào đây...
       ]);
     } else {
@@ -101,39 +102,43 @@ const Header: FC = () => {
       <div className="header_content col-xl-7 col-lg-8">
         <ul>{renderMenu()}</ul>
       </div>
-      <div className="header_right col-xl-2 col-lg-2 d-flex justify-content-end gap-4">
+      <div className="header_right col-xl-2 col-lg-2 d-flex justify-content-end gap-4 align-items-center">
         <div className="search-container" style={{ position: "relative" }} ref={searchRef}>
           <i
             className="bi bi-search"
             style={{ cursor: "pointer" }}
             onClick={toggleSearchInput} // Toggle search input visibility
           />
-            <AutoComplete
-              style={{ width: 300, position: "absolute", top: "40px", right: "0" }}
-              onSearch={handleSearch}
-              className={`${searchInputVisible ? "active form-search": "form-search"}`}
-              placeholder="Tìm kiếm sản phẩm"
-            >
-              {searchResults.map((result) => (
-                <AutoComplete.Option key={result.id} value={result.name}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={result.image}
-                      alt={result.name}
-                      style={{ width: 50, height: 50, marginRight: 10 }}
-                    />
-                    <div>
-                      <strong>{result.name}</strong>
-                      <div className="text-danger">{result.price}</div>
-                    </div>
+          <AutoComplete
+            style={{ width: 300, position: "absolute", top: "40px", right: "0" }}
+            onSearch={handleSearch}
+            className={`${searchInputVisible ? "active form-search" : "form-search"}`}
+            placeholder="Tìm kiếm sản phẩm"
+          >
+            {searchResults.map((result) => (
+              <AutoComplete.Option key={result.id} value={result.name}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={result.image}
+                    alt={result.name}
+                    style={{ width: 50, height: 50, marginRight: 10 }}
+                  />
+                  <div>
+                    <strong>{result.name}</strong>
+                    <div className="text-danger">{result.price}</div>
                   </div>
-                </AutoComplete.Option>
-              ))}
-            </AutoComplete>
+                </div>
+              </AutoComplete.Option>
+            ))}
+          </AutoComplete>
 
         </div>
-        <i className="bi bi-bell-fill"></i>
-        <i className="bi bi-cart4"></i>
+        <Notification />
+        <Link to={Routes.Cart.path}>
+          <div className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
+            <i className="bi bi-cart4"></i>
+          </div>
+        </Link>
         <img
           className="headerUser-right-avt rounded-circle"
           src="https://th.bing.com/th/id/OIP.rzU5tlNULSLFeXggfJ352QHaNK?w=187&h=333&c=7&r=0&o=5&pid=1.7"

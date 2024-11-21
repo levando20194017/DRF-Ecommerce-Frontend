@@ -20,6 +20,8 @@ import StorePage from "./screens/Store";
 import BlogPage from "./screens/Blog";
 import ContactPage from "./screens/Contact";
 import BlogDetail from "./screens/Blog/BlogDetail";
+import OrderDetail from "./screens/Order/OrderDetail";
+import Cart from "./screens/Cart";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
       {
         path: Routes.OrderStatus.path,
         element: <OrderStatus />,
+      },
+      {
+        path: Routes.OrderDetail.path,
+        element: <OrderDetail />,
+      },
+      {
+        path: Routes.Cart.path,
+        element: <Cart />,
       },
     ],
   },
