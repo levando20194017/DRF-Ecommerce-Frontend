@@ -63,6 +63,33 @@
     }
   }
 
+  @keyframes slide {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(20px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .frame-icon-mouse{
+    z-index: 9999;
+    color: #fff;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: slide 2s infinite;
+  }
+
   .frame-banner:before,
   .frame-banner:after {
     content: "";

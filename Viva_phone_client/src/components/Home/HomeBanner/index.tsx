@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSpring, animated } from "@react-spring/web";
 import { GrLinkNext } from "react-icons/gr";
+import { PiMouseSimpleLight } from "react-icons/pi";
+import { IoMdArrowDown } from "react-icons/io";
+
 import "../style.scss";
+import { FaChevronDown } from "react-icons/fa";
 const videoSource: string = require("../../../assets/video/videoBanner.mp4");
 
 export const HomeBanner = () => {
@@ -126,8 +130,11 @@ export const HomeBanner = () => {
           className="video-banner"
         />
       </div>
+      <div className="frame-icon-mouse">
+        <PiMouseSimpleLight style={{fontSize: "40px"}}/>
+        <IoMdArrowDown style={{fontSize: "20px"}}/>
+      </div>
       <div className="div-shadow">
-
       </div>
     </div>
   );

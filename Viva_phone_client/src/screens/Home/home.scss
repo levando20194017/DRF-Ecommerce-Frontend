@@ -1,0 +1,31 @@
+.contact-us{
+    position: relative;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .frame-blur{
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-color: #F8B21833;
+        left: 0px;
+        border-radius: 50%;
+        filter: blur(38.8px);
+    }
+    .contact-title{
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 60.48px;
+        text-align: left;
+        width: 616px;        
+    }
+    .icon-arrow-right{
+        // color: #fff;
+        transition: all 0.4s ease-in-out;
+        &:hover{
+            color: #f0a132;
+            transition: all 0.4s ease-in-out;
+        }
+    }
+}
