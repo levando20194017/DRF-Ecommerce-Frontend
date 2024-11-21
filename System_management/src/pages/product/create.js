@@ -25,7 +25,7 @@ export default () => {
   const userData = JSON.parse(localStorage.getItem("mintadmin_userData"))?.user_infor
 
   const [formData, setFormData] = useState({
-    admin: userData.id,
+    admin: userData?.id,
     catalog: undefined,
     promotion: undefined,
     name: "",
