@@ -5,6 +5,7 @@ import img1 from "../../assets/images/banner.jpg";
 import img2 from "../../assets/images/content.jpg";
 import "./style.scss";
 import { useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export const ProductDetail = () => {
   const images = [
@@ -57,15 +58,7 @@ export const ProductDetail = () => {
   };
   return (
     <div className="pro-form">
-      <div className="div-empty"></div>
-      {/* <div className="pro-header gap-xl-3">
-        <div style={{ fontWeight: "bold", fontSize: "30px" }}>
-          <i className="bi bi-house-fill"></i>
-        </div>
-        <div className="vr"></div>
-        <div className="text-secondary">VIVA FLOWER</div>
-      </div> */}
-      <div className="pro-body mt-5 container">
+      <div className="pro-body mt-5">
         <div className="d-flex">
           <div className="col-5 images-of-pro">
             <div className="img-show">
@@ -77,10 +70,7 @@ export const ProductDetail = () => {
 
             <div className="list-img-of-pro mt-3 d-flex">
               <div>
-                <i
-                  className="bi bi-caret-left-fill"
-                  onClick={handleClickLeft}
-                ></i>
+                <FaChevronLeft onClick={handleClickLeft} style={{fontSize:"25px"}} className="cursor-pointer"/>
               </div>
               <ul>
                 {images
@@ -97,16 +87,13 @@ export const ProductDetail = () => {
                   ))}
               </ul>
               <div>
-                <i
-                  className="bi bi-caret-right-fill"
-                  onClick={handleClickRight}
-                ></i>
+                <FaChevronRight onClick={handleClickRight} style={{fontSize:"25px"}} className="cursor-pointer"/>
               </div>
             </div>
           </div>
 
           <div className="col-7 pro-detai">
-            <h2>Viva Flower</h2>
+            <h2>Viva Phone</h2>
             <hr />
             <div className="d-flex review-sale">
               <div>
@@ -118,24 +105,20 @@ export const ProductDetail = () => {
                 <i className="bi bi-star-fill"></i>
               </div>
               <div>
-                <b>99</b> <span style={{ color: "gray" }}>Reviews</span>
+                <b>99</b> <span style={{ color: "gray" }}>Đánh giá</span>
               </div>
               <div>
-                <b>249</b> <span style={{ color: "gray" }}>Sold</span>
+                <b>249</b> <span style={{ color: "gray" }}>Đã bán</span>
               </div>
             </div>
             <div>
-              <b>The remaining amount:</b>{" "}
+              <b>Số lượng còn:</b>{" "}
               <span style={{ color: "gray" }}>225</span>
-            </div>
-            <div>
-              <b>Availability:</b>{" "}
-              <span style={{ color: "gray" }}>In stock</span>
             </div>
             <div className="d-flex">
               <b>
                 <span style={{ color: "red" }}>*</span>
-                <span style={{ marginLeft: "3px" }}>Color:</span>{" "}
+                <span className="ms-2">Màu sắc:</span>{" "}
               </b>
               <select
                 className="form-select"
@@ -147,39 +130,41 @@ export const ProductDetail = () => {
                   height: "35px",
                 }}
               >
-                <option selected>--Select color--</option>
+                <option selected>--Chọn màu sắc--</option>
                 <option value="1">Blue</option>
                 <option value="2">Orange</option>
                 <option value="3">Purple</option>
               </select>
             </div>
             <div className="mt-3">
-              <b>Price:</b>{" "}
+              <b>Giá bán:</b>{" "}
               <span style={{ color: "red", fontWeight: "bold" }}>229.000đ</span>
             </div>
             <hr />
-            <div className="text-secondary" style={{ fontSize: "13px" }}>
+            {/* <div className="text-secondary" style={{ fontSize: "13px" }}>
               <b style={{ color: "black" }}>Note:</b> Customer have to pay
               shipping fees <b style={{ color: "black" }}>5.000đ</b> for{" "}
               <b style={{ color: "black" }}>1 km</b>.
-            </div>
+            </div> */}
             <div
-              className="d-flex justify-content-between col-7"
-              style={{ marginTop: "20px" }}
+              className="d-flex justify-content-between col-9 mt-4"
             >
               <div className="d-flex quantity">
-                <span>Quantity</span>
-                <input type="number" className="form-control" />
+                <span>
+                  <span style={{ color: "red" }}>*</span>
+                  <span>Quantity</span>
+                </span>
+                <input type="number" className="form-control" style={{width: "70px"}}/>
               </div>
               <div className="button-add ">
                 <button>
                   {" "}
-                  <i className="bi bi-cart4"></i> Add to cart
+                  <i className="bi bi-cart4"></i> <span className="ms-2">Thêm vào giỏ hàng</span>
                 </button>
               </div>
               <div className="buy-now">
                 <button>
-                  <i className="bi bi-bag-heart-fill"></i> Buy now
+                  <i className="bi bi-bag-heart-fill"></i> <span className="ms-2">Mua ngay</span>
                 </button>
               </div>
             </div>

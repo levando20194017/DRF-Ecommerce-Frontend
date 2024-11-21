@@ -15,7 +15,7 @@ export const RelatedProduct = () => {
         setIsOpenModal(!isOpenModal);
     }
     return ( 
-        <div className="related-pro container">
+        <div className="related-pro">
             <ModalQuickView
                 isOpen={isOpenModal}
                 toggleFromParent={toggleModal}

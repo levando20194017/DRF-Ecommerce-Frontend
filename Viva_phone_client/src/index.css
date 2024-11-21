@@ -10,3 +10,6 @@ body {
   height: 80px;
   background: rgba(29, 27, 27, 0.87) !important;
 }
+.cursor-pointer{
+  cursor: pointer;
+}

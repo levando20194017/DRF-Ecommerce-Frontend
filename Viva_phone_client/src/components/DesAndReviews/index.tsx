@@ -9,7 +9,7 @@ export const DesAndReviews = () => {
     setActiveIndex(index);
   };
   return (
-    <div className="des-and-reviews mt-5 container">
+    <div className="des-and-reviews mt-5">
       <div className="title">
         <ul className="nav justify-content-center">
           <li
@@ -152,9 +152,6 @@ export const DesAndReviews = () => {
                 </div>
                 <div className="mt-1">
                   <span className=" text-secondary">20/7/2023 10:30</span>
-                  <span className="like-review mx-4">
-                    <i className="bi bi-hand-thumbs-up-fill"></i> (99)
-                  </span>
                   <span className=" reply">Reply</span>
                 </div>
                 <div>
@@ -171,7 +168,7 @@ export const DesAndReviews = () => {
                         />
                       </div>
                       <div className="px-2 d-flex justify-content-center align-items-center">
-                        <b>VIVA FLOWER</b>
+                        <b>VIVA PHONE</b>
                       </div>
                     </div>
                   </div>
@@ -184,9 +181,6 @@ export const DesAndReviews = () => {
                     </div>
                     <div className="mt-1">
                       <span className="text-secondary">20/7/2023 12:30</span>
-                      <span className="like-review px-4">
-                        <i className="bi bi-hand-thumbs-up-fill"></i> (99)
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -272,10 +266,7 @@ export const DesAndReviews = () => {
                 </div>
                 <div className="mt-1">
                   <span className=" text-secondary">20/7/2023 10:30</span>
-                  <span className="like-review mx-4">
-                    <i className="bi bi-hand-thumbs-up-fill"></i> (99)
-                  </span>
-                  <span className=" reply">Reply</span>
+                  <span className="reply">Reply</span>
                 </div>
                 <div>
                   <div className="d-flex justify-content-between mt-2">
@@ -291,7 +282,7 @@ export const DesAndReviews = () => {
                         />
                       </div>
                       <div className="px-2 d-flex justify-content-center align-items-center">
-                        <b>VIVA FLOWER</b>
+                        <b>VIVA PHONE</b>
                       </div>
                     </div>
                   </div>
@@ -304,9 +295,6 @@ export const DesAndReviews = () => {
                     </div>
                     <div className="mt-1">
                       <span className="text-secondary">20/7/2023 12:30</span>
-                      <span className="like-review px-4">
-                        <i className="bi bi-hand-thumbs-up-fill"></i> (99)
-                      </span>
                     </div>
                   </div>
                 </div>

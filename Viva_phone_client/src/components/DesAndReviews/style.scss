@@ -5,11 +5,11 @@
         padding: 20px;
         font-weight: bold;
         cursor: pointer;
-        color: gray;
+        color: #a3a3a3;
       }
       li.active {
-        color: black;
         transition: all 0.4s ease-in-out;
+        color: #fff;
       }
     }
   }
@@ -43,6 +43,7 @@
     .reply {
       font-weight: bold;
       cursor: pointer;
+      margin-left: 32px;
     }
     .admin {
       font-family: "Tektur", cursive;

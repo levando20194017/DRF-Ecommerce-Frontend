@@ -9,7 +9,7 @@ export const Routes = {
     NewDetail: { path: "/tin-tuc/:slug" },
     Contact: { path: "/lien-lac" },
 
-    AddToCart: { path: "/them-vao-gio-hang" },
+    AddToCart: { path: "/cua-hang/chi-tiet-san-pham" },
 
     OrderStatus: { path: "/trang-thai-don-hang" },
 }
