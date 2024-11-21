@@ -10,38 +10,58 @@ const TopCategories = () => {
     const products = [
         {
             id: 1,
-            name: "Painticks U Primer",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
         {
             id: 2,
-            name: "Painticks Clear Primer",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
         {
             id: 3,
-            name: "Painticks 800",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
         {
             id: 4,
-            name: "Painticks Water Primer",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
         {
             id: 5,
-            name: "Painticks Water Primer",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
         {
             id: 6,
-            name: "Painticks Water Primer",
-            description: "Dược thiết kế để làm lớp lót cho bê mặt bê tông...",
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
+            image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
+        },
+        {
+            id: 7,
+            name: "Iphone 15 Plus 128GB",
+            price: "22.990.000đ",
+            promotion: "Phiếu giảm giá PK 150.000đ",
+            description: "Trả góp 0%",
             image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain",
         },
     ];
@@ -68,8 +88,14 @@ const TopCategories = () => {
                     <SwiperSlide key={product.id}>
                         <div className="carousel-slide">
                             <img src={product.image} alt={product.name} />
-                            <h4>{product.name}</h4>
-                            <p>{product.description}</p>
+                            <div className="d-flex justify-content-start flex-column align-items-start gap-1">
+                                <h4>{product.name}</h4>
+                            </div>
+                            <div className="product-more-infor">
+                                <div className="fw-bold" style={{ color: "red", fontSize: "16px" }}>{product.price}</div>
+                                <div>Ưu đãi: {product.promotion}</div>
+                                <div>{product.description}</div>
+                            </div>
                         </div>
                     </SwiperSlide>
                 ))}

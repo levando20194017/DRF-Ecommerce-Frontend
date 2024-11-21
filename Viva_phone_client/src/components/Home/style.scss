@@ -67,15 +67,17 @@
     0% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(20px);
     }
+
     100% {
       transform: translateY(0);
     }
   }
 
-  .frame-icon-mouse{
+  .frame-icon-mouse {
     z-index: 9999;
     color: #fff;
     position: absolute;
@@ -267,6 +269,7 @@
         rgba(22, 22, 24, 0) 16.59%,
         #161618 45.04%);
   }
+
   .div-shadow {
     position: absolute;
     bottom: 0;
@@ -315,7 +318,6 @@
 .carousel-slide {
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: #282828;
   /* Màu nền cho sản phẩm */
   border-radius: 10px;
@@ -351,10 +353,52 @@
   line-height: 1.5;
 }
 
+.frame-product {
+  display: flex;
+  flex-direction: column;
+  background-color: #282828;
+  /* Màu nền cho sản phẩm */
+  border-radius: 10px;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-radius: 10px;
+    transform: scale(1.05);
+    /* Phóng to khi hover */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    /* Đổ bóng */
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+}
+
+.product-more-infor {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 8px;
+  font-size: 14px;
+  color: #aaa6a6;
+}
+
 /* Swiper Pagination (Dot Indicators) */
-.swiper-pagination{
+.swiper-pagination {
   margin-bottom: 20px;
 }
+
 .swiper-pagination-bullet {
   background: #fff !important;
   /* Màu trắng cho dot */
@@ -594,6 +638,7 @@
       font-weight: 500;
       color: rgb(108, 104, 104);
       gap: 32px;
+
       >div {
         cursor: pointer;
         transition: color 0.3s ease-in-out;
@@ -657,6 +702,7 @@
 .single-location {
   position: relative;
   cursor: pointer;
+
   .item-actions {
     position: absolute;
     top: 45%;
@@ -777,6 +823,7 @@
 
 .modal-quick-view {
   color: black;
+
   img {
     background-size: auto;
     background-position: center;

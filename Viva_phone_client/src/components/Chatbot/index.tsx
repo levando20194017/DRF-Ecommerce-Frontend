@@ -87,7 +87,7 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div style={{ position: "fixed", bottom: "20px", right: "20px", zIndex: 1000 }}>
+    <div style={{ position: "fixed", bottom: "40px", right: "40px", zIndex: 1000 }}>
       {/* Nút mở/đóng chatbox */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -134,84 +134,84 @@ const ChatBot: React.FC = () => {
             color: "white",
             textAlign: "center",
             fontWeight: "bold",
-            position:"relative"
+            position: "relative"
           }}
         >
-            <div>Hỗ trợ khách hàng</div>
-            <span className="cursor-pointer" style={{position:"absolute", right:"10px", bottom:"10px"}}  onClick={() => setIsOpen(false)}><IoMdClose style={{fontSize:"20px"}}/></span>
+          <div>Hỗ trợ khách hàng</div>
+          <span className="cursor-pointer" style={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={() => setIsOpen(false)}><IoMdClose style={{ fontSize: "20px" }} /></span>
         </div>
 
         <div
-            ref={chatContainerRef}
-            style={{
-                flex: 1,
-                padding: "10px",
-                overflowY: "auto",
-                fontSize: "14px",
+          ref={chatContainerRef}
+          style={{
+            flex: 1,
+            padding: "10px",
+            overflowY: "auto",
+            fontSize: "14px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* Hiển thị danh sách tin nhắn */}
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              style={{
                 display: "flex",
-                flexDirection: "column",
-            }}
+                justifyContent: msg.sender === "user" ? "flex-end" : "flex-start",
+                marginBottom: "10px",
+              }}
             >
-            {/* Hiển thị danh sách tin nhắn */}
-            {messages.map((msg, index) => (
-                <div
-                key={index}
+              <span
                 style={{
-                    display: "flex",
-                    justifyContent: msg.sender === "user" ? "flex-end" : "flex-start",
-                    marginBottom: "10px",
+                  padding: "8px 12px",
+                  borderRadius: "15px",
+                  backgroundColor: msg.sender === "user" ? "#FF6600" : "#f1f1f1",
+                  color: msg.sender === "user" ? "white" : "black",
+                  maxWidth: "70%",
+                  wordWrap: "break-word",
                 }}
-                >
-                <span
-                    style={{
-                    padding: "8px 12px",
-                    borderRadius: "15px",
-                    backgroundColor: msg.sender === "user" ? "#FF6600" : "#f1f1f1",
-                    color: msg.sender === "user" ? "white" : "black",
-                    maxWidth: "70%",
-                    wordWrap: "break-word",
-                    }}
-                >
+              >
                 {msg.text.split(" ").map((el, i) => (
-                    <motion.span
+                  <motion.span
                     key={`${el}-${i}`}
                     variants={variants}
                     initial="initial"
                     animate="animate"
                     transition={{
-                        duration: 0.2, // Hiệu ứng mỗi chữ lâu hơn
-                        delay: i / 8, // Tăng khoảng cách giữa các chữ
+                      duration: 0.2, // Hiệu ứng mỗi chữ lâu hơn
+                      delay: i / 8, // Tăng khoảng cách giữa các chữ
                     }}
                     className="word"
-                    >
+                  >
                     {el}{" "}
-                    </motion.span>
+                  </motion.span>
                 ))}
-                </span>
-                </div>
-            ))}
+              </span>
+            </div>
+          ))}
 
-        {isTyping && (
+          {isTyping && (
             <div
-            style={{
+              style={{
                 textAlign: "left",
                 marginTop: "10px",
-            }}
+              }}
             >
-            <span
+              <span
                 style={{
-                display: "inline-block",
-                padding: "8px 12px",
-                borderRadius: "15px",
-                backgroundColor: "#f1f1f1",
-                color: "black",
-                fontStyle: "italic",
+                  display: "inline-block",
+                  padding: "8px 12px",
+                  borderRadius: "15px",
+                  backgroundColor: "#f1f1f1",
+                  color: "black",
+                  fontStyle: "italic",
                 }}
-            >
+              >
                 Đang trả lời...
-            </span>
+              </span>
             </div>
-        )}
+          )}
         </div>
 
         <div
@@ -234,7 +234,7 @@ const ChatBot: React.FC = () => {
               borderRadius: "5px",
               padding: "5px",
               fontSize: "14px",
-              color:"black"
+              color: "black"
             }}
           />
           <button
