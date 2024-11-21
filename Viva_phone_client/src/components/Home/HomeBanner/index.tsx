@@ -6,7 +6,6 @@ import { PiMouseSimpleLight } from "react-icons/pi";
 import { IoMdArrowDown } from "react-icons/io";
 
 import "../style.scss";
-import { FaChevronDown } from "react-icons/fa";
 const videoSource: string = require("../../../assets/video/videoBanner.mp4");
 
 export const HomeBanner = () => {

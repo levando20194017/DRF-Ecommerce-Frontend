@@ -85,7 +85,9 @@ export const LoginForm = ({ title, btnLabel }: Props) => {
                   </p>
                   <div className="clear"></div>
                   <div className="submit-w3l">
-                    <input type="submit" className="mt-5" value="Login" />
+                    <Link to={Routes.HomePage.path}>
+                      <input className="mt-5" type="submit" value="Login" />
+                    </Link>
                   </div>
                 </form>
                 {/* <div className="social w3layouts">

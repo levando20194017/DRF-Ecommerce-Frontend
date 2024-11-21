@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { Routes } from "../../../../screens/Routes";
 import "../../style.scss";
 interface Props {
     product: Product,
@@ -19,15 +21,16 @@ export const ProductItem = (props: Props) => {
        <div className="location-img">
           <img src={product.image} alt={product.name} />
           <div className="item-actions">
-            <div
-              className="quick-view"
-              onClick={() => {
+            <Link to={Routes.AddToCart.path} style={{color: "#fff"}}>
+              <div
+                className="quick-view"
+                >
+                <i className="bi bi-eye-fill"></i>
+              </div>
+            </Link>
+              <div className="add-to-cart" onClick={() => {
                 handleModalQuickView();
-              }}
-            >
-              <i className="bi bi-eye-fill"></i>
-            </div>
-              <div className="add-to-cart">
+              }}>
                 <i className="bi bi-cart4"></i>
               </div>
           </div>
