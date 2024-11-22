@@ -45,3 +45,8 @@ export const roles = {
   ADMIN: "Admin",
   STAFF: "Staff",
 };
+export const discountType = {
+  percentage: "percentage",
+  fixed: "fixed",
+};
+
