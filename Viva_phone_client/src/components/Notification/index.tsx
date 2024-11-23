@@ -5,13 +5,17 @@ import "./notification.scss";
 const Notification: React.FC = () => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false); // State để quản lý trạng thái hiển thị popup thông báo
     const notificationRef = useRef<HTMLDivElement>(null);
+    const iconRef = useRef<HTMLDivElement>(null); // Thêm ref cho icon để xử lý click vào icon
 
     // Đóng popup khi nhấp ra ngoài
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
+            // Kiểm tra xem người dùng có nhấn vào ngoài popup và ngoài icon thông báo không
             if (
                 notificationRef.current &&
-                !notificationRef.current.contains(event.target as Node)
+                !notificationRef.current.contains(event.target as Node) &&
+                iconRef.current &&
+                !iconRef.current.contains(event.target as Node)
             ) {
                 setIsNotificationOpen(false);
             }
@@ -29,11 +33,18 @@ const Notification: React.FC = () => {
         visible: { opacity: 1, y: 0, scale: 1 },
     };
 
+    // Hàm để toggle mở/đóng popup khi click vào icon
+    const handleToggleNotification = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Ngừng sự kiện bọt (để không bị gây ảnh hưởng bởi các sự kiện khác)
+        setIsNotificationOpen(prevState => !prevState); // Đảo trạng thái popup
+    };
+
     return (
         <div style={{ position: "relative" }}>
             {/* Nút bật/tắt thông báo */}
             <div
-                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                ref={iconRef} // Thêm ref cho icon
+                onClick={handleToggleNotification}
                 style={{
                     backgroundColor: `${isNotificationOpen ? "#FF6600" : "transparent"}`,
                     border: "none",

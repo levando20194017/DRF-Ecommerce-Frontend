@@ -12,7 +12,6 @@ const Header: FC = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [searchResults, setSearchResults] = useState<any[]>([]); // Kết quả tìm kiếm
   const [searchInputVisible, setSearchInputVisible] = useState(false); // New state to control search input visibility
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // Điều khiển mở/đóng search
   const searchRef = useRef<HTMLDivElement | null>(null); // Thêm kiểu cho ref
   const location = useLocation(); // Lấy thông tin location hiện tại
 
@@ -22,10 +21,11 @@ const Header: FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Đóng form search khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsSearchOpen(false);
+        setSearchInputVisible(false); // Đóng search khi click ra ngoài
       }
     };
 
@@ -131,7 +131,6 @@ const Header: FC = () => {
               </AutoComplete.Option>
             ))}
           </AutoComplete>
-
         </div>
         <Notification />
         <Link to={Routes.Cart.path}>
