@@ -1,28 +1,86 @@
-import  Header  from "./components/Layout/Header";
-import "./App.css";
-import "../src/styles/fonts.css";
+import { RouterProvider } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { createBrowserRouter } from "react-router-dom";
+import { Layout } from "./components/Layout";
+import SignupPage from "./screens/Signup";
+import LoginPage from "./screens/Login";
+import ForgotPasswordPage from "./screens/ForgotPassword";
+import { HomePage } from "./screens/Home";
+import AddToCartPage from "./screens/AddToCart";
+import "./index.css";
+import { OrderStatus } from "./components/OrderStatus";
+import NotFound from "./screens/NotFound";
+import { Routes } from "./screens/Routes";
+import StorePage from "./screens/Store";
+import BlogPage from "./screens/Blog";
+import ContactPage from "./screens/Contact";
+import BlogDetail from "./screens/Blog/BlogDetail";
+import OrderDetail from "./screens/Order/OrderDetail";
+import Cart from "./screens/Cart";
+const App = () => {
 
-function App() {
-  //...render
-  // calling API
-  // array dependencies
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          path: Routes.HomePage.path,
+          element: <HomePage />,
+        },
+        {
+          path: Routes.Store.path,
+          element: <StorePage />,
+        },
+        {
+          path: Routes.News.path,
+          element: <BlogPage />,
+        },
+        {
+          path: Routes.NewDetail.path,
+          element: <BlogDetail />,
+        },
+        {
+          path: Routes.Contact.path,
+          element: <ContactPage />,
+        },
+        {
+          path: Routes.AddToCart.path,
+          element: <AddToCartPage />,
+        },
+        {
+          path: Routes.OrderStatus.path,
+          element: <OrderStatus />,
+        },
+        {
+          path: Routes.OrderDetail.path,
+          element: <OrderDetail />,
+        },
+        {
+          path: Routes.Cart.path,
+          element: <Cart />,
+        },
+      ],
+    },
+    {
+      path: Routes.SignUp.path,
+      element: <SignupPage />,
+    },
+    {
+      path: Routes.Login.path,
+      element: <LoginPage />,
+    },
+    {
+      path: Routes.ForgotPassword.path,
+      element: <ForgotPasswordPage />,
+    },
+  ]);
 
   return (
-    <div className="app">
-      <Header />
-      <div className="app-content">
-        <h1>App</h1>
-      </div>
-    </div>
+    <RouterProvider router={router} />
   );
-}
+};
 
 export default App;
-
-/**
- * where to call API (API call is asynchronous code )
- * 1. inside component
- * 2. tools: redux-saga, redux-toolkit, react-query
- * Component: pure function
- * Side effect
- */
