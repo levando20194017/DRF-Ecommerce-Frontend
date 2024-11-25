@@ -166,25 +166,25 @@
   }
 
   .navbar_header3 {
-    border-bottom: 1px solid rgb(217, 212, 212);
-    -webkit-box-shadow: 0px 1px 6px 0px #c5c5c5;
-    background-color: #fff;
+    border-bottom: 1px solid rgb(36, 33, 33);
+    box-shadow: 0px 4px 6px -4px #4e4e4e;
+    background-color: #282828;
     height: 80px;
     padding: 0 20px;
-    @include headerCommon(black, #ff652f, black);
+    @include headerCommon(#fff, #fff, #fff);
   }
 
   .header {
-    color: black !important;
+    // color: black !important;
     position: fixed;
     top: -100px;
     left: 0;
     width: 100%;
     z-index: 9999;
 
-    .icon-noti {
-      color: black;
-    }
+    // .icon-noti {
+    //   color: black;
+    // }
   }
 
   .header.visible {

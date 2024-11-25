@@ -27,12 +27,12 @@ export const DesAndReviews = () => {
         </ul>
       </div>
       {activeIndex === 0 && (
-        <div className="des card">
+        <div className="des">
           <div className="car-body p-3">
-            <p>
+            <p className="title">
               <b>The standard Lorem Ipsum passage, used since the 1500</b>
             </p>
-            <p style={{ color: "gray" }}>
+            <p>
               Fashion has been creating well-designed collections since 2010.
               The brand offers feminine designs delivering stylish separates and
               statement dresses which has since evolved into a full
@@ -42,7 +42,7 @@ export const DesAndReviews = () => {
               use Lorem Ipsum as their default model text, and a search for
               'lorem ipsum' will uncover many web sites still in their infancy.
             </p>
-            <p style={{ color: "gray" }}>
+            <p>
               c It has roots in a piece of classical Latin literature from 45
               BC, making it over 2000 years old. Richard McClintock, a Latin
               professor at Hampden-Sydney College in Virginia, looked up one of
@@ -50,13 +50,13 @@ export const DesAndReviews = () => {
               passage, and going through the cites of the word in classical
               literature.
             </p>
-            <p>
+            <p className="title">
               <b>
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text.
               </b>
             </p>
-            <p style={{ color: "gray" }}>
+            <p>
               Many desktop publishing packages and web page editors now use
               Lorem Ipsum as their default model text, and a search for 'lorem
               ipsum' will uncover many web sites still in their infancy. Various
@@ -70,8 +70,8 @@ export const DesAndReviews = () => {
         </div>
       )}
       {activeIndex === 1 && (
-        <div className="reviews card">
-          <div className="card-body px-3">
+        <div className="reviews p-3">
+          <div className="card-body">
             <div className="mt-3">
               <div className="d-flex justify-content-between">
                 <div className="d-flex">
@@ -141,14 +141,11 @@ export const DesAndReviews = () => {
                 </div>
               </div>
               <div className="px-5 py-1">
-                <div>
+                <div className="review-content">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
                   harum cum distinctio, at accusantium nam pariatur omnis quod
                   corporis temporibus fugit ab quas facilis tempora iste commodi
                   impedit odio ex?
-                </div>
-                <div className="level-report mt-2">
-                  Product quality is temporary
                 </div>
                 <div className="mt-1">
                   <span className=" text-secondary">20/7/2023 10:30</span>
@@ -173,7 +170,7 @@ export const DesAndReviews = () => {
                     </div>
                   </div>
                   <div className="px-5">
-                    <div>
+                    <div className="review-content">
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Consequatur ipsa facilis eius, soluta accusantium neque
                       modi aut veritatis dolore qui hic tempore voluptatem. Quos
@@ -255,14 +252,11 @@ export const DesAndReviews = () => {
                 </div>
               </div>
               <div className="px-5 py-1">
-                <div>
+                <div className="review-content">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
                   harum cum distinctio, at accusantium nam pariatur omnis quod
                   corporis temporibus fugit ab quas facilis tempora iste commodi
                   impedit odio ex?
-                </div>
-                <div className="level-report mt-2">
-                  Product quality is temporary
                 </div>
                 <div className="mt-1">
                   <span className=" text-secondary">20/7/2023 10:30</span>
@@ -287,7 +281,7 @@ export const DesAndReviews = () => {
                     </div>
                   </div>
                   <div className="px-5">
-                    <div>
+                    <div className="review-content">
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Consequatur ipsa facilis eius, soluta accusantium neque
                       modi aut veritatis dolore qui hic tempore voluptatem. Quos

@@ -1,4 +1,5 @@
 .des-and-reviews {
+
   .title {
     ul {
       li {
@@ -15,18 +16,29 @@
     }
   }
 
-  .card {
-    background-color: #d1d1d1;
-  }
-
   .des {
+    background-color: #282828;
+    border-radius: 4px;
+
+    .title {
+      color: #fff;
+    }
+
     p {
       line-height: 26px;
       font-weight: 400;
+      color: #aaa6a6;
     }
   }
 
   .reviews {
+    background-color: #282828;
+    border-radius: 4px;
+
+    .review-content {
+      color: #aaa6a6;
+    }
+
     .action-review {
       justify-content: center;
       align-items: center;
@@ -40,7 +52,7 @@
     .level-report {
       border-radius: 20px;
       background-color: rgb(236, 236, 236);
-      color: gray;
+      // color: gray;
       font-weight: 500;
       width: 250px;
       display: flex;

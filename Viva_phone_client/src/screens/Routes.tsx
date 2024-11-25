@@ -3,6 +3,8 @@ export const Routes = {
     SignUp: { path: "/dang-ki" },
     ForgotPassword: { path: "/quen-mat-khau" },
 
+    User: { path: "/tai-khoan" },
+
     HomePage: { path: "/" },
     Store: { path: "/cua-hang" },
     News: { path: "/tin-tuc" },

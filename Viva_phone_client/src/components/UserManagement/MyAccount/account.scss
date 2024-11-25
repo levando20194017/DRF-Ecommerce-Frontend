@@ -1,0 +1,102 @@
+@use "../../../styles/variables" as vars;
+
+.account-infor {
+    flex: 1;
+    background-color: vars.$color-background;
+    padding: 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &_header {
+        h5 {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .text-more {
+            font-size: 14px;
+            color: vars.$color-content;
+            border-bottom: 1px solid vars.$border-color-bottom;
+            padding-bottom: 8px;
+        }
+    }
+
+    &_body {
+        padding: 16px 0;
+        display: flex;
+        gap: 16px;
+
+        .form-infor {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .label {
+                min-width: 125px;
+                text-align: end;
+            }
+
+            .value {
+                flex: 1;
+
+                .ant-input {
+                    background-color: vars.$color-background;
+                    border-radius: 2px;
+                    border: 1px solid vars.$border-color-bottom;
+                    color: vars.$common-white;
+                    height: 40px;
+                    font-size: 16px;
+
+                    &:focus,
+                    &:hover {
+                        background-color: vars.$color-background;
+                    }
+                }
+
+                .ant-input-disabled {
+                    border: 1px solid vars.$border-color-bottom !important;
+                    color: vars.$common-white !important;
+                    background-color: #4e4e4e !important;
+                }
+            }
+
+            .btn-save {
+                border-radius: 2px;
+                padding: 0 32px;
+                font-weight: 600;
+                font-size: 16px;
+                background-color: vars.$common-button;
+                color: vars.$common-white;
+                border: 1px solid vars.$common-button;
+
+                &:hover {
+                    color: black;
+                }
+            }
+        }
+    }
+}
+
+.upload-avatar {
+    flex: 1;
+    text-align: center;
+
+    .avatar-profile {
+        flex: 1;
+        text-align: center;
+
+        img {
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+            overflow: hidden;
+            border-radius: 50%;
+
+            &:hover {
+                border-radius: 50%;
+            }
+        }
+
+    }
+}

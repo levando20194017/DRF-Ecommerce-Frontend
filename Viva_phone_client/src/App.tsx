@@ -8,8 +8,7 @@ import LoginPage from "./screens/Login";
 import ForgotPasswordPage from "./screens/ForgotPassword";
 import { HomePage } from "./screens/Home";
 import AddToCartPage from "./screens/AddToCart";
-import "./index.css";
-import { OrderStatus } from "./components/OrderStatus";
+import OrderStatusPage from "./screens/Order/OrderStatus";
 import NotFound from "./screens/NotFound";
 import { Routes } from "./screens/Routes";
 import StorePage from "./screens/Store";
@@ -18,6 +17,7 @@ import ContactPage from "./screens/Contact";
 import BlogDetail from "./screens/Blog/BlogDetail";
 import OrderDetail from "./screens/Order/OrderDetail";
 import Cart from "./screens/Cart";
+import UserManagementPage from "./screens/UserManagementPage";
 const App = () => {
 
   const router = createBrowserRouter([
@@ -52,7 +52,7 @@ const App = () => {
         },
         {
           path: Routes.OrderStatus.path,
-          element: <OrderStatus />,
+          element: <OrderStatusPage />,
         },
         {
           path: Routes.OrderDetail.path,
@@ -61,6 +61,10 @@ const App = () => {
         {
           path: Routes.Cart.path,
           element: <Cart />,
+        },
+        {
+          path: Routes.User.path,
+          element: <UserManagementPage />,
         },
       ],
     },

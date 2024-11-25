@@ -3,59 +3,73 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import img1 from "../../assets/images/banner.jpg";
 import img2 from "../../assets/images/content.jpg";
-import "./style.scss";
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { motion } from "framer-motion"; // Import motion from framer-motion
+import "./style.scss";
+
+interface Image {
+  original: string;
+}
 
 export const ProductDetail = () => {
-  const images = [
+  const listImages = [
     { original: img1 },
+    { original: "https://th.bing.com/th/id/OIP.uUcKbkk6gr_sD6iBOZWX6AHaIR?w=156&h=180&c=7&r=0&o=5&pid=1.7" },
+    { original: "https://th.bing.com/th/id/OIP.OKsfBcRCUQUV_VYfj1MozwHaEK?w=310&h=180&c=7&r=0&o=5&pid=1.7" },
+    { original: "https://th.bing.com/th/id/OIP.Yr-TVgQ1AOF3p1nw-j1bywHaE8?w=235&h=180&c=7&r=0&o=5&pid=1.7" },
     { original: img2 },
-    { original: img2 },
-    { original: img2 },
-    { original: img2 },
+    { original: "https://th.bing.com/th/id/OIP.LhG7XVTSgYz420P_723mjgHaE8?w=236&h=180&c=7&r=0&o=5&pid=1.7" }
   ];
 
+  const [images, setImages] = useState<Image[]>(listImages.slice(0, 4)); // Hiển thị tối đa 4 ảnh
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const header2 = document.querySelector(".navbar_header2");
   const header3 = document.querySelector(".navbar_header3");
 
-  const handleSelectImage = (selectedIndex: number) => {
-    setSelectedImageIndex(selectedIndex);
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
-
     header2?.classList.remove("modal-header");
     header3?.classList.remove("modal-header");
   };
 
   const handleShowModal = () => {
     setShowModal(true);
-
     header2?.classList.add("modal-header");
     header3?.classList.add("modal-header");
-    console.log(header2, header3);
   };
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
     handleShowModal();
   };
+
   const handleClickLeft = () => {
-    if (selectedImageIndex > 0) {
-      setSelectedImageIndex(selectedImageIndex - 1);
-    }
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.unshift(newImages.pop()!); // Di chuyển ảnh cuối cùng lên đầu
+      return newImages;
+    });
+
+    setSelectedImageIndex((prevIndex) => (prevIndex === 0 ? 3 : prevIndex - 1));
   };
 
   const handleClickRight = () => {
-    if (selectedImageIndex < images.length - 4) {
-      setSelectedImageIndex(selectedImageIndex + 1);
-    }
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.push(newImages.shift()!); // Di chuyển ảnh đầu tiên xuống cuối
+      return newImages;
+    });
+
+    setSelectedImageIndex((prevIndex) => (prevIndex === 3 ? 0 : prevIndex + 1));
   };
+
+  const handleSelectedImage = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -65,29 +79,48 @@ export const ProductDetail = () => {
               <img
                 src={images[selectedImageIndex].original}
                 onClick={() => handleImageClick(selectedImageIndex)}
+                alt="Product"
               />
             </div>
 
             <div className="list-img-of-pro mt-3 d-flex">
               <div>
-                <FaChevronLeft onClick={handleClickLeft} style={{fontSize:"25px"}} className="cursor-pointer"/>
+                <FaChevronLeft
+                  onClick={handleClickLeft}
+                  style={{ fontSize: "25px", cursor: "pointer" }}
+                />
               </div>
-              <ul>
-                {images
-                  .slice(selectedImageIndex, selectedImageIndex + 4)
-                  .map((image, index) => (
-                    <li key={index}>
-                      <img
-                        src={image.original}
-                        height={120}
-                        width={100}
-                        onClick={() => handleImageClick(index)}
-                      />
-                    </li>
-                  ))}
-              </ul>
+
+              {/* Sử dụng motion.div để thêm hiệu ứng trượt */}
+              <motion.div
+                className="image-list"
+                animate={{ x: 0 }} // Điều chỉnh trượt ngang
+                transition={{ type: "spring", stiffness: 100 }}
+              >
+                {images.map((image, index) => (
+                  <motion.div
+                    key={index}
+                    className={`image-item p-2 ${index === selectedImageIndex ? "active" : ""}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img
+                      src={image.original}
+                      height={120}
+                      width={100}
+                      onClick={() => handleSelectedImage(index)}
+                      alt={`Thumbnail ${index}`}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
               <div>
-                <FaChevronRight onClick={handleClickRight} style={{fontSize:"25px"}} className="cursor-pointer"/>
+                <FaChevronRight
+                  onClick={handleClickRight}
+                  style={{ fontSize: "25px", cursor: "pointer" }}
+                />
               </div>
             </div>
           </div>
@@ -141,20 +174,13 @@ export const ProductDetail = () => {
               <span style={{ color: "red", fontWeight: "bold" }}>229.000đ</span>
             </div>
             <hr />
-            {/* <div className="text-secondary" style={{ fontSize: "13px" }}>
-              <b style={{ color: "black" }}>Note:</b> Customer have to pay
-              shipping fees <b style={{ color: "black" }}>5.000đ</b> for{" "}
-              <b style={{ color: "black" }}>1 km</b>.
-            </div> */}
-            <div
-              className="d-flex justify-content-between col-9 mt-4"
-            >
+            <div className="d-flex justify-content-between col-9 mt-4">
               <div className="d-flex quantity">
                 <span>
                   <span style={{ color: "red" }}>*</span>
                   <span>Quantity</span>
                 </span>
-                <input type="number" className="form-control" style={{width: "70px"}}/>
+                <input type="number" className="form-control" style={{ width: "70px" }} />
               </div>
               <div className="button-add ">
                 <button>
@@ -171,24 +197,22 @@ export const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <div className=""></div>
-      <div>
-        <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>
-          <div style={{ backgroundColor: "black" }}>
-            <ImageGallery
-              items={images}
-              showFullscreenButton={false}
-              showPlayButton={false}
-              showThumbnails={false}
-              showBullets={true}
-              startIndex={selectedImageIndex}
-              onScreenChange={() => handleCloseModal()}
-              showNav={true}
-              showIndex={true}
-            />
-          </div>
-        </Modal>
-      </div>
+
+      <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>
+        <div style={{ backgroundColor: "black" }}>
+          <ImageGallery
+            items={listImages}
+            showFullscreenButton={false}
+            showPlayButton={false}
+            showThumbnails={false}
+            showBullets={true}
+            startIndex={selectedImageIndex}
+            onScreenChange={() => handleCloseModal()}
+            showNav={true}
+            showIndex={true}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };

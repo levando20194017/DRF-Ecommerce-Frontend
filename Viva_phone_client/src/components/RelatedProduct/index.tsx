@@ -14,13 +14,18 @@ export const RelatedProduct = () => {
     const toggleModal = () => {
         setIsOpenModal(!isOpenModal);
     }
-    return ( 
+    return (
         <div className="related-pro">
             <ModalQuickView
                 isOpen={isOpenModal}
                 toggleFromParent={toggleModal}
             />
             <div className="title justify-content-center">Các sản phẩm gợi ý</div>
+            <div className="text-center description">
+                <p>
+                    Xem thêm nhiều sản phẩm khác có thể phù hợp với bạn
+                </p>
+            </div>
             <ListProduct handleQuickView={handleQuickView} />
         </div>
     );

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <footer className="footer container text-light pb-3">
-      <hr className="text-light" />
+      {/* <hr className="text-light" /> */}
       <div className="row form-footer">
         <div className="col-lg-3 col-md-6 mb-4 d-flex flex-column gap-4">
           <h5 className="footer-title">Trụ sở</h5>
