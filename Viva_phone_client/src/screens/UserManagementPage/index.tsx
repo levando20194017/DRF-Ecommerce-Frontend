@@ -7,6 +7,9 @@ import SearchOrder from '../../components/UserManagement/Order/Search';
 import Breadcrumb from '../../components/Breadcrumb';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
 import AccountInfor from '../../components/UserManagement/MyAccount/AccountInfor';
+import Notification from '../../components/UserManagement/Notification';
+import EmptyNoti from '../../components/UserManagement/Notification/EmptyNotification';
+import OrderStatus from '../../components/UserManagement/OrderStatus';
 
 const UserManagementPage: React.FC = () => {
     const breadcrumbs = [
@@ -23,7 +26,12 @@ const UserManagementPage: React.FC = () => {
                     <Sidebar />
                     <div className="user-management-content">
                         {/* account management */}
-                        <AccountInfor />
+                        {/* <AccountInfor /> */}
+
+                        {/* <Notification /> */}
+                        {/* <EmptyNoti /> */}
+
+                        <OrderStatus />
 
                         {/* order management
                         <HeaderTabs />

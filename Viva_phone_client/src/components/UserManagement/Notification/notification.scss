@@ -1,0 +1,46 @@
+@use "../../../styles/variables" as vars;
+
+.notification-page {
+    flex: 1;
+    background-color: vars.$color-background;
+    padding: 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    img {
+        height: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: 4px;
+
+        &:hover {
+            border-radius: 4px;
+        }
+    }
+
+    .title {
+        font-weight: 600;
+    }
+
+    .content {
+        font-weight: 400;
+        font-size: 16px;
+        color: vars.$color-content;
+    }
+
+    .btn-rate {
+        border-radius: 2px;
+        height: 32px;
+        font-size: 16px;
+        background-color: vars.$common-button;
+        color: vars.$common-white;
+        border: 1px solid vars.$common-button;
+
+        &:hover {
+            color: black;
+        }
+    }
+}

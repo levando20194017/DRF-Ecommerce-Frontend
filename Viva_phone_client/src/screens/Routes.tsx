@@ -1,19 +1,19 @@
 export const Routes = {
-    Login: { path: "/dang-nhap" },
-    SignUp: { path: "/dang-ki" },
-    ForgotPassword: { path: "/quen-mat-khau" },
+    Login: { path: "/register" },
+    SignUp: { path: "/login" },
+    ForgotPassword: { path: "/fogot-password" },
 
-    User: { path: "/tai-khoan" },
+    User: { path: "/user" },
 
     HomePage: { path: "/" },
-    Store: { path: "/cua-hang" },
-    News: { path: "/tin-tuc" },
-    NewDetail: { path: "/tin-tuc/:slug" },
-    Contact: { path: "/lien-lac" },
+    Store: { path: "/store" },
+    News: { path: "/news" },
+    NewDetail: { path: "/news/:slug" },
+    Contact: { path: "/contact" },
 
-    AddToCart: { path: "/cua-hang/chi-tiet-san-pham" },
-    Cart: { path: "/gio-hang" },
-    OrderDetail: { path: "/chi-tiet-don-hang" },
+    AddToCart: { path: "/store/product-detail" },
+    Cart: { path: "/cart" },
+    OrderDetail: { path: "/order-detail" },
 
-    OrderStatus: { path: "/trang-thai-don-hang" },
+    OrderStatus: { path: "/order-status" },
 }

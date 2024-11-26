@@ -16,7 +16,7 @@ import BlogPage from "./screens/Blog";
 import ContactPage from "./screens/Contact";
 import BlogDetail from "./screens/Blog/BlogDetail";
 import OrderDetail from "./screens/Order/OrderDetail";
-import Cart from "./screens/Cart";
+import Cart from "./screens/Cart/Cart";
 import UserManagementPage from "./screens/UserManagementPage";
 const App = () => {
 
