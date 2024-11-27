@@ -18,6 +18,7 @@ import BlogDetail from "./screens/Blog/BlogDetail";
 import OrderDetail from "./screens/Order/OrderDetail";
 import Cart from "./screens/Cart/Cart";
 import UserManagementPage from "./screens/UserManagementPage";
+import PaymentPage from "./screens/Payment";
 const App = () => {
 
   const router = createBrowserRouter([
@@ -61,6 +62,10 @@ const App = () => {
         {
           path: Routes.Cart.path,
           element: <Cart />,
+        },
+        {
+          path: Routes.Payment.path,
+          element: <PaymentPage />,
         },
         {
           path: Routes.User.path,

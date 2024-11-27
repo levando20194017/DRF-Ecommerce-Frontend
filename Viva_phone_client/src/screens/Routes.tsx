@@ -14,6 +14,6 @@ export const Routes = {
     AddToCart: { path: "/store/product-detail" },
     Cart: { path: "/cart" },
     OrderDetail: { path: "/order-detail" },
-
     OrderStatus: { path: "/order-status" },
+    Payment: { path: "/payment/:id" },
 }
