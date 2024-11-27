@@ -3,7 +3,7 @@ import "./style.scss"
 
 const PopularBlog = () => {
   return (
-    <Link to = "/tin-tuc/:slug" style={{color:"#fff"}}>
+    <Link to = "/news/:slug" style={{color:"#fff"}}>
       <div className="news-card">
         <img
           className="news-image"
