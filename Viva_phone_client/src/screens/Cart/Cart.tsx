@@ -60,7 +60,8 @@ const Cart: React.FC = () => {
                     <Breadcrumb breadcrumbs={breadcrumbs} />
                 </div>
                 {/* <h5 className='title mt-5'>Giỏ hàng của tôi</h5> */}
-                <div className="d-flex py-3 mt-5 fw-bold cart-page_header">
+                <div className='border-top mt-5'></div>
+                <div className="d-flex py-4 fw-bold cart-page_header">
                     <div className='col-5 d-flex'>
                         <div className="col-1 text-center">
                             <Checkbox
@@ -92,7 +93,7 @@ const Cart: React.FC = () => {
                 </div>
 
                 {/* Summary */}
-                <CartSummary total={total} onCheckout={handleCheckout} selectedIds = {selectedIds} handleSelectAll = {handleSelectAll} products = {products}/>
+                <CartSummary total={total} onCheckout={handleCheckout} selectedIds={selectedIds} handleSelectAll={handleSelectAll} products={products} />
             </div>
         </>
     );
