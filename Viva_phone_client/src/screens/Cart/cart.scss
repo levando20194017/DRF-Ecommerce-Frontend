@@ -24,7 +24,12 @@
         }
     }
     .cart-summary{
-        text-align: end;
+        background-color: vars.$color-background;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
         .btn-buy{
             background: vars.$color-price;
             color: #fff;

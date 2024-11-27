@@ -10,6 +10,12 @@ import './cart.scss'
 const initialProducts: Product[] = [
     { id: 1, name: 'Quần Túi Hộp', price: 146000000, quantity: 2, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'Đen, XL', shop: 'HipHop69' },
     { id: 2, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 3, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 4, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 5, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 6, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 7, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 8, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
 ];
 
 const Cart: React.FC = () => {
@@ -73,7 +79,7 @@ const Cart: React.FC = () => {
                 </div>
 
                 {/* Items */}
-                <div className='mt-2'>
+                <div className='mt-1'>
                     {products.map((product) => (
                         <CartItem
                             key={product.id}
@@ -86,7 +92,7 @@ const Cart: React.FC = () => {
                 </div>
 
                 {/* Summary */}
-                <CartSummary total={total} onCheckout={handleCheckout} />
+                <CartSummary total={total} onCheckout={handleCheckout} selectedIds = {selectedIds} handleSelectAll = {handleSelectAll} products = {products}/>
             </div>
         </>
     );
