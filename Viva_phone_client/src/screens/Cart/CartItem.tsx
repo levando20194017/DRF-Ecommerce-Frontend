@@ -11,54 +11,56 @@ interface CartItemProps {
 
 const CartItem: React.FC<CartItemProps> = ({ product, onQuantityChange, onSelect, selected }) => {
     return (
-        <div className="d-flex align-items-center py-3">
+        <div className="d-flex align-items-center py-3 cart-item">
             {/* Checkbox */}
-            <div className="col-1 text-center">
-                <Checkbox
-                    checked={selected}
-                    onChange={(e) => onSelect(product.id, e.target.checked)}
-                />
-            </div>
+            <div className='d-flex col-5'>
+                <div className="col-1 text-center d-flex align-items-center justify-content-center">
+                    <Checkbox
+                        checked={selected}
+                        onChange={(e) => onSelect(product.id, e.target.checked)}
+                    />
+                </div>
 
-            {/* Product Info */}
-            <div className="col-5 d-flex">
-                <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    style={{ width: 80, height: 80, objectFit: 'cover' }}
-                    className="me-3"
-                />
-                <div>
-                    <div>{product.name}</div>
-                    <div>{product.variant}</div>
-                    <div>Shop: {product.shop}</div>
+                {/* Product Info */}
+                <div className="col-11 d-flex">
+                    <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        style={{ width: 80, height: 80, objectFit: 'cover' }}
+                        className="me-3"
+                    />
+                    <div>
+                        <div className='product-name'>{product.name}</div>
+                        <div className='another-info'>{product.variant}</div>
+                        <div className='another-info'>Ưu đãi: {product.shop}</div>
+                    </div>
                 </div>
             </div>
 
-            {/* Unit Price */}
-            <div className="col-2 text-center">
-                {product.price.toLocaleString()}₫
-            </div>
+            <div className='col-7 d-flex price'>
+                <div className="col-4 text-center">
+                    {product.price.toLocaleString()}₫
+                </div>
 
-            {/* Quantity */}
-            <div className="col-2 text-center">
-                <InputNumber
-                    min={1}
-                    value={product.quantity}
-                    onChange={(value) => onQuantityChange(product.id, value || 1)}
-                />
-            </div>
+                <div className="col-3 text-center">
+                    <InputNumber
+                        min={1}
+                        value={product.quantity}
+                        onChange={(value) => onQuantityChange(product.id, value || 1)}
+                    />
+                </div>
 
-            {/* Total Price */}
-            <div className="col-2 text-center fw-bold">
-                {(product.price * product.quantity).toLocaleString()}₫
-            </div>
+                {/* Total Price */}
+                <div className="col-3 text-center fw-bold price">
+                    {(product.price * product.quantity).toLocaleString()}₫
+                </div>
 
-            {/* Actions */}
-            <div className="col-2 text-center">
-                <Button type="link" danger>
-                    Xóa
-                </Button>
+                {/* Actions */}
+                <div className="col-2 text-center">
+                    <Button type="link" danger>
+                        Xóa
+                    </Button>
+                </div>
             </div>
         </div>
     );

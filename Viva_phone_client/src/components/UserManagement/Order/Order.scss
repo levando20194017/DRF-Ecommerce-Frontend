@@ -3,7 +3,7 @@
 .order-item {
     margin-bottom: 16px;
     padding: 16px;
-    background-color: #282828;
+    background-color: vars.$color-background;
     display: flex;
     flex-direction: column;
     gap: 8px;

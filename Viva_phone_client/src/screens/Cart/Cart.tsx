@@ -5,10 +5,11 @@ import { Product } from '../../types';
 import { Checkbox } from 'antd';
 import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
+import './cart.scss'
 
 const initialProducts: Product[] = [
-    { id: 1, name: 'Quần Túi Hộp', price: 146000, quantity: 2, imageUrl: 'https://via.placeholder.com/80', variant: 'Đen, XL', shop: 'HipHop69' },
-    { id: 2, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://via.placeholder.com/80', variant: 'M, Đen', shop: 'Tuấn Shop' },
+    { id: 1, name: 'Quần Túi Hộp', price: 146000000, quantity: 2, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'Đen, XL', shop: 'HipHop69' },
+    { id: 2, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
 ];
 
 const Cart: React.FC = () => {
@@ -48,34 +49,41 @@ const Cart: React.FC = () => {
     return (
         <>
             <div className="div-empty"></div>
-            <div className="container mt-4">
+            <div className="container mt-4 cart-page">
                 <div className="mt-3">
                     <Breadcrumb breadcrumbs={breadcrumbs} />
                 </div>
-                <div className="d-flex py-2 fw-bold">
-                    <div className="col-1 text-center">
-                        <Checkbox
-                            onChange={(e) => handleSelectAll(e.target.checked)}
-                            checked={selectedIds.length === products.length}
-                        />
+                {/* <h5 className='title mt-5'>Giỏ hàng của tôi</h5> */}
+                <div className="d-flex py-3 mt-5 fw-bold cart-page_header">
+                    <div className='col-5 d-flex'>
+                        <div className="col-1 text-center">
+                            <Checkbox
+                                onChange={(e) => handleSelectAll(e.target.checked)}
+                                checked={selectedIds.length === products.length}
+                            />
+                        </div>
+                        <div className="col-11">Sản Phẩm</div>
                     </div>
-                    <div className="col-5">Sản Phẩm</div>
-                    <div className="col-2 text-center">Đơn Giá</div>
-                    <div className="col-2 text-center">Số Lượng</div>
-                    <div className="col-2 text-center">Số Tiền</div>
-                    <div className="col-2 text-center">Thao Tác</div>
+                    <div className='col-7 d-flex'>
+                        <div className="col-4 text-center">Đơn Giá</div>
+                        <div className="col-3 text-center">Số Lượng</div>
+                        <div className="col-3 text-center">Số Tiền</div>
+                        <div className="col-2 text-center">Thao Tác</div>
+                    </div>
                 </div>
 
                 {/* Items */}
-                {products.map((product) => (
-                    <CartItem
-                        key={product.id}
-                        product={product}
-                        selected={selectedIds.includes(product.id)}
-                        onQuantityChange={handleQuantityChange}
-                        onSelect={handleSelect}
-                    />
-                ))}
+                <div className='mt-2'>
+                    {products.map((product) => (
+                        <CartItem
+                            key={product.id}
+                            product={product}
+                            selected={selectedIds.includes(product.id)}
+                            onQuantityChange={handleQuantityChange}
+                            onSelect={handleSelect}
+                        />
+                    ))}
+                </div>
 
                 {/* Summary */}
                 <CartSummary total={total} onCheckout={handleCheckout} />
