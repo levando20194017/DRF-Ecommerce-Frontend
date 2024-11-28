@@ -1,6 +1,6 @@
 export const Routes = {
-    Login: { path: "/register" },
-    SignUp: { path: "/login" },
+    Login: { path: "/login" },
+    SignUp: { path: "/register" },
     ForgotPassword: { path: "/fogot-password" },
 
     User: { path: "/user" },

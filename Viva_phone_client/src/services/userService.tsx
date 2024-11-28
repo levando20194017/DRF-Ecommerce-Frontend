@@ -1,7 +1,24 @@
 import axios from '../axios/axios';
+import client from "../axios/axiosClient"
+interface UserLogin {
+    email: string;
+    password: string;
+}
 
-const handleLoginApi = (userEmail: string, userPassword: string) => {
-    return axios.post('/api/login', { email: userEmail, password: userPassword });
+const apiLogin = (data: UserLogin) => {
+    return client.post('/api/guest/login/', data);
+}
+
+interface UserRegister {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+}
+
+const apiRegister = (data: UserRegister) => {
+    return client.post('/api/guests/register/', data);
 }
 
 const getAllUsers = (inputId: string) => {
@@ -28,4 +45,4 @@ const editUserService = (data: UserData) => {
     return axios.put('/api/edit-user', data);
 }
 
-export { handleLoginApi, getAllUsers, createNewUserService, deleteUserService, editUserService }; 
+export { apiLogin, apiRegister, getAllUsers, createNewUserService, deleteUserService, editUserService }; 

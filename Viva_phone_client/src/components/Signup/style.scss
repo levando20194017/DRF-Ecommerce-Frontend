@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 a {
   text-decoration: none;
 }
@@ -114,14 +116,12 @@ img {
     height: 50px;
     padding: 0 15px;
     color: #fff;
-    font-size: 17px;
     font-weight: 200;
     background-color: transparent;
     border-bottom: 5px solid #fff;
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    font-family: 'Raleway', sans-serif;
     margin: 0 auto 20px;
     display: block;
     outline: none;
@@ -139,13 +139,13 @@ img {
   input#lastname:hover,
   input#phonenumber:hover,
   input#password2:hover {
-    color: #fff;
+    color: vars.$color-content;
     border-bottom: 5px solid #3970b0;
     transition: all .4s ease-out 0s
   }
 
   input::-webkit-input-placeholder {
-    color: #fff !important;
+    color: vars.$color-content !important;
   }
 
   input:-moz-placeholder {
@@ -500,4 +500,8 @@ img {
     }
   }
 
+}
+
+.error-text {
+  color: red;
 }
