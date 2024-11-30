@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .list-blogs {
     .title {
         text-align: center;
@@ -141,8 +143,16 @@
 
         &:hover {
             img {
-                transform: scale(1.15);
+                transform: scale(1.08);
             }
+        }
+
+        .frame-blog-image {
+            height: 109px;
+            min-width: 155px !important;
+            overflow: hidden;
+            object-fit: cover;
+            border-radius: 4px;
         }
 
         .img-blog-popular {
@@ -155,13 +165,18 @@
 
         .blog-popular-title {
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 24px;
             letter-spacing: -0.015em;
             text-align: left;
             text-underline-position: from-font;
             text-decoration-skip-ink: none;
             color: #FCFCFC;
+        }
+
+        .blog-short-description {
+            color: vars.$color-content;
+            font-size: 14px;
         }
 
         .text-date {
