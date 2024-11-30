@@ -1,6 +1,6 @@
 import "./style.scss";
 import { useState } from 'react';
-import { ListProduct } from "../Home/ProductCatgories/ListProduct";
+import { ListProduct } from "../Home/ProductCatgories/ProductItem";
 import { ModalQuickView } from "../Home/ModalQuickView";
 
 export const RelatedProduct = () => {

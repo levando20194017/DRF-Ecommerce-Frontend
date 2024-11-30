@@ -315,6 +315,10 @@
 }
 
 /* Cấu hình từng Slide */
+.swiper {
+  height: auto;
+}
+
 .carousel-slide {
   display: flex;
   flex-direction: column;
@@ -324,6 +328,7 @@
   padding: 15px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 430px;
 }
 
 .carousel-slide:hover {
@@ -335,7 +340,10 @@
 }
 
 .carousel-slide img {
-  max-width: 100%;
+  // max-width: 100%;
+  overflow: hidden;
+  height: 200px !important;
+  object-fit: cover;
   border-radius: 10px;
   margin-bottom: 10px;
 }
@@ -361,6 +369,7 @@
   border-radius: 10px;
   padding: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 450px;
 
   &:hover {
     border-radius: 10px;
@@ -374,6 +383,9 @@
     max-width: 100%;
     border-radius: 10px;
     margin-bottom: 10px;
+    min-height: 266px;
+    object-fit: cover;
+    overflow: hidden;
   }
 
   h4 {
@@ -414,7 +426,7 @@
 /* Swiper Navigation (Arrow Buttons) */
 .swiper-button-next,
 .swiper-button-prev {
-  margin-top: -4% !important;
+  // margin-top: -4% !important;
   color: #fff;
   transition: color 0.3s;
 }

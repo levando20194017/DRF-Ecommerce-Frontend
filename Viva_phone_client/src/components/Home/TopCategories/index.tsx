@@ -119,7 +119,7 @@ const TopCategories = () => {
                                 <div className="fw-bold" style={{ color: "red", fontSize: "16px" }}>{formatPrice(product.price)}</div>
                                 <div>Ưu đãi: {product.promotion_name ?? "Không có"}</div>
                                 {product.promotion_discount_type && <div>Giảm giá: <span className="price">{product.promotion_discount_type === promotionType.PERCENT ? `${product.promotion_discount_value}%` : `${formatPrice(product.promotion_discount_value)}`}</span></div>}
-                                <div className="text-start">{product.description}</div>
+                                <div className="text-start">{product.short_description}</div>
                             </div>
                         </div>
                     </SwiperSlide>

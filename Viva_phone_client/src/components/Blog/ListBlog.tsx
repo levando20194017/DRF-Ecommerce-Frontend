@@ -38,8 +38,8 @@ export const ListBlog = () => {
     const handleGetListBlogs = async () => {
         try {
             const res = await apiGetBlogs({
-                pageIndex: 1,
-                pageSize: 10,
+                pageIndex: pageIndex,
+                pageSize: pageSize,
             }) as any
             if (res.status == 200) {
                 setListBlogs(res.data.blogs)

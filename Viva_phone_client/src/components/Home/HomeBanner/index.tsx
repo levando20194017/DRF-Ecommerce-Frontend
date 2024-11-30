@@ -120,18 +120,18 @@ export const HomeBanner = () => {
       </div>
       <div className="div-linear"></div>
       <div>
-        <video
+        {/* <video
           src={videoSource}
           autoPlay
           loop
           muted
           preload="auto"
           className="video-banner"
-        />
+        /> */}
       </div>
       <div className="frame-icon-mouse">
-        <PiMouseSimpleLight style={{fontSize: "40px"}}/>
-        <IoMdArrowDown style={{fontSize: "20px"}}/>
+        <PiMouseSimpleLight style={{ fontSize: "40px" }} />
+        <IoMdArrowDown style={{ fontSize: "20px" }} />
       </div>
       <div className="div-shadow">
       </div>
