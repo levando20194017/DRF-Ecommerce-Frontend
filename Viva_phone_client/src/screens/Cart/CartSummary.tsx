@@ -6,12 +6,12 @@ interface CartSummaryProps {
     onCheckout: () => void; // Hàm xử lý thanh toán
     selectedIds: number[]; // Mảng chứa các ID sản phẩm đã chọn
     handleSelectAll: (checked: boolean) => void; // Hàm xử lý việc chọn/deselect tất cả sản phẩm
-    products: { id: number }[]; // Danh sách sản phẩm, mỗi sản phẩm có ít nhất id
+    cart: { id: number }[]; // Danh sách sản phẩm, mỗi sản phẩm có ít nhất id
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ total, onCheckout, selectedIds, handleSelectAll, products }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ total, onCheckout, selectedIds, handleSelectAll, cart }) => {
     // Kiểm tra nếu tất cả các sản phẩm đã được chọn
-    const isAllSelected = selectedIds.length === products.length;
+    const isAllSelected = selectedIds.length === cart.length;
     const coupon = 100000
 
     return (

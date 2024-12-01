@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
-import { Product } from '../../types';
 import { Checkbox } from 'antd';
 import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
 import './cart.scss'
-import { apiGetCart } from '../../services/cart';
-
-const initialProducts: Product[] = [
-    { id: 1, name: 'Quần Túi Hộp', price: 146000000, quantity: 2, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'Đen, XL', shop: 'HipHop69' },
-    { id: 2, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 3, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 4, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 5, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 6, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 7, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-    { id: 8, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-];
+import { apiGetCart, apiRemoveCartItem } from '../../services/cart';
+import { ToastFailed } from '../../components/Common/Toast';
+import { toastWrong } from '../../utils/ToastType';
 
 const Cart: React.FC = () => {
     const [loading, setLoading] = useState<Boolean>(false);
-    const [products, setProducts] = useState<Product[]>(initialProducts);
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [cart, setCart] = useState<any>([])
     const breadcrumbs = [
         { label: "Trang chủ", path: Routes.HomePage.path },
         { label: "Giỏ hàng", path: Routes.Cart.path },
@@ -30,8 +20,8 @@ const Cart: React.FC = () => {
     const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
 
     const handleQuantityChange = (id: number, quantity: number) => {
-        setProducts((prev) =>
-            prev.map((product) =>
+        setCart((prev: any) =>
+            prev.map((product: any) =>
                 product.id === id ? { ...product, quantity } : product
             )
         );
@@ -44,33 +34,52 @@ const Cart: React.FC = () => {
     };
 
     const handleSelectAll = (selected: boolean) => {
-        setSelectedIds(selected ? products.map((product) => product.id) : []);
+        setSelectedIds(selected ? cart.map((cartItem: any) => cartItem.id) : []);
     };
 
-    const total = products
-        .filter((product) => selectedIds.includes(product.id))
-        .reduce((sum, product) => sum + product.price * product.quantity, 0);
+    const total = cart
+        .filter((cartItem: any) => selectedIds.includes(cartItem.id))
+        .reduce((sum: number, cartItem: any) => sum + cartItem.product.price * cartItem.quantity, 0);
 
     const handleCheckout = () => {
         console.log('Checked out items:', selectedIds);
     };
 
     const handleGetCart = async () => {
-        try {
-            setLoading(true)
-            const response = await apiGetCart(userData?.id)
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false)
+        if (userData?.id) {
+            try {
+                setLoading(true)
+                const response = await apiGetCart(userData?.id)
+                if (response.status === 200) {
+                    setCart(response.data.items)
+                }
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false)
+            }
+        } else {
+            ToastFailed(toastWrong)
         }
     }
 
     useEffect(() => {
-        if (userData?.id) {
-            handleGetCart()
-        }
+        handleGetCart()
     }, [])
+
+    const handleRemoveCartItem = async (cartId: number) => {
+        try {
+            const response = await apiRemoveCartItem({
+                id: userData?.id,
+                cart_item_id: cartId
+            })
+            if (response.status === 204) {
+                handleGetCart()
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <>
@@ -86,7 +95,7 @@ const Cart: React.FC = () => {
                         <div className="col-1 text-center">
                             <Checkbox
                                 onChange={(e) => handleSelectAll(e.target.checked)}
-                                checked={selectedIds.length === products.length}
+                                checked={selectedIds.length === cart.length}
                             />
                         </div>
                         <div className="col-11">Sản Phẩm</div>
@@ -101,19 +110,20 @@ const Cart: React.FC = () => {
 
                 {/* Items */}
                 <div className='mt-1'>
-                    {products.map((product) => (
+                    {cart.map((cartItem: any) => (
                         <CartItem
-                            key={product.id}
-                            product={product}
-                            selected={selectedIds.includes(product.id)}
+                            key={cartItem.id}
+                            cartItem={cartItem}
+                            selected={selectedIds.includes(cartItem.id)}
                             onQuantityChange={handleQuantityChange}
                             onSelect={handleSelect}
+                            handleRemoveCartItem={handleRemoveCartItem}
                         />
                     ))}
                 </div>
 
                 {/* Summary */}
-                <CartSummary total={total} onCheckout={handleCheckout} selectedIds={selectedIds} handleSelectAll={handleSelectAll} products={products} />
+                <CartSummary total={total} onCheckout={handleCheckout} selectedIds={selectedIds} handleSelectAll={handleSelectAll} cart={cart} />
             </div>
         </>
     );
