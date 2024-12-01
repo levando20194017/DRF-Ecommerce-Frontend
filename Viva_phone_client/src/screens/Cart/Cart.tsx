@@ -8,6 +8,9 @@ import './cart.scss'
 import { apiGetCart, apiRemoveCartItem } from '../../services/cart';
 import { ToastFailed } from '../../components/Common/Toast';
 import { toastWrong } from '../../utils/ToastType';
+import { setOrderLocal } from '../../helps/setLocalStorage';
+import { getOrderLocal, getUserData } from '../../helps/getItemLocal';
+import { useNavigate } from 'react-router-dom';
 
 const Cart: React.FC = () => {
     const [loading, setLoading] = useState<Boolean>(false);
@@ -17,7 +20,8 @@ const Cart: React.FC = () => {
         { label: "Trang chủ", path: Routes.HomePage.path },
         { label: "Giỏ hàng", path: Routes.Cart.path },
     ];
-    const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
+    const userData = getUserData()
+    const navigate = useNavigate();
 
     const handleQuantityChange = (id: number, quantity: number) => {
         setCart((prev: any) =>
@@ -42,7 +46,13 @@ const Cart: React.FC = () => {
         .reduce((sum: number, cartItem: any) => sum + cartItem.product.price * cartItem.quantity, 0);
 
     const handleCheckout = () => {
-        console.log('Checked out items:', selectedIds);
+        const order = cart.filter((item: any) => {
+            if (selectedIds.includes(item.id)) return item
+        })
+        setOrderLocal(order)
+        if (order.length > 0) {
+            navigate(Routes.Payment.path)
+        }
     };
 
     const handleGetCart = async () => {
@@ -80,7 +90,6 @@ const Cart: React.FC = () => {
             console.log(e);
         }
     }
-
     return (
         <>
             <div className="div-empty"></div>
