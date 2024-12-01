@@ -1,26 +1,57 @@
 import { Link } from "react-router-dom";
 import "./style.scss"
+import { apiGetListHotBlogs } from "../../services/blog";
+import { useEffect, useState } from "react";
+import { getImageUrl } from "../../helps/getImageUrl";
+import { formatTime } from "../../utils/format";
 
+interface PopularBlog {
+  title: string,
+  image: string,
+  created_at: string,
+  short_description: string
+}
 const PopularBlog = () => {
+  const [popularBlog, setPopularBlog] = useState<PopularBlog>({
+    title: "",
+    image: "",
+    created_at: "",
+    short_description: ""
+  });
+
+  const handleGetBlogDetail = async () => {
+    try {
+      const response = await apiGetListHotBlogs({ pageIndex: 1, pageSize: 1 })
+      if (response.status === 200) {
+        if (response.data.blogs.length > 0) {
+          setPopularBlog(response.data.blogs[0])
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    handleGetBlogDetail()
+  }, [])
+
   return (
-    <Link to = "/news/:slug" style={{color:"#fff"}}>
+    <Link to={`/news/${popularBlog}`} style={{ color: "#fff" }}>
       <div className="news-card">
         <img
           className="news-image"
-          src="https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"
-          alt="Hội nghị khách hàng 2024"
+          src={getImageUrl(popularBlog.image)}
+          alt={popularBlog.title}
         />
         <div className="news-content">
           <h2 className="news-title">
-            Công ty Cổ phần Sản xuất sơn Hà Nội tổ chức "Hội nghị khách hàng 2024"
+            {popularBlog.title}
           </h2>
           <p className="news-description">
-            Ngày 06 tháng 01 năm 2024, Công ty cổ phần sản xuất sơn Hà Nội tổ chức sự kiện
-            "Hội nghị khách hàng 2024", nhằm đẩy mạnh mối quan hệ hợp tác giữa công ty và
-            nhà phân phối tại Việt Nam, tri ân các khách hàng và đại lý đã tin tưởng và hợp
-            tác...
+            {popularBlog.short_description}
           </p>
-          <div className="news-date">16/01/2024 · 01:28</div>
+          <div className="news-date">{formatTime(popularBlog.created_at)}</div>
         </div>
       </div>
     </Link>

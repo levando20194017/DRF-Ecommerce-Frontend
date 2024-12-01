@@ -13,7 +13,7 @@ const apiGetDetailBlog = (slug: string) => {
 }
 
 const apiGetListHotBlogs = (data: GetBlogData) => {
-    return client.get(`api/blog/search-blogs/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&order_by_field=views`);
+    return client.get(`api/blog/search-blogs/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&order_by=views`);
 }
 
 export {
