@@ -14,6 +14,13 @@ import { toastWrong } from "../../utils/ToastType";
 interface Image {
   original: string;
 }
+interface FlyingIconState {
+  isAnimating: boolean;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}
 
 export const ProductDetail = ({ productDetail, storeDetail }: any) => {
   const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
@@ -74,7 +81,14 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
     setSelectedImageIndex(index);
   };
 
-  const handleAddToCart = async () => {
+  const [flyingIcon, setFlyingIcon] = useState<FlyingIconState | null>(null);
+
+  const handleAddToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const target = document.querySelector('.frame-cart-icon'); // Vị trí giỏ hàng
+
+    const rect = event.currentTarget.getBoundingClientRect(); // Vị trí nút nhấn
+    const targetRect = target?.getBoundingClientRect();
+
     if (userData?.id && productDetail?.id && storeDetail?.id) {
       try {
         const response = await apiAddToCart({
@@ -84,6 +98,23 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
           color: "Đen",
           store_id: storeDetail?.id
         })
+        if (response.status === 201) {
+          if (targetRect) {
+            console.log('Start:', rect.left + rect.width / 2, rect.top + rect.height / 2);
+            console.log('End:', targetRect.left + targetRect.width / 2, targetRect.top + targetRect.height / 2);
+
+            setFlyingIcon({
+              isAnimating: true,
+              startX: rect.left + rect.width / 2,
+              startY: rect.top + rect.height / 2,
+              endX: targetRect.left + targetRect.width / 2,
+              endY: targetRect.top + targetRect.height / 2,
+            });
+
+            // Kết thúc animation sau 1 giây
+            setTimeout(() => setFlyingIcon(null), 1000);
+          }
+        }
       } catch (e) {
         console.log(e);
       }
@@ -208,6 +239,24 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
                   {" "}
                   <i className="bi bi-cart4"></i> <span className="ms-2">Thêm vào giỏ hàng</span>
                 </button>
+                {flyingIcon && flyingIcon.isAnimating && (
+                  <div
+                    className="flying-icon"
+                    style={{
+                      position: 'fixed',
+                      left: flyingIcon.startX,
+                      top: flyingIcon.startY,
+                      width: 30,
+                      height: 30,
+                      backgroundColor: '#ff652f',
+                      borderRadius: '50%',
+                      zIndex: 999,
+                      transition: 'all 1s ease', // Đảm bảo transition được áp dụng
+                      transform: `translate(${flyingIcon.endX - flyingIcon.startX}px, ${flyingIcon.endY - flyingIcon.startY
+                        }px)`,
+                    }}
+                  />
+                )}
               </div>
               <div className="buy-now">
                 <button>
