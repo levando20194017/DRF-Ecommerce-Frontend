@@ -8,6 +8,7 @@ interface Cart {
     product_id: number,
     quantity: number,
     store_id: number,
+    color: string
 }
 const apiAddToCart = (data: Cart) => {
     return client.post("api/cart/guests/add-to-cart/", data);

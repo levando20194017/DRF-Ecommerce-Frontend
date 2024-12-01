@@ -52,7 +52,9 @@ const AddToCartPage = () => {
         <div className="mt-3">
           <Breadcrumb breadcrumbs={breadcrumbs} />
         </div>
-        <ProductDetail />
+        <ProductDetail
+          productDetail={productDetail}
+          storeDetail={storeDetail} />
         <DesAndReviews />
         <RelatedProduct />
       </div>

@@ -7,12 +7,16 @@ import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 import "./style.scss";
+import { apiAddToCart } from "../../services/cart";
+import { ToastFailed } from "../Common/Toast";
+import { toastWrong } from "../../utils/ToastType";
 
 interface Image {
   original: string;
 }
 
-export const ProductDetail = () => {
+export const ProductDetail = ({ productDetail, storeDetail }: any) => {
+  const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
   const listImages = [
     { original: img1 },
     { original: "https://th.bing.com/th/id/OIP.uUcKbkk6gr_sD6iBOZWX6AHaIR?w=156&h=180&c=7&r=0&o=5&pid=1.7" },
@@ -70,6 +74,23 @@ export const ProductDetail = () => {
     setSelectedImageIndex(index);
   };
 
+  const handleAddToCart = async () => {
+    if (userData?.id && productDetail?.id && storeDetail?.id) {
+      try {
+        const response = await apiAddToCart({
+          id: userData.id,
+          product_id: productDetail.id,
+          quantity: 1,
+          color: "Đen",
+          store_id: storeDetail?.id
+        })
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      ToastFailed(toastWrong)
+    }
+  }
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -183,7 +204,7 @@ export const ProductDetail = () => {
                 <input type="number" className="form-control" style={{ width: "70px" }} />
               </div>
               <div className="button-add ">
-                <button>
+                <button onClick={handleAddToCart}>
                   {" "}
                   <i className="bi bi-cart4"></i> <span className="ms-2">Thêm vào giỏ hàng</span>
                 </button>
