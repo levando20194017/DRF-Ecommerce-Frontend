@@ -29,7 +29,7 @@ export const ProductItem = (props: any) => {
           <div className="location-img">
             <img src={getImageUrl(product.image)} alt={product.name} />
             <div className="item-actions">
-              <Link to={Routes.AddToCart.path} style={{ color: "#fff" }}>
+              <Link to={Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog })} style={{ color: "#fff" }}>
                 <div
                   className="quick-view"
                 >

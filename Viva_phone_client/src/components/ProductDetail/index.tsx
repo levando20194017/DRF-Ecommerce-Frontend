@@ -3,7 +3,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import img1 from "../../assets/images/banner.jpg";
 import img2 from "../../assets/images/content.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 import "./style.scss";

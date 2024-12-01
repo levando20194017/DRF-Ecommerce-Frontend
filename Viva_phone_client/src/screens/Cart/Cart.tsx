@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import { Product } from '../../types';
@@ -6,6 +6,7 @@ import { Checkbox } from 'antd';
 import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
 import './cart.scss'
+import { apiGetCart } from '../../services/cart';
 
 const initialProducts: Product[] = [
     { id: 1, name: 'Quần Túi Hộp', price: 146000000, quantity: 2, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'Đen, XL', shop: 'HipHop69' },
@@ -19,12 +20,14 @@ const initialProducts: Product[] = [
 ];
 
 const Cart: React.FC = () => {
+    const [loading, setLoading] = useState<Boolean>(false);
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const breadcrumbs = [
         { label: "Trang chủ", path: Routes.HomePage.path },
         { label: "Giỏ hàng", path: Routes.Cart.path },
     ];
+    const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
 
     const handleQuantityChange = (id: number, quantity: number) => {
         setProducts((prev) =>
@@ -51,6 +54,23 @@ const Cart: React.FC = () => {
     const handleCheckout = () => {
         console.log('Checked out items:', selectedIds);
     };
+
+    const handleGetCart = async () => {
+        try {
+            setLoading(true)
+            const response = await apiGetCart(userData?.id)
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (userData?.id) {
+            handleGetCart()
+        }
+    }, [])
 
     return (
         <>

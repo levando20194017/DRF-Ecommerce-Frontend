@@ -14,6 +14,15 @@ const apiGetListProductsByCatalog = (data: any) => {
 }
 
 //api/product/get-one-product-per-catalog/
+interface DetailProductStore {
+    productId: number,
+    storeId: number
+}
+const apiGetProductDetailInStore = (data: DetailProductStore) => {
+    return client.get(`api/product_store/detail-of-product-and-store/?product_id=${data.productId}&store_id=${data.storeId}`);
+}
 export {
-    apiGetBestSelling, apiGetListProductsByCatalog
+    apiGetBestSelling,
+    apiGetListProductsByCatalog,
+    apiGetProductDetailInStore
 }; 
