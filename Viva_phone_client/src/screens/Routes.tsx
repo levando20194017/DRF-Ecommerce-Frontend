@@ -3,8 +3,6 @@ export const Routes = {
     SignUp: { path: "/register" },
     ForgotPassword: { path: "/fogot-password" },
 
-    User: { path: "/user" },
-
     HomePage: { path: "/" },
     Store: { path: "/store" },
     News: { path: "/news" },
@@ -20,4 +18,15 @@ export const Routes = {
     OrderDetail: { path: "/order-detail" },
     OrderStatus: { path: "/order-status" },
     Payment: { path: "/payment" },
+
+    User: { path: "/user" },
+    UserInfor: { path: "/user/infor" },
+    AllOrder: { path: "/user/order/all-orders" },
+    OrderWaitConfirm: { path: "/user/order/waiting-for-confirm" },
+    OrderTransit: { path: "/user/order/in-transit" },
+    OrderReceived: { path: "/user/order/received" },
+    OrderCanceled: { path: "/user/order/canceled" },
+    OrderConfirm: { path: "/user/order/confirmed" },
+
+    Notification: { path: "/user/notification" },
 }

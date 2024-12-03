@@ -22,12 +22,16 @@ const PaymentPage: React.FC = () => {
     const userData = getUserData();
     const listOrders = getOrderLocal();
     const totalPrice = listOrders.reduce((sum: number, item: any) => sum + item.product.price * item.quantity, 0)
-    const totalDiscount = listOrders.reduce((sum: number, item: any) =>
-        sum + item.product.promotion ?
-            item.product.promotion_discount_type === promotionType.FIXED ?
-                item.product.promotion_discount_value * item.quantity :
-                item.product.promotion_discount_value * item.product.price / 100 * item.quantity :
-            0, 0)
+    const totalDiscount = listOrders.reduce((sum: number, item: any) => {
+        if (item.product.promotion) {
+            if (item.product.promotion_discount_type === promotionType.FIXED) {
+                return sum + (item.product.promotion_discount_value * item.quantity);
+            } else {
+                return sum + ((item.product.promotion_discount_value * item.unit_price / 100) * item.quantity);
+            }
+        }
+        return sum; // Nếu không có khuyến mãi, giữ nguyên tổng
+    }, 0)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash")
     const [formData, setFormData] = useState<Order>({

@@ -71,6 +71,31 @@ const App = () => {
           path: Routes.User.path,
           element: <UserManagementPage />,
         },
+        {
+          path: Routes.AllOrder.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderCanceled.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderConfirm.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderReceived.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderTransit.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderWaitConfirm.path,
+          element: <UserManagementPage />,
+        },
+
       ],
     },
     {

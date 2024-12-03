@@ -3,17 +3,17 @@ import './Order.scss';
 import { Link } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 
-interface OrderItemProps {
-    order: {
-        id: number;
-        shop: string;
-        status: string;
-        items: { name: string; price: number; image: string; quantity: number }[];
-        total: number;
-    };
-}
+// interface OrderItemProps {
+//     order: {
+//         id: number;
+//         shop: string;
+//         status: string;
+//         items: { name: string; price: number; image: string; quantity: number }[];
+//         total: number;
+//     };
+// }
 
-const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+const OrderItem: React.FC<any> = ({ order }) => {
     return (
         <div className="order-item">
             <div className="order-item_header">
@@ -28,7 +28,7 @@ const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
                 <span className="status">{order.status}</span>
             </div>
             <div className="items">
-                {order.items.map((item, index) => (
+                {order.items.map((item: any, index: number) => (
                     <div key={index} className="item">
                         <div className='image'>
                             <img src={item.image} />

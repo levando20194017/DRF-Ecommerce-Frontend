@@ -10,6 +10,7 @@ import AccountInfor from '../../components/UserManagement/MyAccount/AccountInfor
 import Notification from '../../components/UserManagement/Notification';
 import EmptyNoti from '../../components/UserManagement/Notification/EmptyNotification';
 import OrderStatus from '../../components/UserManagement/OrderStatus';
+import Orders from './Orders';
 
 const UserManagementPage: React.FC = () => {
     const breadcrumbs = [
@@ -30,16 +31,9 @@ const UserManagementPage: React.FC = () => {
 
                         {/* <Notification /> */}
                         {/* <EmptyNoti /> */}
-
-                        <OrderStatus />
-
-                        {/* order management
-                        <HeaderTabs />
-                        <EmptyOrder />
-                        <>
-                            <SearchOrder />
-                            <OrderList />
-                        </> */}
+                        {/* 
+                        <OrderStatus /> */}
+                        <Orders />
                     </div>
                 </div>
             </div>
