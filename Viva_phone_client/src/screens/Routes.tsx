@@ -19,5 +19,5 @@ export const Routes = {
     Cart: { path: "/cart" },
     OrderDetail: { path: "/order-detail" },
     OrderStatus: { path: "/order-status" },
-    Payment: { path: "/payment/:id" },
+    Payment: { path: "/payment" },
 }

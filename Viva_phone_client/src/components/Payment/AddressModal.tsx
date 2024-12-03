@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
 import { Modal, Form, Input, Select, Button, Radio } from 'antd';
-const { Option } = Select;
+import { Order } from '../../types';
+// const { Option } = Select;
 
 interface ModalProps {
+    formData: Order
     isModalVisible: boolean;
     setIsModalVisible: (visible: boolean) => void; // Nhận tham số là boolean
+    setFormData: (formData: Order) => void
 }
 
-const AddressModal: React.FC<ModalProps> = ({ isModalVisible, setIsModalVisible }) => {
+const AddressModal: React.FC<ModalProps> = ({ isModalVisible, setIsModalVisible, formData, setFormData }) => {
     const [form] = Form.useForm();
 
     const handleOk = () => {
         form
             .validateFields()
             .then((values) => {
-                const formData = {
-                    fullName: values.fullName,
-                    phoneNumber: values.phoneNumber,
-                    location: values.location,
-                    detailAddress: values.detailAddress,
-                    addressType: values.addressType,
-                };
-                console.log('Form Data:', formData);
+                const newFormData = { ...formData, recipient_phone: values.phoneNumber, shipping_address: values.detailAddress, recipient_name: values.fullName }
+                setFormData(newFormData)
                 // Call API with formData here
                 setIsModalVisible(false);
             })

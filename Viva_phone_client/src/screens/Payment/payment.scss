@@ -29,6 +29,10 @@
     .sum-product {
         padding: 0 16px;
         background-color: vars.$color-background;
+
+        .another-info {
+            color: vars.$color-content;
+        }
     }
 
     .total-cost {
@@ -62,6 +66,12 @@
                 width: 200px;
                 text-align: end;
                 color: vars.$color-content;
+            }
+
+            .actual-total {
+                width: 200px;
+                text-align: end;
+                color: vars.$common-white;
             }
 
             .value {

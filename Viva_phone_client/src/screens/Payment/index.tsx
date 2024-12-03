@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Product } from '../../types';
+import React, { useEffect, useState } from 'react';
+import { Order, Product } from '../../types';
 import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
 import './payment.scss'
@@ -7,11 +7,11 @@ import { FaLocationDot } from "react-icons/fa6";
 import { Button } from 'antd';
 import ProductItem from '../../components/Payment/ProductItem';
 import AddressModal from '../../components/Payment/AddressModal';
-
-const initialProducts: Product[] = [
-    { id: 1, name: 'Quần Túi Hộp', price: 146000000, quantity: 2, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'Đen, XL', shop: 'HipHop69' },
-    { id: 2, name: 'Áo Khoác Blazer', price: 342000, quantity: 1, imageUrl: 'https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain', variant: 'M, Đen', shop: 'Tuấn Shop' },
-];
+import { getOrderLocal, getUserData } from '../../helps/getItemLocal';
+import { PaymentMethod } from '../../utils/paymentType';
+import { formatPrice } from '../../utils/format';
+import { promotionType } from '../../utils/promotionType';
+import { apiCreateNewOrder } from '../../services/order';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -19,22 +19,69 @@ const PaymentPage: React.FC = () => {
         { label: "Giỏ hàng", path: Routes.Cart.path },
         { label: "Thanh toán" },
     ];
-    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const userData = getUserData();
+    const listOrders = getOrderLocal();
+    const totalPrice = listOrders.reduce((sum: number, item: any) => sum + item.product.price * item.quantity, 0)
+    const totalDiscount = listOrders.reduce((sum: number, item: any) =>
+        sum + item.product.promotion ?
+            item.product.promotion_discount_type === promotionType.FIXED ?
+                item.product.promotion_discount_value * item.quantity :
+                item.product.promotion_discount_value * item.product.price / 100 * item.quantity :
+            0, 0)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash")
-
+    const [formData, setFormData] = useState<Order>({
+        guest_id: userData.id,
+        recipient_phone: userData.phone_number,
+        shipping_address: userData.address,
+        recipient_name: userData.last_name + " " + userData.first_name,
+        payment_methods: PaymentMethod.cashOnDelivery,
+        shipping_cost: 0,
+        gst_amount: 0,
+        order_details: listOrders.map((item: any) => ({
+            quantity: item.quantity,
+            store_id: 1,
+            color: item.color,
+            product_id: item.product.id
+        }))
+    })
     const showModal = () => {
         setIsModalVisible(true);
     };
 
     const handleChangePaymentMethod = (value: string) => {
         setPaymentMethod(value)
+        setFormData({ ...formData, payment_methods: value })
     }
 
+    const [loading, setLoading] = useState<any>(false)
+    const [errorLocation, setErrorLocation] = useState<string>("")
+    const handleCreateNewOrder = async () => {
+        if (!formData.recipient_name || !formData.shipping_address || !formData.recipient_phone) {
+            setErrorLocation("Vui lòng nhập đầy đủ thông tin người nhận");
+            return;
+        }
+        try {
+            setLoading(true)
+            const response = await apiCreateNewOrder(formData)
+            if (response.status === 200) {
+
+            }
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false)
+        }
+    }
+    useEffect(() => {
+        if (formData.recipient_name && formData.shipping_address && formData.recipient_phone) {
+            setErrorLocation("")
+        }
+    }, [formData])
     return (
         <>
             <div className="div-empty"></div>
-            <AddressModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+            <AddressModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} formData={formData} setFormData={setFormData} />
             <div className="container mt-4 payment-page">
                 <div className="mt-3">
                     <Breadcrumb breadcrumbs={breadcrumbs} />
@@ -44,11 +91,15 @@ const PaymentPage: React.FC = () => {
                     <div className='border-top mt-5'></div>
                     <div className='shipping-address'>
                         <div className='title price'><FaLocationDot className='mb-2' /> Địa chỉ nhận hàng</div>
-                        <div>
-                            <span className='fw-bold'>Lê Văn Do 0987565773</span>
-                            <span className='ms-2'>46 ngõ 61 Định Công, Hoàng Mai, Hà Nội</span>
+                        <div className='d-flex'>
+                            <span className='fw-bold d-flex gap-2'>
+                                <span>{formData.recipient_name ? formData.recipient_name : "....."}</span>
+                                <span>{formData.recipient_phone ? formData.recipient_phone : "....."}</span>
+                            </span>
+                            <span className='ms-2'>{formData.shipping_address ? formData.shipping_address : "....."}</span>
                             <span className='ms-3'><Button className="btn-change" onClick={showModal}>THAY ĐỔI</Button></span>
                         </div>
+                        {errorLocation && <div className='text-danger'>{errorLocation}</div>}
                     </div>
                     <div className='sum-product'>
                         <div className="d-flex py-3 mt-1">
@@ -62,10 +113,10 @@ const PaymentPage: React.FC = () => {
                             </div>
                         </div>
                         <div className='mt-1'>
-                            {products.map((product) => (
+                            {listOrders.map((item: any) => (
                                 <ProductItem
-                                    key={product.id}
-                                    product={product}
+                                    key={item.id}
+                                    item={item}
                                 />
                             ))}
                         </div>
@@ -78,35 +129,37 @@ const PaymentPage: React.FC = () => {
                             <div className='d-flex gap-4 justify-content-center align-items-center'>
                                 {paymentMethod ?
                                     <>
-                                        <span>Thanh toán khi nhận hàng</span>
+                                        <span>{formData.payment_methods === PaymentMethod.cashOnDelivery ? "Thanh toán khi nhận hàng" : "Thanh toán bằng VN Pay"}</span>
                                         <Button className="btn-change" onClick={() => { setPaymentMethod("") }}>THAY ĐỔI</Button>
                                     </>
                                     :
                                     <>
-                                        <Button className='payment-option' onClick={() => { handleChangePaymentMethod("online") }}>Thanh toán bằng VN Pay</Button>
-                                        <Button className='payment-option' onClick={() => { handleChangePaymentMethod("cash_on_delivery") }}>Thanh toán khi nhận hàng</Button>
+                                        <Button className='payment-option' onClick={() => { handleChangePaymentMethod(PaymentMethod.creditCard) }}>Thanh toán bằng VN Pay</Button>
+                                        <Button className='payment-option' onClick={() => { handleChangePaymentMethod(PaymentMethod.cashOnDelivery) }}>Thanh toán khi nhận hàng</Button>
                                     </>}
                             </div>
                         </div>
                         <div className='d-flex justify-content-end actual-amount p-3'>
-                            <div>
+                            <div className='d-flex flex-column gap-2'>
                                 <div className='d-flex gap-2'>
                                     <div className='label'>Tổng tiền hàng</div>
-                                    <div className='value'>30000000₫</div>
+                                    <div className='value'>{formatPrice(totalPrice)}</div>
                                 </div>
                                 <div className='d-flex gap-2'>
                                     <div className='label'>Khuyễn mãi</div>
-                                    <div className='value'>300000₫</div>
+                                    {totalDiscount > 0 ?
+                                        <div className='value'>{formatPrice(totalDiscount)}</div> :
+                                        <div className='value' style={{ color: "gray" }}>Không có</div>}
                                 </div>
                                 <div className='d-flex gap-2'>
-                                    <div className='label'>Tổng thanh toán</div>
-                                    <div className='value'>300000₫</div>
+                                    <div className='actual-total'>Tổng thanh toán</div>
+                                    <div className='value fw-bold'>{formatPrice(totalPrice - totalDiscount)}</div>
                                 </div>
                             </div>
                         </div>
                         <div className='payment-action'>
                             <div>Nhấn đặt hàng đồng nghĩa với việc bạn đồng ý điều khoản tuân theo <a style={{ color: "#0d6efd" }} className='cursor-pointer'>Điều khoản Viva Phone</a></div>
-                            <div><Button className='btn-payment'>Thanh toán</Button></div>
+                            <div><Button className='btn-payment' loading={loading} onClick={handleCreateNewOrder}>Thanh toán</Button></div>
                         </div>
                     </div>
                 </div>
