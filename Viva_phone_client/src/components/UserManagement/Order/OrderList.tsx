@@ -66,7 +66,7 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
                             </Link>
                         </div>
                         <div className='order-item_footer_right'>
-                            <div className='total'>Khuyến mãi: {handleGetDiscount(order) ? <span className='price'>{formatPrice(handleGetDiscount(order))}</span> : "Không"}</div>
+                            {handleGetDiscount(order) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(handleGetDiscount(order))}</span></div> : ""}
                             <div className="total">Tổng thanh toán: <span className='price'>{formatPrice(order.total_cost)}</span></div>
                             <div className='d-flex gap-4 justify-content-end'>
                                 {order.order_status === OrderStatus.PENDING &&

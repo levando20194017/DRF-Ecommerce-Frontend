@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './notification.scss';
 import { Button, Image } from 'antd';
+import EmptyNoti from './EmptyNotification';
 
 interface Notification {
     title: string;
@@ -23,23 +24,26 @@ const Notification: React.FC = () => {
         created_at: "21-11-2024 07:09",
     }])
     return (
-        <div className="notification-page">
-            {listNoti.map((item, index) => (
-                <div className='d-flex gap-3 justify-content-between' key={index}>
-                    <div>
-                        <Image src={item.image} />
+        listNoti.length > 0 ?
+            <div className="notification-page">
+                {listNoti.map((item, index) => (
+                    <div className='d-flex gap-3 justify-content-between' key={index}>
+                        <div>
+                            <Image src={item.image} />
+                        </div>
+                        <div className='d-flex flex-column gap-1' style={{ flex: 1 }}>
+                            <div className='title'>{item.title}</div>
+                            <div className='content'>{item.content}</div>
+                            <div className='content' style={{ fontSize: "14px" }}>{item.created_at}</div>
+                        </div>
+                        <div className=''>
+                            <Button className='btn-rate'>Đánh giá sản phẩm</Button>
+                        </div>
                     </div>
-                    <div className='d-flex flex-column gap-1' style={{ flex: 1 }}>
-                        <div className='title'>{item.title}</div>
-                        <div className='content'>{item.content}</div>
-                        <div className='content' style={{ fontSize: "14px" }}>{item.created_at}</div>
-                    </div>
-                    <div className=''>
-                        <Button className='btn-rate'>Đánh giá sản phẩm</Button>
-                    </div>
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+            :
+            <EmptyNoti />
     );
 };
 

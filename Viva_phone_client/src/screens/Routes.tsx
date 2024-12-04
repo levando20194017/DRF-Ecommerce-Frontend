@@ -20,7 +20,8 @@ export const Routes = {
     Payment: { path: "/payment" },
 
     User: { path: "/user" },
-    UserInfor: { path: "/user/infor" },
+    UserInfor: { path: "/user/information" },
+    UserVoucher: { path: "/user/voucher" },
     AllOrder: { path: "/user/order/all-orders" },
     OrderWaitConfirm: { path: "/user/order/waiting-for-confirm" },
     OrderTransit: { path: "/user/order/in-transit" },

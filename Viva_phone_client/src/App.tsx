@@ -68,7 +68,15 @@ const App = () => {
           element: <PaymentPage />,
         },
         {
-          path: Routes.User.path,
+          path: Routes.UserInfor.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.Notification.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.UserVoucher.path,
           element: <UserManagementPage />,
         },
         {

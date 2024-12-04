@@ -11,12 +11,16 @@ import Notification from '../../components/UserManagement/Notification';
 import EmptyNoti from '../../components/UserManagement/Notification/EmptyNotification';
 import OrderStatus from '../../components/UserManagement/OrderStatus';
 import Orders from './Orders';
+import { useLocation } from 'react-router-dom';
+import { Routes } from '../Routes';
+import Voucher from '../../components/UserManagement/Voucher';
 
 const UserManagementPage: React.FC = () => {
     const breadcrumbs = [
         { label: "Trang chủ", path: "/" },
         { label: "Trang cá nhân" },
     ];
+    const location = useLocation();
 
     return (
         <>
@@ -26,14 +30,21 @@ const UserManagementPage: React.FC = () => {
                 <div className="d-flex mt-5 gap-4">
                     <Sidebar />
                     <div className="user-management-content">
-                        {/* account management */}
-                        {/* <AccountInfor /> */}
-
-                        {/* <Notification /> */}
-                        {/* <EmptyNoti /> */}
-                        {/* 
-                        <OrderStatus /> */}
-                        <Orders />
+                        {location.pathname === Routes.UserInfor.path &&
+                            <AccountInfor />
+                        }
+                        {location.pathname === Routes.Notification.path &&
+                            <Notification />
+                        }
+                        {location.pathname === Routes.OrderStatus.path &&
+                            <OrderStatus />
+                        }
+                        {location.pathname.includes("order") &&
+                            <Orders />
+                        }
+                        {location.pathname === Routes.UserVoucher.path &&
+                            <Voucher />
+                        }
                     </div>
                 </div>
             </div>
