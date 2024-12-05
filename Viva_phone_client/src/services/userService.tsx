@@ -1,4 +1,3 @@
-import axios from '../axios/axios';
 import client from "../axios/axiosClient"
 interface UserLogin {
     email: string;
@@ -21,28 +20,21 @@ const apiRegister = (data: UserRegister) => {
     return client.post('/api/guests/register/', data);
 }
 
-const getAllUsers = (inputId: string) => {
-    return axios.get(`/api/get-all-users?id=${inputId}`);
+const apiChangeUserInfor = (data: any) => {
+    return client.put('/api/guests/change-information/', data);
 }
 
-interface UserData {
-    name: string;
-    email: string;
-    password: string;
-}
-
-const createNewUserService = (data: UserData) => {
-    return axios.post('/api/create-new-user', data);
-}
-
-const deleteUserService = (userId: string) => {
-    return axios.delete('/api/delete-user', {
-        data: { id: userId }
+const apiChangeAvatar = function (formData: any) {
+    return client.put("api/guests/change-avatar/", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     });
-}
+};
 
-const editUserService = (data: UserData) => {
-    return axios.put('/api/edit-user', data);
-}
-
-export { apiLogin, apiRegister, getAllUsers, createNewUserService, deleteUserService, editUserService }; 
+export {
+    apiLogin,
+    apiRegister,
+    apiChangeAvatar,
+    apiChangeUserInfor
+}; 

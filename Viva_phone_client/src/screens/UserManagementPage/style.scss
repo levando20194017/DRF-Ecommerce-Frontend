@@ -9,7 +9,7 @@ $color-content: #848484;
 }
 
 .sidebar {
-    width: 240px;
+    min-width: 240px;
     padding: 16px 0;
     // border-right: 1px solid rgb(99, 97, 97);
     // padding: 16px;
@@ -18,12 +18,18 @@ $color-content: #848484;
         text-align: center;
 
         .avatar {
-            width: 64px;
-            height: 64px;
-            background-color: #ddd;
-            border-radius: 50%;
-            margin: 0 auto;
+            text-align: center;
+
+            img {
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                overflow: hidden;
+                border-radius: 50%;
+            }
         }
+
+
 
         .username {
             margin-top: 8px;
@@ -72,9 +78,36 @@ $color-content: #848484;
     background-color: #282828;
 
     .tab {
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        position: relative;
+        padding-bottom: 2px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #f53d2d;
+            transition: width 0.4s ease-in-out;
+        }
+
+        &.active {
+            color: #f53d2d;
+        }
+
+        &.active::after {
+            width: 100%;
+        }
+    }
+
+
+    .tab {
         width: 150px;
         text-align: center;
-        padding: 8px 0;
+        padding: 12px 0;
         background: none;
         border: none;
         cursor: pointer;
@@ -109,6 +142,6 @@ $color-content: #848484;
 .user-management-content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     flex: 1;
 }

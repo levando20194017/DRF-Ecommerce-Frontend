@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import logo4 from "../../assets/images/logo4.png";
 import { Routes } from "../../screens/Routes";
 import { apiLogin } from "../../services/userService";
+import { useDispatch } from "react-redux";
+import { changeInformation } from "../../store/actions";
 
 interface UserLogin {
   email: string;
@@ -59,6 +61,8 @@ export const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const dispatch = useDispatch()
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); // Ngăn chặn reload trang
     if (!validate()) return;
@@ -68,6 +72,7 @@ export const LoginForm = () => {
       if (response.status === 200) {
         let data = response.data;
         localStorage.setItem("vivaphone_userData", JSON.stringify(data));
+        dispatch(changeInformation(data))
         localStorage.setItem("vivaphone_isLoggedIn", "true");
         navigate("/");
       } else {

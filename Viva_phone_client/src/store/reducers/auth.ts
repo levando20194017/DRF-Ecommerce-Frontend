@@ -24,7 +24,8 @@ const initialState = {
             id: 4,
             majorName: "Accounting",
         },
-    ]
+    ],
+    userData: {}
 }
 
 export const authReducer = (state = initialState, actions: any) => {
@@ -41,6 +42,10 @@ export const authReducer = (state = initialState, actions: any) => {
         case Actions.UPDATE_USER:
             return {
                 ...state, currentUser: { name: actions.payload }
+            }
+        case Actions.CHANGE_INFOR:
+            return {
+                ...state, userData: actions.payload
             }
         case Actions.GET_MAJOR:
             return {

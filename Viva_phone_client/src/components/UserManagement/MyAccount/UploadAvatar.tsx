@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './account.scss';
-import { Button, Image } from 'antd';
+import { Button, Image, message } from 'antd';
 import NoImage from "../../../assets/images/no_avatar.jpg"
 import { ToastFailed } from '../../Common/Toast';
+import { getImageUrl } from '../../../helps/getImageUrl';
+import { apiChangeAvatar } from '../../../services/userService';
+import { setUserDataLocal } from '../../../helps/setLocalStorage';
+import { TypeLocal } from '../../../helps/typeItem';
+import { getUserData } from '../../../helps/getItemLocal';
+import { useDispatch } from 'react-redux';
+import { changeInformation } from '../../../store/actions';
 interface UploadAvatarProps {
     formData: {
         email: string;
@@ -12,23 +19,30 @@ interface UploadAvatarProps {
         gender: number;
         address: string;
         date_of_birth: string;
-        image: string;
+        avatar: string;
     };
+    setFormData: (data: any) => void;
 }
 
 interface Avatar {
     name: string;
     url: string;
-    file: File;
+    file: File | null;
 }
 
-const UploadAvatar: React.FC<UploadAvatarProps> = ({ formData }) => {
+const UploadAvatar: React.FC<UploadAvatarProps> = ({ formData, setFormData }) => {
     const [errorCount, setErrorCount] = useState(0);
-    const [avatar, setAvatar] = React.useState<Avatar | null>(null);
+    const [avatar, setAvatar] = React.useState<Avatar>({
+        name: "",
+        url: "",
+        file: null,
+    });
     const [errors, setErrors] = useState({
         image: ""
     })
     const inputRef = useRef<HTMLInputElement>(null);
+    const userData = getUserData()
+    const dispatch = useDispatch()
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]; // Dấu ? để xử lý trường hợp files có thể là undefined.
@@ -63,27 +77,49 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ formData }) => {
     };
 
     const handleChangeAvatar = async () => {
-        const newFormData = new FormData();
-        // newFormData.append("file", avatar.file)
-        try {
-            // const response = await apiChangeAvatar()
-        } catch (e) {
-            console.log(e);
+        if (!userData?.id) {
+            message.error("Lỗi, yêu cầm đăng nhập lại!")
+            return;
         }
-    }
+        if (!avatar.file) {
+            message.error("Vui lòng kiểm tra lại!");
+            return;
+        }
+        const newFormData = new FormData();
+        newFormData.append("user_id", userData.id)
+        newFormData.append("file", avatar.file);
+        try {
+            const response = await apiChangeAvatar(newFormData) as any;
+            if (response.status === 200) {
+                const newUserData = JSON.parse(localStorage.getItem(TypeLocal.USER_DATA) || "")
+                newUserData.user_infor.avatar = response.img_url;
+                setUserDataLocal(newUserData)
+                message.success("Thay đổi avart thành công!")
+                setFormData({ ...formData, avatar: response.img_url })
+                dispatch(changeInformation(newUserData))
+            } else {
+                message.error("Vui lòng kiểm tra lại!")
+            }
+        } catch (e) {
+            console.error("Error updating avatar:", e);
+            message.error("Vui lòng kiểm tra lại!")
+        }
+    };
 
     useEffect(() => {
-        handleChangeAvatar()
+        if (avatar?.file) {
+            handleChangeAvatar()
+        }
     }, [avatar])
     return (
         <div className="upload-avatar">
             <div className="avatar-profile">
-                {formData.image ? (
+                {formData.avatar ? (
                     <Image
-                        src={`${process.env.REACT_APP_IMAGE_URL}${formData.image}`}
+                        src={getImageUrl(formData.avatar)}
                     />
                 ) : (
-                    <Image src={formData.image ? "" : NoImage} />
+                    <Image src={formData.avatar ? "" : NoImage} />
                 )}
             </div>
             {errors.image && <div className="text-danger">{errors.image}</div>}
