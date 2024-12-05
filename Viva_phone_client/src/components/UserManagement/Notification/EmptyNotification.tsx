@@ -5,7 +5,7 @@ const EmptyNoti: React.FC = () => {
     return (
         <div className="empty-order">
             <img src={EmptyNotiImg} />
-            <div>Chưa có thông báo</div>
+            <div className='fs-5'>Chưa có thông báo</div>
         </div>
     );
 };

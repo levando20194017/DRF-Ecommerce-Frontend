@@ -4,7 +4,7 @@ const EmptyVoucher: React.FC = () => {
     return (
         <div className="empty-order">
             <img src={EmptyOrderImg} />
-            <div>Chưa có voucher nào</div>
+            <div className='fs-5'>Chưa có voucher nào</div>
         </div>
     );
 };
