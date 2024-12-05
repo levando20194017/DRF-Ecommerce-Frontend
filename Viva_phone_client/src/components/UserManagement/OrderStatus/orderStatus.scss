@@ -62,8 +62,8 @@
 
                 .image {
                     img {
-                        height: 80px;
-                        width: 80px;
+                        height: 100px;
+                        width: 100px;
                         overflow: hidden;
                         object-fit: cover;
                         border-radius: 4px;
@@ -89,6 +89,30 @@
 
         .address {
             font-size: 20px;
+        }
+
+        .payment-method {
+            display: flex;
+            gap: 8px;
+            color: vars.$color-content;
+
+            .label {
+                width: 200px;
+                text-align: end;
+            }
+
+            .status {
+                text-transform: uppercase;
+                color: vars.$common-white;
+            }
+
+            .status.success {
+                color: green;
+            }
+
+            .status.unpaid {
+                color: vars.$color-price;
+            }
         }
 
         .customer-name {

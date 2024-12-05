@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
-import { OrderStatus } from '../../../utils/orderStatus';
+import { OrderStatusType } from '../../../utils/orderStatus';
 
 const HeaderTabs: React.FC<any> = ({ handleGetListOrder }) => {
     const tabs = [
         { label: "Tất cả", path: Routes.AllOrder.path, status: "" },
-        { label: "Chờ xác nhận", path: Routes.OrderWaitConfirm.path, status: OrderStatus.PENDING },
-        { label: "Đã xác nhận", path: Routes.OrderConfirm.path, status: OrderStatus.CONFIRMED },
-        { label: "Vận chuyển", path: Routes.OrderTransit.path, status: OrderStatus.SHIPPED },
-        { label: "Hoàn thành", path: Routes.OrderReceived.path, status: OrderStatus.DELIVERY },
-        { label: "Đã hủy", path: Routes.OrderCanceled.path, status: OrderStatus.CANCELLED },
+        { label: "Chờ xác nhận", path: Routes.OrderWaitConfirm.path, status: OrderStatusType.PENDING },
+        { label: "Đã xác nhận", path: Routes.OrderConfirm.path, status: OrderStatusType.CONFIRMED },
+        { label: "Vận chuyển", path: Routes.OrderTransit.path, status: OrderStatusType.SHIPPED },
+        { label: "Hoàn thành", path: Routes.OrderReceived.path, status: OrderStatusType.DELIVERY },
+        { label: "Đã hủy", path: Routes.OrderCanceled.path, status: OrderStatusType.CANCELLED },
     ];
 
     const navigate = useNavigate();

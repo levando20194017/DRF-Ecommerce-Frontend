@@ -16,7 +16,11 @@ export const Routes = {
     },
     Cart: { path: "/cart" },
     OrderDetail: { path: "/order-detail" },
-    OrderStatus: { path: "/order-status" },
+    OrderStatus: {
+        path: "/order-status",
+        getPath: ({ orderId }: { orderId: number }) =>
+            `/order-status?order_id=${orderId}`
+    },
     Payment: { path: "/payment" },
 
     User: { path: "/user" },

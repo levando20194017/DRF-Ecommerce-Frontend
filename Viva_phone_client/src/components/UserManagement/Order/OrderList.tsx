@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { formatPrice } from '../../../utils/format';
 import { getImageUrl } from '../../../helps/getImageUrl';
-import { OrderStatus, OrderStatusShow } from '../../../utils/orderStatus';
+import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 
 const OrderList: React.FC<any> = ({ listOrders }) => {
@@ -69,10 +69,15 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
                             {handleGetDiscount(order) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(handleGetDiscount(order))}</span></div> : ""}
                             <div className="total">Tổng thanh toán: <span className='price'>{formatPrice(order.total_cost)}</span></div>
                             <div className='d-flex gap-4 justify-content-end'>
-                                {order.order_status === OrderStatus.PENDING &&
+                                <Link to={Routes.OrderStatus.getPath({ orderId: order.id })}>
+                                    <div>
+                                        <button className="rate-btn">Chi tiết đơn hàng</button>
+                                    </div>
+                                </Link>
+                                {order.order_status === OrderStatusType.PENDING &&
                                     <button className='btn-cancel'>Hủy đơn</button>
                                 }
-                                {order.order_status === OrderStatus.DELIVERY &&
+                                {order.order_status === OrderStatusType.DELIVERY &&
                                     <button className="rate-btn">Đánh giá</button>
                                 }
                             </div>

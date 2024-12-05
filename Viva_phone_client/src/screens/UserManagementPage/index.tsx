@@ -39,7 +39,7 @@ const UserManagementPage: React.FC = () => {
                         {location.pathname === Routes.OrderStatus.path &&
                             <OrderStatus />
                         }
-                        {location.pathname.includes("order") &&
+                        {location.pathname.includes("order/") &&
                             <Orders />
                         }
                         {location.pathname === Routes.UserVoucher.path &&

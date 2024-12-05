@@ -8,17 +8,16 @@ import LoginPage from "./screens/Login";
 import ForgotPasswordPage from "./screens/ForgotPassword";
 import { HomePage } from "./screens/Home";
 import AddToCartPage from "./screens/AddToCart";
-import OrderStatusPage from "./screens/Order/OrderStatus";
 import NotFound from "./screens/NotFound";
 import { Routes } from "./screens/Routes";
 import StorePage from "./screens/Store";
 import BlogPage from "./screens/Blog";
 import ContactPage from "./screens/Contact";
 import BlogDetail from "./screens/Blog/BlogDetail";
-import OrderDetail from "./screens/Order/OrderDetail";
 import Cart from "./screens/Cart/Cart";
 import UserManagementPage from "./screens/UserManagementPage";
 import PaymentPage from "./screens/Payment";
+
 const App = () => {
 
   const router = createBrowserRouter([
@@ -51,14 +50,10 @@ const App = () => {
           path: Routes.AddToCart.path,
           element: <AddToCartPage />,
         },
-        {
-          path: Routes.OrderStatus.path,
-          element: <OrderStatusPage />,
-        },
-        {
-          path: Routes.OrderDetail.path,
-          element: <OrderDetail />,
-        },
+        // {
+        //   path: Routes.OrderDetail.path,
+        //   element: <OrderDetail />,
+        // },
         {
           path: Routes.Cart.path,
           element: <Cart />,
@@ -77,6 +72,10 @@ const App = () => {
         },
         {
           path: Routes.UserVoucher.path,
+          element: <UserManagementPage />,
+        },
+        {
+          path: Routes.OrderStatus.path,
           element: <UserManagementPage />,
         },
         {
@@ -103,7 +102,6 @@ const App = () => {
           path: Routes.OrderWaitConfirm.path,
           element: <UserManagementPage />,
         },
-
       ],
     },
     {

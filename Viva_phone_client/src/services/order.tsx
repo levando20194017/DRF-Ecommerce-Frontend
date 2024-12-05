@@ -15,7 +15,12 @@ const apiGetListOrdersByStatus = (data: GetOrderByStatus) => {
     return client.get(`api/order/get-list-orders/?page_index=${data.page_index}&page_size=${data.page_size}&guest_id=${data.guest_id}&order_status=${data.order_status}`);
 }
 
+const apiGetOrderDetail = (order_id: number) => {
+    return client.get(`api/order/get-order-detail/?order_id=${order_id}`);
+}
+
 export {
     apiCreateNewOrder,
-    apiGetListOrdersByStatus
+    apiGetListOrdersByStatus,
+    apiGetOrderDetail
 }; 
