@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Table, Image } from "@themesberg/react-bootstrap";
-import { formatTime } from "../../../utils";
+import { formatPrice, formatTime } from "../../../utils";
 import { changeTextToThreeDot } from "../../../utils";
 import { ToastContainer } from "react-toastify";
 import ImageLink from "../../../assets/img/no-image.png";
@@ -27,7 +27,7 @@ export default ({
                 <td>
                     {changeTextToThreeDot(product_name, 20)}
                 </td>
-                <td className="text-danger">{sale_price}</td>
+                <td className="text-danger">{formatPrice(sale_price)}</td>
                 <td className="text-danger">{quantity_sold}</td>
                 <td className="text-danger">{vat}</td>
                 <td className="text-danger">{shipping_cost}</td>

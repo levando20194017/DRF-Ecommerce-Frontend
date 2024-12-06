@@ -17,6 +17,8 @@ import BlogDetail from "./screens/Blog/BlogDetail";
 import Cart from "./screens/Cart/Cart";
 import UserManagementPage from "./screens/UserManagementPage";
 import PaymentPage from "./screens/Payment";
+import AnimatedModal from "./components/Common/test";
+import ModalSuccess from "./components/Common/ModalSuccess";
 
 const App = () => {
 
@@ -29,6 +31,10 @@ const App = () => {
         {
           path: Routes.HomePage.path,
           element: <HomePage />,
+        },
+        {
+          path: "test",
+          element: <ModalSuccess />,
         },
         {
           path: Routes.Store.path,

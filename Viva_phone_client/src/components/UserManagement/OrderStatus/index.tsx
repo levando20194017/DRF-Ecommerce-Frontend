@@ -10,6 +10,7 @@ import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusShow, OrderStatusType } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';
+import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 
 const OrderStatus: React.FC = () => {
     const [items, setItems] = useState<any>([
@@ -117,12 +118,16 @@ const OrderStatus: React.FC = () => {
                                     <div className='fw-bold'>{item.product.name}</div>
                                     <div className='qty'>Số lượng: {item.quantity}</div>
                                     <div className='qty'>Màu sắc: {item.product.color}</div>
-                                    <div className='qty'>Ưu đãi: {item.product.promotion ? item.product.promotion_name : "Không"}</div>
-                                    {item.product.promotion_discount_type && <div className='qty'>Giảm giá: <span className="price">
-                                        {item.product.promotion_discount_type === promotionType.PERCENT ?
-                                            `${item.product.promotion_discount_value}%` :
-                                            `${formatPrice(item.product.promotion_discount_value)}`}</span>
-                                    </div>}
+                                    {item.promotion_name &&
+                                        <>
+                                            <div className='qty'>Ưu đãi: {item.product.promotion ? item.product.promotion_name : "Không"}</div>
+                                            {item.promotion_discount_type && <div className='qty'>Giảm giá: <span className="price">
+                                                {item.promotion_discount_type === promotionType.PERCENT ?
+                                                    `${item.promotion_discount_value}%` :
+                                                    `${formatPrice(item.promotion_discount_value)}`}</span>
+                                            </div>}
+                                        </>}
+
                                 </div>
                                 <div className="price">{formatPrice(item.unit_price)}</div>
                             </div>
@@ -160,7 +165,7 @@ const OrderStatus: React.FC = () => {
                             </Link>
                         </div>
                         <div className='order-item_footer_right'>
-                            {handleGetDiscount(orderDetail) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(handleGetDiscount(orderDetail))}</span></div> : ""}
+                            {getTotalDiscountByOrder(orderDetail?.items) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(getTotalDiscountByOrder(orderDetail.items))}</span></div> : ""}
                             <div className="total">Tổng tiền: <span className='price'>{formatPrice(orderDetail.total_cost)}</span></div>
                             <div className='d-flex gap-4'>
                                 {orderDetail.status === OrderStatusType.PENDING &&

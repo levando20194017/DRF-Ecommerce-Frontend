@@ -3,6 +3,7 @@ import React from 'react';
 import { formatPrice } from '../../utils/format';
 import { getImageUrl } from '../../helps/getImageUrl';
 import { promotionType } from '../../utils/promotionType';
+import { checkPromotionValid } from '../../helps/checkPormotionValid';
 
 // interface ProductItemProps {
 //     product: Product;
@@ -22,8 +23,8 @@ const ProductItem: React.FC<any> = ({ item }) => {
                 <div>
                     <div className='product-name fw-bold'>{item.product.name}</div>
                     <div className='another-info'>Màu sắc: {item.color}</div>
-                    <div className='another-info'>Ưu đãi: {item.product.promotion ? item.product.promotion_name : "Không"}</div>
-                    {item.product.promotion_discount_type && <div className='another-info'>
+                    <div className='another-info'>Ưu đãi: {checkPromotionValid(item.product) ? item.product.promotion_name : "Không"}</div>
+                    {checkPromotionValid(item.product) && item.product.promotion_discount_type && <div className='another-info'>
                         Giảm giá:
                         <span className="price">
                             {item.product.promotion_discount_type === promotionType.PERCENT ?

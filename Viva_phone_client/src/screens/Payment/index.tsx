@@ -12,6 +12,7 @@ import { PaymentMethod } from '../../utils/paymentType';
 import { formatPrice } from '../../utils/format';
 import { promotionType } from '../../utils/promotionType';
 import { apiCreateNewOrder } from '../../services/order';
+import { getTotalDiscountByCart } from '../../helps/getTotalDiscount';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -22,16 +23,7 @@ const PaymentPage: React.FC = () => {
     const userData = getUserData();
     const listOrders = getOrderLocal();
     const totalPrice = listOrders.reduce((sum: number, item: any) => sum + item.product.price * item.quantity, 0)
-    const totalDiscount = listOrders.reduce((sum: number, item: any) => {
-        if (item.product.promotion) {
-            if (item.product.promotion_discount_type === promotionType.FIXED) {
-                return sum + (item.product.promotion_discount_value * item.quantity);
-            } else {
-                return sum + ((item.product.promotion_discount_value * item.unit_price / 100) * item.quantity);
-            }
-        }
-        return sum; // Nếu không có khuyến mãi, giữ nguyên tổng
-    }, 0)
+    const totalDiscount = getTotalDiscountByCart(listOrders)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash")
     const [formData, setFormData] = useState<Order>({
