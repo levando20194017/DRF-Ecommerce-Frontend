@@ -9,7 +9,7 @@ import { apiGetCart, apiRemoveCartItem } from '../../services/cart';
 import { ToastFailed } from '../../components/Common/Toast';
 import { toastWrong } from '../../utils/ToastType';
 import { setOrderLocal } from '../../helps/setLocalStorage';
-import { getOrderLocal, getUserData } from '../../helps/getItemLocal';
+import { getUserData } from '../../helps/getItemLocal';
 import { useNavigate } from 'react-router-dom';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 // import OrderItem from './OrderItem';
 import './Order.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { formatPrice } from '../../../utils/format';
 import { getImageUrl } from '../../../helps/getImageUrl';
@@ -9,6 +9,7 @@ import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { apiCanceledOrder } from '../../../services/order';
 import { message, Popconfirm } from 'antd';
+import { setOrderLocal } from '../../../helps/setLocalStorage';
 
 const OrderList: React.FC<any> = ({ listOrders }) => {
     const handleGetDiscount = (order: any) => {
@@ -36,6 +37,14 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
             message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
         }
     }
+    const navigate = useNavigate();
+    const handleBuyBackOrder = (orderDetail: any) => {
+        if (orderDetail.items?.length > 0) {
+            setOrderLocal(orderDetail.items)
+            navigate(Routes.Payment.path)
+        }
+    }
+
     return (
         <div className="order-list">
             {listOrders.map((order: any, index: number) => (
@@ -90,7 +99,7 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
                                     </div>
                                 </Link>
                                 {order.order_status === OrderStatusType.CANCELLED &&
-                                    <button className='btn-cancel'>Mua lại</button>}
+                                    <button className='btn-cancel' onClick={() => { handleBuyBackOrder(order) }}>Mua lại</button>}
                                 {order.order_status === OrderStatusType.PENDING &&
                                     <Popconfirm
                                         title="Bạn có chắc chắn muốn hủy đơn hàng này không?"

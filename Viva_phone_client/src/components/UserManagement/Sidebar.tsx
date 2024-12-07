@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
         <div className="sidebar">
             <div className="user-info">
                 <div className="avatar">
-                    <img src={getImageUrl(userInfor?.avatar)} />
+                    <Image src={getImageUrl(userInfor?.avatar)} />
                 </div>
                 <div className="username">{userInfor?.last_name} {userInfor?.first_name}</div>
                 <Link to={Routes.UserInfor.path}>

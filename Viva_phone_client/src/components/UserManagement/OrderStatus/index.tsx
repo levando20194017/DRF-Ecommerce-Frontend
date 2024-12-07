@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './orderStatus.scss';
 import { GrPrevious } from 'react-icons/gr';
 import { message, Popconfirm, Steps } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { apiCanceledOrder, apiGetOrderDetail } from '../../../services/order';
 import { formatPrice, formatTime, formatTime2 } from '../../../utils/format';
@@ -11,6 +11,7 @@ import { OrderStatusShow, OrderStatusType } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
+import { setOrderLocal } from '../../../helps/setLocalStorage';
 
 const OrderStatus: React.FC = () => {
     const [items, setItems] = useState<any>([
@@ -58,21 +59,11 @@ const OrderStatus: React.FC = () => {
             handleGetOrderDetail()
         }
     }, [])
-
-    const handleGetDiscount = (order: any) => {
-        if (order?.items?.length > 0) {
-            return order.items.reduce((sum: number, item: any) => {
-                if (item.product.promotion) {
-                    if (item.product.promotion_discount_type === promotionType.FIXED) {
-                        return sum + (item.product.promotion_discount_value * item.quantity);
-                    } else {
-                        return sum + ((item.product.promotion_discount_value * item.unit_price / 100) * item.quantity);
-                    }
-                }
-                return sum; // Nếu không có khuyến mãi, giữ nguyên tổng
-            }, 0)
-        } else {
-            return 0
+    const navigate = useNavigate()
+    const handleBuyBackOrder = () => {
+        if (orderDetail.items?.length > 0) {
+            setOrderLocal(orderDetail.items)
+            navigate(Routes.Payment.path)
         }
     }
 
@@ -89,6 +80,7 @@ const OrderStatus: React.FC = () => {
             message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
         }
     }
+
 
     return (
         <div className="order-status-page">
@@ -192,7 +184,7 @@ const OrderStatus: React.FC = () => {
                             <div className="total">Tổng tiền: <span className='price'>{formatPrice(orderDetail.total_cost)}</span></div>
                             <div className='d-flex justify-content-end gap-4'>
                                 {orderDetail.order_status === OrderStatusType.CANCELLED &&
-                                    <button className='btn-cancel'>Mua lại</button>}
+                                    <button className='btn-cancel' onClick={() => { handleBuyBackOrder() }}>Mua lại</button>}
                                 {orderDetail.order_status === OrderStatusType.PENDING &&
                                     <Popconfirm
                                         title="Bạn có chắc chắn muốn hủy đơn hàng này không?"
