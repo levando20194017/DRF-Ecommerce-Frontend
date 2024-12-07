@@ -4,21 +4,6 @@ import "../../style.scss";
 import { getImageUrl } from "../../../../helps/getImageUrl";
 import { formatPrice } from "../../../../utils/format";
 import { promotionType } from "../../../../utils/promotionType";
-interface Props {
-  product: Product,
-  handleModalQuickView: () => void
-}
-
-interface Product {
-  name: string,
-  image: string,
-  price: number,
-  promotion: string,
-  promotion_name: string,
-  promotion_discount_type: string,
-  promotion_discount_value: number,
-  description: string
-}
 
 export const ProductItem = (props: any) => {
   const { product, handleModalQuickView } = props
