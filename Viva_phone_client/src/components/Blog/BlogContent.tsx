@@ -33,7 +33,7 @@ const BlogContent: React.FC = () => {
 
     useEffect(() => {
         handleGetBlogDetail()
-    }, [])
+    }, [slug])
 
     useEffect(() => {
         if (contentRef.current) {

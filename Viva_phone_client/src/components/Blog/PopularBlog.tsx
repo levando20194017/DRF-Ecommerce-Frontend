@@ -6,6 +6,7 @@ import { getImageUrl } from "../../helps/getImageUrl";
 import { formatTime } from "../../utils/format";
 
 interface PopularBlog {
+  slug: string,
   title: string,
   image: string,
   created_at: string,
@@ -13,6 +14,7 @@ interface PopularBlog {
 }
 const PopularBlog = () => {
   const [popularBlog, setPopularBlog] = useState<PopularBlog>({
+    slug: "",
     title: "",
     image: "",
     created_at: "",
@@ -37,7 +39,7 @@ const PopularBlog = () => {
   }, [])
 
   return (
-    <Link to={`/news/${popularBlog}`} style={{ color: "#fff" }}>
+    <Link to={`/news/${popularBlog.slug}`} style={{ color: "#fff" }}>
       <div className="news-card">
         <img
           className="news-image"
