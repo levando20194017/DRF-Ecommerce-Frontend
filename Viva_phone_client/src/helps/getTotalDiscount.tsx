@@ -6,8 +6,11 @@ export const getTotalDiscountByCart = (listOrders: any) => {
         if (item.product?.promotion_name) {
             const now = new Date();
 
+            const fromDate = new Date(item.product.promotion_from_date); // Chuyển từ chuỗi sang Date object
+            const toDate = new Date(item.product.promotion_to_date);
+
             // Kiểm tra điều kiện status và khoảng thời gian
-            if (item.product.promotion_status === "active" && now > item.product.promotion_from_date && now < item.product.promotion_to_date) {
+            if (item.product.promotion_status === "active" && now >= fromDate && now <= toDate) {
                 if (item.product.promotion_discount_type === promotionType.FIXED) {
                     return sum + (item.product.promotion_discount_value * item.quantity);
                 } else {

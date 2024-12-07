@@ -3,6 +3,7 @@ import { Checkbox, InputNumber, Button, Popconfirm } from 'antd';
 import { getImageUrl } from '../../helps/getImageUrl';
 import { formatPrice } from '../../utils/format';
 import { promotionType } from '../../utils/promotionType';
+import { checkPromotionValid } from '../../helps/checkPormotionValid';
 
 interface CartItemProps {
     cartItem: any;
@@ -40,8 +41,15 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem, onQuantityChange, onSelec
                     <div>
                         <div className='product-name fw-bold'>{cartItem.product.name}</div>
                         <div className='another-info'>Màu sắc: {cartItem.color}</div>
-                        <div className='another-info'>Ưu đãi: {cartItem.product.promotion ? cartItem.product.promotion_name : "Không"}</div>
-                        {cartItem.product.promotion_discount_type && <div className='another-info'>Giảm giá: <span className="price">{cartItem.product.promotion_discount_type === promotionType.PERCENT ? `${cartItem.product.promotion_discount_value}%` : `${formatPrice(cartItem.product.promotion_discount_value)}`}</span></div>}
+                        <div className='another-info'>Ưu đãi: {checkPromotionValid(cartItem.product) ? cartItem.product.promotion_name : "Không"}</div>
+                        {checkPromotionValid(cartItem.product) && <div className='another-info'>
+                            Giảm giá:
+                            <span className="price">
+                                {cartItem.product.promotion_discount_type === promotionType.PERCENT ?
+                                    `${cartItem.product.promotion_discount_value}%` :
+                                    `${formatPrice(cartItem.product.promotion_discount_value)}`}
+                            </span>
+                        </div>}
                     </div>
                 </div>
             </div>
