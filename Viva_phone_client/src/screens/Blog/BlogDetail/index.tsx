@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import BlogContent from "../../../components/Blog/BlogContent";
 import { ListBlog } from "../../../components/Blog/ListBlog";
 import ListBlogsPopular from "../../../components/Blog/ListBlogsPopular";
@@ -5,10 +6,11 @@ import Breadcrumb from "../../../components/Breadcrumb";
 import { Routes } from "../../Routes";
 
 const BlogDetail = () => {
+    const { slug } = useParams<string>()
     const breadcrumbs = [
         { label: "Trang chủ", path: Routes.HomePage.path },
         { label: "Tin tức", path: Routes.News.path },
-        { label: "ban-tin-moi-nhat" },
+        { label: `${slug}` },
     ];
 
     return (

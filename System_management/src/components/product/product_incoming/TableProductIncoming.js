@@ -4,7 +4,7 @@ import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Card, Table, Image } from "@themesberg/react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../../../routes";
-import { formatTime, toastFailed, toastSuccess } from "../../../utils";
+import { formatPrice, formatTime, toastFailed, toastSuccess } from "../../../utils";
 import { changeTextToThreeDot } from "../../../utils";
 import { ToastContainer } from "react-toastify";
 import { Popconfirm } from "antd";
@@ -58,7 +58,7 @@ export default ({
                 <td>
                     {changeTextToThreeDot(product_name, 20)}
                 </td>
-                <td className="text-danger">{cost_price}</td>
+                <td className="text-danger">{formatPrice(cost_price)}</td>
                 <td>
                     {quantity_in}
                 </td>

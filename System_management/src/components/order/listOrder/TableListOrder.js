@@ -4,7 +4,7 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { Card, Badge, Table } from "@themesberg/react-bootstrap";
 import ModalOrderDetail from "../orderDetail/ModalOrderDetail";
 import { v4 as uuidv4 } from "uuid";
-import { formatTime } from "../../../utils";
+import { formatPrice, formatTime } from "../../../utils";
 import { apiOrderDetail } from "../../../services/order";
 export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -118,7 +118,7 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
           </Card.Link>
         </td>
         <td>{guest_first_name + " " + guest_last_name}</td>
-        <td className="text-danger">{total_cost}</td>
+        <td className="text-danger">{formatPrice(total_cost)}</td>
         <td>{statusBtn(order_status)}</td>
         <td>{payment_method}</td>
         <td>{statusPayment(payment_status)}</td>

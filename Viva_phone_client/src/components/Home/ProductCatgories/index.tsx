@@ -1,12 +1,20 @@
 import "../style.scss";
 import "animate.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import img1 from "../../../assets/images/content.jpg";
 import { ModalQuickView } from "../ModalQuickView";
-import { ListProduct } from "./ListProduct";
+import { ListProduct } from "./ProductItem";
+import { apiGetCatalog } from "../../../services/catalog";
+import { apiGetListProductsByCatalog } from "../../../services/product";
+import { ProductItem } from "./ProductItem/ProductItem";
 export const ProductCatgories = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [listCatalogs, setListCatalogs] = useState<any[]>([])
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [selectedCatalog, setSelectedCatalog] = useState(0);
+  const [listProducts, setListProducts] = useState<any[]>([])
 
   const handleQuickView = () => {
     setIsOpenModal(true);
@@ -14,9 +22,48 @@ export const ProductCatgories = () => {
   const toggleModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-  const handleClick = (index: number) => {
-    setActiveIndex(index);
+  const handleClick = (id: number) => {
+    setSelectedCatalog(id)
   };
+
+  const handleGetCatalog = async () => {
+    try {
+      const res = await apiGetCatalog({
+        pageIndex: 1, pageSize: 100, level: 1
+      })
+      if (res.status === 200) {
+        setListCatalogs(res.data.catalogs)
+        if (res.data.catalogs.length > 0) {
+          setSelectedCatalog(res.data.catalogs[0].id)
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    handleGetCatalog();
+  }, [])
+
+  const handleGetListProductsOfCatalog = async (catalog: number) => {
+    try {
+      const response = await apiGetListProductsByCatalog({
+        pageIndex, pageSize, catalog_id: catalog
+      })
+      if (response.status === 200) {
+        setListProducts(response.data.products)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedCatalog) {
+      handleGetListProductsOfCatalog(selectedCatalog)
+    }
+  }, [selectedCatalog])
 
   return (
     <div className="container list-product mt-5">
@@ -76,38 +123,22 @@ export const ProductCatgories = () => {
                 </p>
               </div>
               <div className="categories-list d-flex mt-4">
-                <div
-                  className={activeIndex === 0 ? "active" : ""}
-                  onClick={() => handleClick(0)}
-                >
-                 Iphone
-                </div>
-                <div
-                  className={activeIndex === 1 ? "active" : ""}
-                  onClick={() => handleClick(1)}
-                >
-                  Samsung
-                </div>
-                <div
-                  className={activeIndex === 2 ? "active" : ""}
-                  onClick={() => handleClick(2)}
-                >
-                  Realme
-                </div>
-                <div
-                  className={activeIndex === 3 ? "active" : ""}
-                  onClick={() => handleClick(3)}
-                >
-                  Xiaomi
-                </div>
+                {listCatalogs.map((item, index) => (
+                  <div
+                    className={selectedCatalog === item.id ? "active" : ""}
+                    onClick={() => handleClick(item.id)}
+                    key={index}
+                  >
+                    {item.name}
+                  </div>
+                ))}
               </div>
               <div className="mt-3">
-                {activeIndex === 0 && (
-                  <ListProduct handleQuickView={handleQuickView} />
-                )}
-                {activeIndex === 1 && (
-                  <ListProduct handleQuickView={handleQuickView} />
-                )}
+                <div className="top-categories_list row">
+                  {listProducts.map(product => (
+                    <ProductItem product={product} handleModalQuickView={handleQuickView} />
+                  ))}
+                </div>
               </div>
             </div>
           </section>

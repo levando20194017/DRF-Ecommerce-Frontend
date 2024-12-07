@@ -7,31 +7,39 @@
     height: 85px;
     justify-content: center;
     align-items: center;
+
     .vr {
       margin-top: 35px;
       height: 21px;
     }
   }
+
   .pro-body {
     .images-of-pro {
       .img-show {
         position: relative;
-        width: auto;
+        width: 100%;
         height: 500px;
         overflow: hidden;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #282828;
+        padding: 24px;
+
         img {
           height: 500px;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          max-width: 100%;
           max-height: 100%;
+          width: auto;
           transition: transform 0.3s ease-out;
+          border-radius: 8px;
+          object-fit: cover;
+          overflow: hidden;
         }
 
         img:hover {
-          transform: translate(-50%, -50%) scale(1.1);
+          transform: scale(1.02);
         }
       }
 
@@ -61,39 +69,48 @@
           display: inline-block;
           font-size: 30px;
         }
-        > div {
+
+        >div {
           display: flex;
           justify-content: center;
           align-items: center;
         }
       }
     }
+
     .pro-detai {
       padding: 0px 0px 0px 30px;
+
       h2 {
         display: flex;
         justify-content: center;
         align-items: center;
       }
+
       i {
         color: orange;
         padding-left: 3px;
       }
+
       .review-sale {
         width: 350px;
         justify-content: space-between;
       }
-      > div {
+
+      >div {
         line-height: 46px;
       }
+
       .quantity {
         width: 130px;
         height: 35px;
+
         span {
           margin-right: 7px;
           font-weight: bold;
         }
       }
+
       button {
         height: 35px;
         font-weight: 500;
@@ -105,6 +122,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
         // height: 100%;
         &:hover {
           animation: scale 1s ease-in-out;
@@ -117,15 +135,96 @@
     }
   }
 }
+
 .image-gallery-image {
   height: 87vh;
 }
-// .ReactModal__Overlay{
-//   background: rgba(29, 27, 27, 0.87) !important;
-// }
+
 .navbar_header2.modal-header {
   display: none !important;
 }
+
 .navbar_header3.modal-header {
   display: none !important;
+}
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  z-index: 9999;
+  background-color: rgba(68, 67, 67, 0.75) !important;
+}
+
+.ReactModal__Content--after-open {
+  background: #282828 !important;
+  border: none !important;
+}
+
+.image-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+  transition: transform 0.3s ease-in-out;
+  /* Thêm hiệu ứng trượt */
+  padding: 0;
+  margin: 0;
+}
+
+.image-item {
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #ff652f;
+    filter: brightness(70%);
+    transition: all 0.4s ease-in-out;
+  }
+
+  &.active {
+    border-color: #ff652f;
+  }
+
+  img {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+}
+
+.img-show {
+  transition: transform 0.3s ease;
+
+  img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    object-fit: cover;
+  }
+}
+
+.list-img-of-pro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background-color: #282828;
+  border-radius: 4px;
+
+  svg {
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.fa-chevron-left,
+.fa-chevron-right {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.fa-chevron-left:hover,
+.fa-chevron-right:hover {
+  color: #007bff;
 }

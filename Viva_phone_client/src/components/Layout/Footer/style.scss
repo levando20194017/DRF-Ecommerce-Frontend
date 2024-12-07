@@ -1,5 +1,8 @@
 /* Footer Styles */
 .footer {
+  border-top: 1px solid rgb(94, 93, 93);
+  box-shadow: 0px -4px 6px -4px #4e4e4e;
+  margin-top: 32px;
   font-size: 14px;
   line-height: 1.6;
   font-weight: 500;
@@ -37,7 +40,6 @@
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #fff;
   /* Màu tiêu đề */
 }
 
@@ -66,7 +68,6 @@
 }
 
 .input-group .btn-warning {
-  color: #fff;
   background-color: #ff9500;
   border: none;
 }

@@ -1,0 +1,1 @@
+export const toastWrong = "Some thing went wrong, please try again."

@@ -6,7 +6,7 @@ const apiGetOrderList = function ({ pageIndex, pageSize, startDate, endDate, ord
   );
 };
 const apiOrderDetail = function (id) {
-  return axios.get(`/api/order/get-order-detail/?id=${id}`);
+  return axios.get(`/api/order/admin/get-order-detail/?order_id=${id}`);
 };
 
 const apiUpdateOrderStatus = function (data) {

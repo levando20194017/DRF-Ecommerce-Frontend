@@ -185,7 +185,7 @@ export const FormCreateBlog = ({
               </div>
             ) : id ? (
               <Button variant="primary" type="submit">
-                Edit Blog
+                Update Blog
               </Button>
             ) : (
               <Button variant="primary" type="submit">

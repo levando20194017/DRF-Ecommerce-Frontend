@@ -1,12 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row, Card, Form, Button } from "@themesberg/react-bootstrap";
 import { ToastContainer } from "react-toastify";
-import { DatePicker, Space, theme } from 'antd';
+import { DatePicker, Select, Space, theme } from 'antd';
 import { useHistory, useParams } from "react-router-dom";
 import { apiCreatePromotion, apiDetailPromotion, apiEditPromotion } from "../../../services/promotion";
 import dayjs from 'dayjs';
 import { Routes } from "../../../routes";
 import { toastFailed } from "../../../utils";
+const optionsType = [{
+    value: "percentage",
+    label: "Percentage Discount"
+},
+{
+    value: "fixed",
+    label: "Fixed Discount"
+},
+]
+const optionsStatus = [{
+    value: "active",
+    label: "Active"
+},
+{
+    value: "inactive",
+    label: "Inactive"
+},
+{
+    value: "expired",
+    label: "Expired"
+},]
 
 export const CreatePromotion = () => {
     const [error, setError] = useState("");
@@ -22,8 +43,11 @@ export const CreatePromotion = () => {
         from_date: undefined,
         to_date: undefined,
         rate: "",
-        special_price: "",
-        member_price: ""
+        discount_value: "",
+        discount_type: optionsType[0].value,
+        status: optionsStatus[0].value,
+        // special_price: "",
+        // member_price: ""
     })
 
     const handleRangeChange = (dates) => {
@@ -34,6 +58,12 @@ export const CreatePromotion = () => {
     const handleInput = (e, name) => {
         const newData = { ...dataDetail };
         newData[name] = e.target.value;
+        setDataDetail(newData)
+    }
+
+    const handleChangeOption = (name, value) => {
+        const newData = { ...dataDetail };
+        newData[name] = value;
         setDataDetail(newData)
     }
 
@@ -113,28 +143,42 @@ export const CreatePromotion = () => {
                                 <Col md={4} className="mb-3">
                                     <Form.Group id="SKU">
                                         <Form.Label>
-                                            Rate <span className="text-danger">*</span>
+                                            Discount type <span className="text-danger">*</span>
                                         </Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            onChange={(e) => handleInput(e, "rate")}
-                                            value={dataDetail.rate}
+                                        <Select
+                                            showSearch
+                                            value={dataDetail.discount_type}
+                                            onChange={() => handleChangeOption("discount_type")}
+                                            options={optionsType}
                                         />
                                     </Form.Group>
                                 </Col>
                                 <Col md={4} className="mb-3">
                                     <Form.Group id="SKU">
                                         <Form.Label>
-                                            Special Price
+                                            Discount value
                                         </Form.Label>
                                         <Form.Control
                                             type="text"
-                                            onChange={(e) => handleInput(e, "special_price")}
-                                            value={dataDetail.special_price}
+                                            onChange={(e) => handleInput(e, "discount_value")}
+                                            value={dataDetail.discount_value}
                                         />
                                     </Form.Group>
                                 </Col>
                                 <Col md={4} className="mb-3">
+                                    <Form.Group id="SKU">
+                                        <Form.Label>
+                                            Status <span className="text-danger">*</span>
+                                        </Form.Label>
+                                        <Select
+                                            showSearch
+                                            value={dataDetail.status}
+                                            onChange={() => handleChangeOption("status")}
+                                            options={optionsStatus}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                {/* <Col md={4} className="mb-3">
                                     <Form.Group id="SKU">
                                         <Form.Label>
                                             Member Price
@@ -145,7 +189,7 @@ export const CreatePromotion = () => {
                                             onChange={(e) => handleInput(e, "member_price")}
                                         />
                                     </Form.Group>
-                                </Col>
+                                </Col> */}
                             </Row>
                             <Form.Label>Description</Form.Label>
                             <Row className="px-2">

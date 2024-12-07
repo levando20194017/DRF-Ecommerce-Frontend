@@ -4,7 +4,7 @@ import './style.css'
 const LoginPage = () => {
   return (
     <div>
-      <SignupForm title="Signup" btnLabel="Sign Up" />
+      <SignupForm />
     </div>
   );
 };

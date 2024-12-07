@@ -1,0 +1,170 @@
+@use "../../../styles/variables" as vars;
+
+.order-status-page {
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: vars.$color-background;
+        height: 48px;
+        text-transform: uppercase;
+        padding: 8px 16px;
+
+        .order-status {
+            color: vars.$color-price;
+        }
+    }
+
+    .order-step {
+        margin-top: 1px;
+        padding: 24px 16px;
+        background-color: vars.$color-background;
+    }
+
+    .order-item {
+        margin-top: 1px;
+        margin-bottom: 16px;
+        padding: 16px;
+        background-color: #282828;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        &_header {
+            display: flex;
+            justify-content: space-between;
+            height: 40px;
+            border-bottom: 1px solid vars.$border-color-bottom;
+
+            .text-more {
+                font-size: 14px;
+                color: vars.$color-content;
+            }
+
+            .shop-name {
+                font-weight: bold;
+            }
+
+            .status {
+                color: vars.$color-status;
+                text-transform: uppercase;
+            }
+        }
+
+        .items {
+            padding-bottom: 8px;
+            border-bottom: 1px solid vars.$border-color-bottom;
+
+            .item {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+
+                .image {
+                    img {
+                        height: 100px;
+                        width: 100px;
+                        overflow: hidden;
+                        object-fit: cover;
+                        border-radius: 4px;
+                    }
+                }
+
+                .name {
+                    flex: 1;
+
+                    .qty {
+                        font-size: 14px;
+                        color: vars.$color-content;
+                    }
+                }
+
+                .price {
+                    color: vars.$color-price;
+                    font-weight: bold;
+                }
+            }
+
+        }
+
+        .address {
+            font-size: 20px;
+        }
+
+        .payment-method {
+            display: flex;
+            gap: 8px;
+            color: vars.$color-content;
+
+            .label {
+                width: 200px;
+                text-align: end;
+            }
+
+            .status {
+                text-transform: uppercase;
+                color: vars.$common-white;
+            }
+
+            .status.success {
+                color: green;
+            }
+
+            .status.unpaid {
+                color: vars.$color-price;
+            }
+        }
+
+        .customer-name {
+            font-weight: bold;
+        }
+
+        &_footer {
+            display: flex;
+            justify-content: space-between;
+
+            &_left {
+                font-size: 14px;
+                color: vars.$color-content;
+            }
+
+            &_right {
+                text-align: end;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-top: 8px;
+
+                .price {
+                    color: vars.$color-price;
+                    font-weight: bold;
+                }
+
+                .btn-cancel {
+                    border: 1px solid vars.$color-price;
+                    padding: 8px 32px;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    outline: none;
+                    color: vars.$color-price;
+                    background-color: transparent;
+                    transition: all 0.4s ease;
+
+                    &:hover {
+                        color: #fff;
+                        background-color: vars.$color-price;
+                    }
+                }
+
+                .rate-btn {
+                    background: #f53d2d;
+                    color: #fff;
+                    border: none;
+                    padding: 8px 32px;
+                    border-radius: 2px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

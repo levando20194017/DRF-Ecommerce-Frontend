@@ -1,31 +1,40 @@
-import axios from '../axios/axios';
-
-const handleLoginApi = (userEmail: string, userPassword: string) => {
-    return axios.post('/api/login', { email: userEmail, password: userPassword });
-}
-
-const getAllUsers = (inputId: string) => {
-    return axios.get(`/api/get-all-users?id=${inputId}`);
-}
-
-interface UserData {
-    name: string;
+import client from "../axios/axiosClient"
+interface UserLogin {
     email: string;
     password: string;
 }
 
-const createNewUserService = (data: UserData) => {
-    return axios.post('/api/create-new-user', data);
+const apiLogin = (data: UserLogin) => {
+    return client.post('/api/guest/login/', data);
 }
 
-const deleteUserService = (userId: string) => {
-    return axios.delete('/api/delete-user', {
-        data: { id: userId }
+interface UserRegister {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+}
+
+const apiRegister = (data: UserRegister) => {
+    return client.post('/api/guests/register/', data);
+}
+
+const apiChangeUserInfor = (data: any) => {
+    return client.put('/api/guests/change-information/', data);
+}
+
+const apiChangeAvatar = function (formData: any) {
+    return client.put("api/guests/change-avatar/", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     });
-}
+};
 
-const editUserService = (data: UserData) => {
-    return axios.put('/api/edit-user', data);
-}
-
-export { handleLoginApi, getAllUsers, createNewUserService, deleteUserService, editUserService }; 
+export {
+    apiLogin,
+    apiRegister,
+    apiChangeAvatar,
+    apiChangeUserInfor
+}; 

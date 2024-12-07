@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .list-blogs {
     .title {
         text-align: center;
@@ -23,17 +25,41 @@
         }
     }
 
+    .single-location-blog:hover .location-img img {
+        transform: scale(1.1);
+    }
+
     .frame-blog-item {
         display: flex;
         flex-direction: column;
         gap: 16px;
+        min-height: 410px;
+
+        .location-img {
+            border-radius: 15px;
+            overflow: hidden;
+            height: 250px;
+            width: 100%;
+            background-color: vars.$color-background;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            overflow: hidden;
+            transform: scale(1);
+            transition: all 0.4s ease;
+        }
 
         .blog-title {
             font-size: 20px;
             font-weight: 700;
             line-height: 30px;
             text-align: left;
-            text-underline-position: from-font;
             text-decoration-skip-ink: none;
         }
 
@@ -42,17 +68,15 @@
             font-weight: 400;
             line-height: 21px;
             text-align: left;
-            text-underline-position: from-font;
             text-decoration-skip-ink: none;
-            color: #9A9A9A
+            color: vars.$color-content
         }
 
         .blog-date {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 400;
             line-height: 18px;
             text-align: left;
-            text-underline-position: from-font;
             text-decoration-skip-ink: none;
             color: #626262;
         }
@@ -60,7 +84,7 @@
 }
 
 .news-card {
-    color: white;
+    color: vars.$common-white;
     border-radius: 8px;
     overflow: hidden;
     margin: 20px auto;
@@ -102,7 +126,7 @@
         font-size: 16px;
         line-height: 1.5;
         margin-bottom: 20px;
-        color: #9A9A9A
+        color: vars.$color-content
     }
 
     .news-date {
@@ -120,7 +144,6 @@
         font-weight: 700;
         line-height: 36px;
         text-align: left;
-        text-underline-position: from-font;
         text-decoration-skip-ink: none;
         color: #F8B218;
     }
@@ -141,8 +164,16 @@
 
         &:hover {
             img {
-                transform: scale(1.15);
+                transform: scale(1.08);
             }
+        }
+
+        .frame-blog-image {
+            height: 109px;
+            min-width: 155px !important;
+            overflow: hidden;
+            object-fit: cover;
+            border-radius: 4px;
         }
 
         .img-blog-popular {
@@ -155,13 +186,17 @@
 
         .blog-popular-title {
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 24px;
             letter-spacing: -0.015em;
             text-align: left;
-            text-underline-position: from-font;
             text-decoration-skip-ink: none;
-            color: #FCFCFC;
+            color: vars.$common-white;
+        }
+
+        .blog-short-description {
+            color: vars.$color-content;
+            font-size: 14px;
         }
 
         .text-date {

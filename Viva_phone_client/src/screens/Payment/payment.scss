@@ -1,0 +1,129 @@
+@use "../../styles/variables" as vars;
+
+.payment-page {
+    .btn-change {
+        border-radius: 2px;
+        background-color: transparent;
+        outline: none;
+        border: 1px solid vars.$color-background;
+        color: #0d6efd;
+        font-weight: bold;
+    }
+
+    .border-top {
+        background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+        background-position-x: -30px;
+        background-size: 116px 3px;
+        height: 3px;
+        width: 100%;
+    }
+
+    .shipping-address {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background-color: vars.$color-background;
+        padding: 16px;
+    }
+
+    .sum-product {
+        padding: 0 16px;
+        background-color: vars.$color-background;
+
+        .another-info {
+            color: vars.$color-content;
+        }
+    }
+
+    .total-cost {
+        background-color: vars.$color-background;
+
+        .payment-method {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid vars.$border-color-bottom;
+            padding: 20px 16px;
+        }
+
+        .payment-option {
+            background-color: transparent;
+            color: vars.$common-white;
+            border-radius: 2px;
+            height: 40px;
+            font-size: 16px;
+
+            &:hover {
+                color: vars.$color-price;
+            }
+        }
+
+        .actual-amount {
+            padding: 0 16px;
+            border-bottom: 1px dashed vars.$border-color-bottom;
+
+            .label {
+                width: 200px;
+                text-align: end;
+                color: vars.$color-content;
+            }
+
+            .actual-total {
+                width: 200px;
+                text-align: end;
+                color: vars.$common-white;
+            }
+
+            .value {
+                text-align: end;
+                color: vars.$color-price;
+                min-width: 110px;
+                text-align: end;
+                padding-left: 10px;
+            }
+        }
+
+        .payment-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 16px;
+            color: vars.$color-content;
+            font-size: 14px;
+
+            .btn-payment {
+                background: vars.$color-price;
+                color: #fff;
+                border: none;
+                padding: 8px 32px;
+                border-radius: 2px;
+                cursor: pointer;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.ant-radio-wrapper {
+    color: vars.$common-white;
+}
+
+.ant-modal-root {
+    z-index: 9999;
+
+    .ant-modal-body {
+        font-size: 16px !important;
+    }
+
+    .ant-form-item-control-input-content {
+        input {
+            height: 40px;
+        }
+    }
+
+    button {
+        height: 40px;
+        padding: 0 16px;
+    }
+}

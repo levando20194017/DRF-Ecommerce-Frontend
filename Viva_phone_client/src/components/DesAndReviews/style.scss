@@ -1,25 +1,44 @@
 .des-and-reviews {
+
   .title {
     ul {
       li {
         padding: 20px;
         font-weight: bold;
         cursor: pointer;
-        color: gray;
+        color: #a3a3a3;
       }
+
       li.active {
-        color: black;
         transition: all 0.4s ease-in-out;
+        color: #fff;
       }
     }
   }
+
   .des {
+    background-color: #282828;
+    border-radius: 4px;
+
+    .title {
+      color: #fff;
+    }
+
     p {
       line-height: 26px;
       font-weight: 400;
+      color: #aaa6a6;
     }
   }
+
   .reviews {
+    background-color: #282828;
+    border-radius: 4px;
+
+    .review-content {
+      color: #aaa6a6;
+    }
+
     .action-review {
       justify-content: center;
       align-items: center;
@@ -29,10 +48,11 @@
         cursor: pointer;
       }
     }
+
     .level-report {
       border-radius: 20px;
       background-color: rgb(236, 236, 236);
-      color: gray;
+      // color: gray;
       font-weight: 500;
       width: 250px;
       display: flex;
@@ -40,15 +60,19 @@
       align-items: center;
       height: 30px;
     }
+
     .reply {
       font-weight: bold;
       cursor: pointer;
+      margin-left: 32px;
     }
+
     .admin {
       font-family: "Tektur", cursive;
       font-size: 22px;
       color: #ff652f;
     }
+
     .like-review {
       cursor: pointer;
     }
