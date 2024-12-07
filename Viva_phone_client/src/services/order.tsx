@@ -19,8 +19,13 @@ const apiGetOrderDetail = (order_id: number) => {
     return client.get(`api/order/get-order-detail/?order_id=${order_id}`);
 }
 
+const apiCanceledOrder = (data: { order_id: number }) => {
+    return client.put("api/order/cancel-order/", data);
+}
+
 export {
     apiCreateNewOrder,
     apiGetListOrdersByStatus,
-    apiGetOrderDetail
+    apiGetOrderDetail,
+    apiCanceledOrder
 }; 

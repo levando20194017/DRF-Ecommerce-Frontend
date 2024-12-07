@@ -7,6 +7,8 @@ import { formatPrice } from '../../../utils/format';
 import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
+import { apiCanceledOrder } from '../../../services/order';
+import { message, Popconfirm } from 'antd';
 
 const OrderList: React.FC<any> = ({ listOrders }) => {
     const handleGetDiscount = (order: any) => {
@@ -20,6 +22,19 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
             }
             return sum; // Nếu không có khuyến mãi, giữ nguyên tổng
         }, 0)
+    }
+    const handleCancelOrder = async (id: number) => {
+        try {
+            const response = await apiCanceledOrder({ order_id: id })
+            if (response.status === 200) {
+                message.success("Hủy đơn hàng thành công.")
+            } else {
+                message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
+            }
+        } catch (e) {
+            console.log(e);
+            message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
+        }
     }
     return (
         <div className="order-list">
@@ -74,8 +89,18 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
                                         <button className="rate-btn">Chi tiết đơn hàng</button>
                                     </div>
                                 </Link>
+                                {order.order_status === OrderStatusType.CANCELLED &&
+                                    <button className='btn-cancel'>Mua lại</button>}
                                 {order.order_status === OrderStatusType.PENDING &&
-                                    <button className='btn-cancel'>Hủy đơn</button>
+                                    <Popconfirm
+                                        title="Bạn có chắc chắn muốn hủy đơn hàng này không?"
+                                        okText="Có"
+                                        cancelText="Không"
+                                        onConfirm={() => handleCancelOrder(order.id)}
+                                        className="cursor-pointer text-center"
+                                    >
+                                        <button className='btn-cancel'>Hủy đơn</button>
+                                    </Popconfirm>
                                 }
                                 {order.order_status === OrderStatusType.DELIVERY &&
                                     <button className="rate-btn">Đánh giá</button>

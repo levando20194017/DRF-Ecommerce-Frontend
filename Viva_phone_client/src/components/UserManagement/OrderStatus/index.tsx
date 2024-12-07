@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './orderStatus.scss';
 import { GrPrevious } from 'react-icons/gr';
-import { Steps } from 'antd';
+import { message, Popconfirm, Steps } from 'antd';
 import { Link } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
-import { apiGetOrderDetail } from '../../../services/order';
-import { formatPrice, formatTime2 } from '../../../utils/format';
+import { apiCanceledOrder, apiGetOrderDetail } from '../../../services/order';
+import { formatPrice, formatTime, formatTime2 } from '../../../utils/format';
 import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusShow, OrderStatusType } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
@@ -76,6 +76,20 @@ const OrderStatus: React.FC = () => {
         }
     }
 
+    const handleCancelOrder = async (id: number) => {
+        try {
+            const response = await apiCanceledOrder({ order_id: id })
+            if (response.status === 200) {
+                message.success("Hủy đơn hàng thành công.")
+            } else {
+                message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
+            }
+        } catch (e) {
+            console.log(e);
+            message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
+        }
+    }
+
     return (
         <div className="order-status-page">
             <div className='header'>
@@ -107,6 +121,11 @@ const OrderStatus: React.FC = () => {
                                 Xem lại các sản phẩm mà bạn đã đặt bên dưới!
                             </div>
                         </span>
+                        {orderDetail.order_status === OrderStatusType.CANCELLED &&
+                            <span className='d-flex gap-2'>
+                                <span className='shop-name'>Thời gian hủy:</span> <span className='text-more fs-6'>{formatTime(orderDetail.date_cancelled)}</span>
+                            </span>
+                        }
                     </div>
                     <div className="items">
                         {orderDetail.items?.map((item: any, index: number) => (
@@ -165,11 +184,25 @@ const OrderStatus: React.FC = () => {
                             </Link>
                         </div>
                         <div className='order-item_footer_right'>
-                            {getTotalDiscountByOrder(orderDetail?.items) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(getTotalDiscountByOrder(orderDetail.items))}</span></div> : ""}
+                            {getTotalDiscountByOrder(orderDetail?.items) ?
+                                <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(getTotalDiscountByOrder(orderDetail.items))}</span></div>
+                                :
+                                ""
+                            }
                             <div className="total">Tổng tiền: <span className='price'>{formatPrice(orderDetail.total_cost)}</span></div>
-                            <div className='d-flex gap-4'>
-                                {orderDetail.status === OrderStatusType.PENDING &&
-                                    <button className='btn-cancel'>Hủy đơn</button>
+                            <div className='d-flex justify-content-end gap-4'>
+                                {orderDetail.order_status === OrderStatusType.CANCELLED &&
+                                    <button className='btn-cancel'>Mua lại</button>}
+                                {orderDetail.order_status === OrderStatusType.PENDING &&
+                                    <Popconfirm
+                                        title="Bạn có chắc chắn muốn hủy đơn hàng này không?"
+                                        okText="Có"
+                                        cancelText="Không"
+                                        onConfirm={() => handleCancelOrder(order_id)}
+                                        className="cursor-pointer text-center"
+                                    >
+                                        <button className='btn-cancel'>Hủy đơn</button>
+                                    </Popconfirm>
                                 }
                                 {orderDetail.order_status === OrderStatusType.DELIVERY &&
                                     <button className="rate-btn">Đánh giá</button>
