@@ -33,7 +33,7 @@ const Orders: React.FC = () => {
             {listOrders.length > 0 ?
                 <>
                     <SearchOrder />
-                    <OrderList listOrders={listOrders} />
+                    <OrderList listOrders={listOrders} handleGetListOrder={handleGetListOrder} />
                 </>
                 :
                 <EmptyOrder />

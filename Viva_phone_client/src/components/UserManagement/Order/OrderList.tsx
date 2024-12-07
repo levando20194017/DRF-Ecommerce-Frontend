@@ -11,7 +11,7 @@ import { apiCanceledOrder } from '../../../services/order';
 import { message, Popconfirm } from 'antd';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
 
-const OrderList: React.FC<any> = ({ listOrders }) => {
+const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
     const handleGetDiscount = (order: any) => {
         return order.items.reduce((sum: number, item: any) => {
             if (item.product.promotion) {
@@ -29,6 +29,7 @@ const OrderList: React.FC<any> = ({ listOrders }) => {
             const response = await apiCanceledOrder({ order_id: id })
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
+                handleGetListOrder()
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
             }
