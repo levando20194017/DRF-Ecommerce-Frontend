@@ -253,6 +253,9 @@
   margin-right: 10px;
 }
 
+.ant-select-item.ant-select-item-option.ant-select-item-option-active {
+  background-color: rgb(190, 224, 248, 0.8);
+}
 
 /*--- Responsive Code ---*/
 @media screen and (max-width: 1920px) {}

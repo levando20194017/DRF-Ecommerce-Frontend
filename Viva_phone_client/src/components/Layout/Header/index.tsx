@@ -1,15 +1,21 @@
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom"; // Import useLocation
-import { Input, AutoComplete } from "antd"; // Import các component cần thiết cho tìm kiếm
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useLocation
+import { AutoComplete } from "antd"; // Import các component cần thiết cho tìm kiếm
 import "./style.scss";
 import { useEffect, useState, FC, useRef } from "react";
 import logo4 from "../../../assets/images/logo4.png";
 import { Routes } from "../../../screens/Routes";
 import Notification from "../../Notification";
+import { apiSearchProductsInStore } from "../../../services/product";
+import { getImageUrl } from "../../../helps/getImageUrl";
+import { formatPrice } from "../../../utils/format";
+import { checkPromotionValid } from "../../../helps/checkPormotionValid";
+import { promotionType } from "../../../utils/promotionType";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [textSearch, setTextSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]); // Kết quả tìm kiếm
   const [searchInputVisible, setSearchInputVisible] = useState(false); // New state to control search input visibility
   const searchRef = useRef<HTMLDivElement | null>(null); // Thêm kiểu cho ref
@@ -62,22 +68,36 @@ const Header: FC = () => {
       </Link>
     ));
 
-  const handleSearch = (value: string) => {
-    // Giả sử bạn có một hàm fetch dữ liệu tìm kiếm sản phẩm từ API
-    if (value) {
-      setSearchResults([
-        { id: 1, name: "Sản phẩm A", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "22,200,000 VND" },
-        { id: 2, name: "Sản phẩm B", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "13,300,000 VND" },
-        // Thêm các sản phẩm vào đây...
-      ]);
-    } else {
-      setSearchResults([]);
-    }
+  const handleSearch = async (value: string) => {
+    setTextSearch(value)
   };
+
+  const handleGetListProduct = async (name: string) => {
+    try {
+      const response = await apiSearchProductsInStore({
+        pageIndex: 1, pageSize: 20, textSearch: name, storeId: 1
+      }) as any
+      if (response.status === 200) {
+        setSearchResults(response.data.products)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  useEffect(() => {
+    handleGetListProduct(textSearch)
+  }, [textSearch])
 
   const toggleSearchInput = () => {
     setSearchInputVisible(!searchInputVisible); // Toggle search input visibility
   };
+  const navigate = useNavigate()
+  const handleClickItemProduct = (product: any) => {
+    setTextSearch("");
+    if (product?.id) {
+      navigate(Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog }))
+    }
+  }
 
   const renderHeaderContent = (isSticky = false) => (
     <Navbar className={`d-flex ${isSticky ? "navbar_header3" : "navbar_header2"}`}>
@@ -110,22 +130,37 @@ const Header: FC = () => {
             onClick={toggleSearchInput} // Toggle search input visibility
           />
           <AutoComplete
-            style={{ width: 300, position: "absolute", top: "40px", right: "0" }}
+            style={{ width: 500, position: "absolute", top: "40px", right: "0", zIndex: 9999 }}
             onSearch={handleSearch}
+            onSelect={() => { }}
+            value={textSearch}
             className={`${searchInputVisible ? "active form-search" : "form-search"}`}
             placeholder="Tìm kiếm sản phẩm"
+            autoFocus
           >
             {searchResults.map((result) => (
-              <AutoComplete.Option key={result.id} value={result.name}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={result.image}
-                    alt={result.name}
-                    style={{ width: 50, height: 50, marginRight: 10 }}
-                  />
-                  <div>
-                    <strong>{result.name}</strong>
-                    <div className="text-danger">{result.price}</div>
+              <AutoComplete.Option key={result.id}>
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  className="justity-content-between"
+                  onClick={() => { handleClickItemProduct(result.product) }}>
+                  <div className="d-flex">
+                    <img
+                      src={getImageUrl(result.product.image)}
+                      alt={result.product.name}
+                      style={{ width: 50, height: 50, marginRight: 10 }}
+                    />
+                    <div>
+                      <strong>{result.product.name}</strong>
+                      <div><span>Ưu đãi:</span> <span className="price">{checkPromotionValid(result.product) ?
+                        result.product.promotion_discount_type === promotionType.PERCENT ?
+                          `${result.product.promotion_discount_value}%` :
+                          `${formatPrice(result.product.promotion_discount_value)}` : <span style={{ color: "gray" }}>Không</span>}</span></div>
+                      <div className="price">{formatPrice(result.product.price)}</div>
+                    </div>
+                  </div>
+                  <div className="price">
+                    {!result.remaining_stock && "Hết hàng"}
                   </div>
                 </div>
               </AutoComplete.Option>

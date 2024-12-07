@@ -5,6 +5,7 @@ import { Routes } from "../Routes";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
 import { apiGetProductDetailInStore } from "../../services/product";
+import { useLocation } from "react-router-dom";
 const AddToCartPage = () => {
   const breadcrumbs = [
     { label: "Trang chủ", path: Routes.HomePage.path },
@@ -15,6 +16,7 @@ const AddToCartPage = () => {
   const [storeDetail, setStoreDetail] = useState<any>()
   const [stork, setStork] = useState<number>(0)
   const urlParams = new URLSearchParams(window.location.search);
+  const location = useLocation();
   const storeId = Number(urlParams.get('store_id')) || 0; // Chuyển thành number, mặc định 0 nếu null
   const productId = Number(urlParams.get('product_id')) || 0;
   const catalogId = Number(urlParams.get('catalog_id')) || 0;
@@ -42,7 +44,7 @@ const AddToCartPage = () => {
     if (productId && storeId) {
       handleGetProductDetail()
     }
-  }, [])
+  }, [location.pathname])
 
 
   return (

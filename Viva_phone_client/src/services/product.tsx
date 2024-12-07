@@ -21,8 +21,20 @@ interface DetailProductStore {
 const apiGetProductDetailInStore = (data: DetailProductStore) => {
     return client.get(`api/product_store/detail-of-product-and-store/?product_id=${data.productId}&store_id=${data.storeId}`);
 }
+
+interface SearchProductStore {
+    storeId: number,
+    pageIndex: number,
+    pageSize: number,
+    textSearch: string
+}
+const apiSearchProductsInStore = (data: SearchProductStore) => {
+    return client.get(`api/product_store/search-products-in-store/?store_id=${data.storeId}&textSearch=${data.textSearch}&page_index=${data.pageIndex}&page_size=${data.pageSize}`);
+}
+
 export {
     apiGetBestSelling,
     apiGetListProductsByCatalog,
-    apiGetProductDetailInStore
+    apiGetProductDetailInStore,
+    apiSearchProductsInStore
 }; 
