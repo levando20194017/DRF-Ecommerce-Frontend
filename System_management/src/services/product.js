@@ -51,7 +51,7 @@ const apiGetListProductInStore = function ({ pageIndex, pageSize, searchName, st
 //product sold
 
 const apiGetListProductSold = function ({ pageIndex, pageSize, startDate, endDate, storeId }) {
-  return axios.get(`/api/product_sale/admin/get-list-sold-products-filter/?page_index=${pageIndex}&page_size=${pageSize}&store_id=${storeId}&start_date=${startDate}&end_date=${endDate}`);
+  return axios.get(`/api/product_sale/admin/get-all-products-sale/?page_index=${pageIndex}&page_size=${pageSize}&store_id=${storeId}&start_date=${startDate}&end_date=${endDate}`);
 };
 
 

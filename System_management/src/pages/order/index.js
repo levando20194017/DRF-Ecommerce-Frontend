@@ -77,6 +77,7 @@ const ListOrder = () => {
           pageIndex={pageIndex}
           pageSize={pageSize}
           listData={listData}
+          setListData={setListData}
         />
       </div>
       <div className="bottom-pagination">

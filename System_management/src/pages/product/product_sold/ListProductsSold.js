@@ -30,11 +30,11 @@ export default () => {
                 pageIndex,
                 pageSize,
                 storeId: 1,
-                startData: date.startDate,
+                startDate: date.startDate,
                 endDate: date.endDate
             })
             if (response.status === 200) {
-                setListData(response.data.products)
+                setListData(response.data.product_sale)
                 setToalRecords(response.data.total_items)
             }
         } catch (e) {
