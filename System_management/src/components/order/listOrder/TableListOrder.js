@@ -31,8 +31,7 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
     const {
       id,
       index,
-      guest_first_name,
-      guest_last_name,
+      guest,
       total_cost,
       order_status,
       payment_method,
@@ -117,7 +116,7 @@ export const TableListOrder = ({ pageIndex, pageSize, listData }) => {
             {index + (pageIndex - 1) * pageSize + 1}
           </Card.Link>
         </td>
-        <td>{guest_first_name + " " + guest_last_name}</td>
+        <td>{guest.last_name + " " + guest.first_name}</td>
         <td className="text-danger">{formatPrice(total_cost)}</td>
         <td>{statusBtn(order_status)}</td>
         <td>{payment_method}</td>

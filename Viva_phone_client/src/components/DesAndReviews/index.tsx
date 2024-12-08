@@ -1,13 +1,20 @@
 import "./style.scss";
-import { useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import logo4 from "../../assets/images/logo4.png";
-export const DesAndReviews = () => {
+export const DesAndReviews: FC<any> = ({ productDetail }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isActive, setIsActive] = useState(true);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleSetActiveIndex = (index: number) => {
     setActiveIndex(index);
   };
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.innerHTML = productDetail?.description; // Gán HTML vào phần tử thông qua innerHTML
+    }
+  }, [productDetail, activeIndex]);
   return (
     <div className="des-and-reviews mt-5">
       <div className="title">
@@ -28,44 +35,7 @@ export const DesAndReviews = () => {
       </div>
       {activeIndex === 0 && (
         <div className="des">
-          <div className="car-body p-3">
-            <p className="title">
-              <b>The standard Lorem Ipsum passage, used since the 1500</b>
-            </p>
-            <p>
-              Fashion has been creating well-designed collections since 2010.
-              The brand offers feminine designs delivering stylish separates and
-              statement dresses which has since evolved into a full
-              ready-to-wear collection in which every item is a vital part of a
-              woman's wardrobe. The result? Cool, easy, chic looks with youthful
-              elegance.Many desktop publishing packages and web page editors now
-              use Lorem Ipsum as their default model text, and a search for
-              'lorem ipsum' will uncover many web sites still in their infancy.
-            </p>
-            <p>
-              c It has roots in a piece of classical Latin literature from 45
-              BC, making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature.
-            </p>
-            <p className="title">
-              <b>
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text.
-              </b>
-            </p>
-            <p>
-              Many desktop publishing packages and web page editors now use
-              Lorem Ipsum as their default model text, and a search for 'lorem
-              ipsum' will uncover many web sites still in their infancy. Various
-              versions have evolved over the years, sometimes by accident,
-              sometimes on purpose (injected humour and the like).All the Lorem
-              Ipsum generators on the Internet tend to repeat predefined chunks
-              as necessary, making this the first true generator on the
-              Internet.
-            </p>
+          <div className="car-body p-3" ref={contentRef}>
           </div>
         </div>
       )}

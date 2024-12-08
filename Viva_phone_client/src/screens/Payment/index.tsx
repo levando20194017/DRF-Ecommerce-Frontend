@@ -36,7 +36,7 @@ const PaymentPage: React.FC = () => {
         gst_amount: 0,
         order_details: listOrders.map((item: any) => ({
             quantity: item.quantity,
-            store_id: 1,
+            store_id: item.store,
             color: item.color,
             product_id: item.product.id
         }))

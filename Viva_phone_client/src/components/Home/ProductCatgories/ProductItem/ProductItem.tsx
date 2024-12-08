@@ -4,6 +4,7 @@ import "../../style.scss";
 import { getImageUrl } from "../../../../helps/getImageUrl";
 import { formatPrice } from "../../../../utils/format";
 import { promotionType } from "../../../../utils/promotionType";
+import { checkPromotionValid } from "../../../../helps/checkPormotionValid";
 
 export const ProductItem = (props: any) => {
   const { product, handleModalQuickView } = props
@@ -32,8 +33,15 @@ export const ProductItem = (props: any) => {
             <h4 className="product-name">{product.name}</h4>
             <div className="product-more-infor">
               <div className="fw-bold" style={{ color: "red", fontSize: "16px" }}>{formatPrice(product.price)}</div>
-              <div>Ưu đãi: {product.promotion_name ?? "Không có"}</div>
-              {product.promotion_discount_type && <div>Giảm giá: <span className="price">{product.promotion_discount_type === promotionType.PERCENT ? `${product.promotion_discount_value}%` : `${formatPrice(product.promotion_discount_value)}`}</span></div>}
+              <div className='another-info'>Ưu đãi: {checkPromotionValid(product) ? product.promotion_name : "Không"}</div>
+              {checkPromotionValid(product) && <div className='another-info'>
+                Giảm giá:
+                <span className="price">
+                  {product.promotion_discount_type === promotionType.PERCENT ?
+                    `${product.promotion_discount_value}%` :
+                    `${formatPrice(product.promotion_discount_value)}`}
+                </span>
+              </div>}
               <div className="text-start">{product.short_description}</div>
             </div>
           </div>

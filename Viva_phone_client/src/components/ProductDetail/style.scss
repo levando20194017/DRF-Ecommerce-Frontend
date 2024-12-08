@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .pro-form {
   .pro-header {
     position: relative;
@@ -102,7 +104,6 @@
       }
 
       .quantity {
-        width: 130px;
         height: 35px;
 
         span {
@@ -111,21 +112,28 @@
         }
       }
 
+      .text-content {
+        color: vars.$color-content
+      }
+
       button {
-        height: 35px;
+        height: 40px;
         font-weight: 500;
         background-color: #ff652f;
         color: #fff;
         font-weight: bold;
         border: none;
-        box-shadow: 0px 0px 19px 0px #aaa6a6;
+        // box-shadow: 0px 0px 19px 0px #aaa6a6;
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: 0.4s ease-in;
 
-        // height: 100%;
         &:hover {
-          animation: scale 1s ease-in-out;
+          // transform: scale(1.02);
+          // animation: scale 0.4s ease-in-out;
+          background-color: #bd4512;
+          transition: 0.4s ease-in;
         }
 
         i {
@@ -187,6 +195,7 @@
   img {
     object-fit: cover;
     transition: transform 0.3s ease;
+    border-radius: 4px;
   }
 }
 

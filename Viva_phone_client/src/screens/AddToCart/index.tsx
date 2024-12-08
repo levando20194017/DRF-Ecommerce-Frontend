@@ -56,8 +56,9 @@ const AddToCartPage = () => {
         </div>
         <ProductDetail
           productDetail={productDetail}
-          storeDetail={storeDetail} />
-        <DesAndReviews />
+          storeDetail={storeDetail}
+          stork={stork} />
+        <DesAndReviews productDetail={productDetail} />
         <RelatedProduct />
       </div>
     </div>
