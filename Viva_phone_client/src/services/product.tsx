@@ -6,7 +6,7 @@ interface BestSelling {
 }
 
 const apiGetBestSelling = (data: BestSelling) => {
-    return client.get(`api/product_sale/admin/get-list-sold-products-filter/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&store_id=${data.store_id}`);
+    return client.get(`api/product_sale/get-list-sold-products-filter/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&store_id=${data.store_id}`);
 }
 
 const apiGetListProductsByCatalog = (data: any) => {

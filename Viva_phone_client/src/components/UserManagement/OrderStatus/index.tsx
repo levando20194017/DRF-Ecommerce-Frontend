@@ -162,7 +162,7 @@ const OrderStatus: React.FC = () => {
                             <div className='payment-method'>
                                 <div className='label'>Trạng thái:</div>
                                 <div className={`${orderDetail.payment_status === PaymentStatus.PAID ?
-                                    "status success" : "status unpaid"}`}>
+                                    "status success fw-bold" : "status unpaid fw-bold"}`}>
                                     {PaymentStatusShow[orderDetail.payment_status]}
                                 </div>
                             </div>
