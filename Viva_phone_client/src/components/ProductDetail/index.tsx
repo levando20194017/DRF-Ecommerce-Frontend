@@ -10,7 +10,7 @@ import { apiAddToCart } from "../../services/cart";
 import { ToastFailed } from "../Common/Toast";
 import { toastWrong } from "../../utils/ToastType";
 import { getImageUrl } from "../../helps/getImageUrl";
-import { formatPrice } from "../../utils/format";
+import { formatPrice, roundToNearestHalf } from "../../utils/format";
 import { checkPromotionValid } from "../../helps/checkPormotionValid";
 import { promotionType } from "../../utils/promotionType";
 import { message, Rate, Select } from "antd";
@@ -38,7 +38,7 @@ interface Cartitem {
   color: string
 }
 
-export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }: any) => {
+export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, listRelateds, setProductDetail }: any) => {
   const [listImages, setListImages] = useState([{ original: img1 }]);
 
   const [images, setImages] = useState<Image[]>([]);
@@ -214,6 +214,10 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }
     }
   }, [input])
 
+  const handleSetProductSelected = (product: any) => {
+    setProductDetail(product)
+  }
+
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -275,7 +279,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }
             <div className="d-flex review-sale">
               <div className="d-flex gap-2 align-iems-end">
                 <b>{dataReviews?.average_rating ? dataReviews?.average_rating : 0}</b>
-                <div><Rate allowHalf defaultValue={1.5} disabled /></div>
+                <div><Rate allowHalf defaultValue={roundToNearestHalf(dataReviews?.average_rating)} disabled /></div>
               </div>
               <div className="d-flex gap-2">
                 <b>{dataReviews?.total_items ? dataReviews?.total_items : 0}</b> <span style={{ color: "gray" }}>Đánh giá</span>
@@ -300,10 +304,27 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }
                 value={cartItem.color}
               />
             </div>
-            <div className="mt-3 d-flex gap-2">
-              <b>Giá bán:</b>
-              <span className="price">{formatPrice(productDetail?.price)}</span>
-            </div>
+            {listRelateds.length > 1 ?
+              <div className="list-versions">
+                <b>Lựa chọn phiên bản</b>
+                <div className="row px-2">
+                  {listRelateds.map((item: any, index: number) => (
+                    <div className="col-4 p-1" key={index}>
+                      <div className={`cursor-pointer version-item ${item.id === productDetail?.id ? "active" : ""}`}
+                        onClick={() => { handleSetProductSelected(item) }}>
+                        <div className="fw-bold">{item.name}</div>
+                        <div className="price fw-bold">{formatPrice(item.price)}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              :
+              <div className="mt-3 d-flex gap-2">
+                <b>Giá bán:</b>
+                <span className="price fw-bold">{formatPrice(productDetail?.price)}</span>
+              </div>
+            }
             {productDetail?.id &&
               <>
                 <div className="d-flex gap-2">
@@ -312,7 +333,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }
                 </div>
                 {checkPromotionValid(productDetail) &&
                   <>
-                    <div>Giảm giá: <span className="price">
+                    <div>Giảm giá: <span className="price fw-bold">
                       {productDetail.promotion_discount_type === promotionType.PERCENT ?
                         `${productDetail.promotion_discount_value}%` :
                         `${formatPrice(productDetail.promotion_discount_value)}`}

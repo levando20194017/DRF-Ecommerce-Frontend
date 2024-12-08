@@ -24,24 +24,24 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews }) => {
             className={activeIndex === 0 ? "nav-item active" : "nav-item"}
             onClick={() => handleSetActiveIndex(0)}
           >
-            Description
+            Bài viết
           </li>
           <li
             className={activeIndex === 1 ? "nav-item active" : "nav-item"}
             onClick={() => handleSetActiveIndex(1)}
           >
-            Reviews (99)
+            Đánh giá (99)
           </li>
         </ul>
       </div>
       {activeIndex === 0 && (
         <div className="des">
-          <div className="car-body p-3" ref={contentRef}>
+          <div className="car-body p-4" ref={contentRef}>
           </div>
         </div>
       )}
       {activeIndex === 1 && (
-        <div className="reviews p-3">
+        <div className="reviews p-4">
           <div className="card-body">
             <div className="mt-3">
               <div className="d-flex justify-content-between">

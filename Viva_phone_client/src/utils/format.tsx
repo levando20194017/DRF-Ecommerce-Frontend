@@ -26,3 +26,7 @@ export const formatTime2 = (time: string): string => {
 
     return `${day}/${month}/${year}  ${hours}:${minutes}`;
 };
+
+export function roundToNearestHalf(num: number): number {
+    return Math.round(num * 2) / 2;
+}

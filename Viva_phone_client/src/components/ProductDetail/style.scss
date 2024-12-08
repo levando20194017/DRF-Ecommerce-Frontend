@@ -132,6 +132,24 @@
         color: vars.$color-content
       }
 
+      .list-versions {
+        .version-item {
+          // height: 70px;
+          background-color: vars.$color-background;
+          border-radius: 4px;
+          display: flex;
+          flex-direction: column;
+          gap: 0px;
+          align-items: center;
+          line-height: 2;
+          padding: 8px;
+        }
+
+        .version-item.active {
+          border: 1px solid vars.$color-price;
+        }
+      }
+
       button {
         height: 40px;
         font-weight: 500;

@@ -4,7 +4,7 @@ import { DesAndReviews } from "../../components/DesAndReviews";
 import { Routes } from "../Routes";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
-import { apiGetProductDetailInStore } from "../../services/product";
+import { apiGetListProductsByCatalog, apiGetProductDetailInStore } from "../../services/product";
 import { useLocation } from "react-router-dom";
 import { apiGetListReviews } from "../../services/review";
 const AddToCartPage = () => {
@@ -22,6 +22,7 @@ const AddToCartPage = () => {
   const productId = Number(urlParams.get('product_id')) || 0;
   const catalogId = Number(urlParams.get('catalog_id')) || 0;
   const [dataReviews, setDataReviews] = useState<any>({})
+  const [listRelateds, setListRelateds] = useState([])
 
   const handleGetProductDetail = async () => {
     try {
@@ -39,7 +40,14 @@ const AddToCartPage = () => {
   }
 
   const handleGetListProductByCatalog = async () => {
-
+    try {
+      const response = await apiGetListProductsByCatalog({ storeId, catalog_id: catalogId })
+      if (response.status === 200) {
+        setListRelateds(response.data.products)
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const handleGetListReviews = async () => {
@@ -62,6 +70,7 @@ const AddToCartPage = () => {
     if (productId && storeId) {
       handleGetProductDetail()
       handleGetListReviews()
+      handleGetListProductByCatalog()
     }
   }, [location.pathname])
 
@@ -76,7 +85,9 @@ const AddToCartPage = () => {
           productDetail={productDetail}
           storeDetail={storeDetail}
           dataReviews={dataReviews}
-          stork={stork} />
+          listRelateds={listRelateds}
+          stork={stork}
+          setProductDetail={setProductDetail} />
         <DesAndReviews productDetail={productDetail} dataReviews={dataReviews} />
         <RelatedProduct />
       </div>
