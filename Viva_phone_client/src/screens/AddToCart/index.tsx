@@ -6,6 +6,7 @@ import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
 import { apiGetProductDetailInStore } from "../../services/product";
 import { useLocation } from "react-router-dom";
+import { apiGetListReviews } from "../../services/review";
 const AddToCartPage = () => {
   const breadcrumbs = [
     { label: "Trang chủ", path: Routes.HomePage.path },
@@ -20,6 +21,7 @@ const AddToCartPage = () => {
   const storeId = Number(urlParams.get('store_id')) || 0; // Chuyển thành number, mặc định 0 nếu null
   const productId = Number(urlParams.get('product_id')) || 0;
   const catalogId = Number(urlParams.get('catalog_id')) || 0;
+  const [dataReviews, setDataReviews] = useState<any>({})
 
   const handleGetProductDetail = async () => {
     try {
@@ -40,12 +42,28 @@ const AddToCartPage = () => {
 
   }
 
+  const handleGetListReviews = async () => {
+    try {
+      const response = await apiGetListReviews({
+        storeId,
+        productId,
+        pageIndex: 1,
+        pageSize: 100
+      })
+      if (response.status === 200) {
+        setDataReviews(response.data)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     if (productId && storeId) {
       handleGetProductDetail()
+      handleGetListReviews()
     }
   }, [location.pathname])
-
 
   return (
     <div>
@@ -57,8 +75,9 @@ const AddToCartPage = () => {
         <ProductDetail
           productDetail={productDetail}
           storeDetail={storeDetail}
+          dataReviews={dataReviews}
           stork={stork} />
-        <DesAndReviews productDetail={productDetail} />
+        <DesAndReviews productDetail={productDetail} dataReviews={dataReviews} />
         <RelatedProduct />
       </div>
     </div>

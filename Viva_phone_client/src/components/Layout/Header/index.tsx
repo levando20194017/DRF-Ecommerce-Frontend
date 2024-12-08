@@ -85,8 +85,10 @@ const Header: FC = () => {
     }
   }
   useEffect(() => {
-    handleGetListProduct(textSearch)
-  }, [textSearch])
+    if (searchInputVisible) {
+      handleGetListProduct(textSearch)
+    }
+  }, [textSearch, searchInputVisible])
 
   const toggleSearchInput = () => {
     setSearchInputVisible(!searchInputVisible); // Toggle search input visibility

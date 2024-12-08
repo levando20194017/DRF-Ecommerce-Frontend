@@ -1,9 +1,9 @@
 import "./style.scss";
 import { FC, useEffect, useRef, useState } from "react";
 import logo4 from "../../assets/images/logo4.png";
-export const DesAndReviews: FC<any> = ({ productDetail }) => {
+export const DesAndReviews: FC<any> = ({ productDetail, dataReviews }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  // const [isActive, setIsActive] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleSetActiveIndex = (index: number) => {
@@ -15,6 +15,7 @@ export const DesAndReviews: FC<any> = ({ productDetail }) => {
       contentRef.current.innerHTML = productDetail?.description; // Gán HTML vào phần tử thông qua innerHTML
     }
   }, [productDetail, activeIndex]);
+
   return (
     <div className="des-and-reviews mt-5">
       <div className="title">

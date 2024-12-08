@@ -13,9 +13,11 @@ import { getImageUrl } from "../../helps/getImageUrl";
 import { formatPrice } from "../../utils/format";
 import { checkPromotionValid } from "../../helps/checkPormotionValid";
 import { promotionType } from "../../utils/promotionType";
-import { Select } from "antd";
-import { Order } from "../../types";
+import { message, Rate, Select } from "antd";
 import { getUserData } from "../../helps/getItemLocal";
+import { setOrderLocal } from "../../helps/setLocalStorage";
+import { useNavigate } from "react-router-dom";
+import { Routes } from "../../screens/Routes";
 
 interface Image {
   original: string;
@@ -36,7 +38,7 @@ interface Cartitem {
   color: string
 }
 
-export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
+export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews }: any) => {
   const [listImages, setListImages] = useState([{ original: img1 }]);
 
   const [images, setImages] = useState<Image[]>([]);
@@ -51,7 +53,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
 
   const [cartItem, setCartIem] = useState<Cartitem>({
     id: userData?.id,
-    store_id: storeDetail?.id,
+    store_id: 0,
     product_id: 0,
     quantity: 1,
     color: ""
@@ -59,8 +61,8 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
 
   const [temporaryOrder, setTemporaryOrder] = useState([{
     quantity: 1,
-    product: productDetail,
-    store: storeDetail?.id,
+    product: {},
+    store: 0,
     color: "",
   }])
 
@@ -75,7 +77,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
       setImages(newListImages.slice(0, 4))
     }
 
-    if (productDetail?.color) {
+    if (productDetail?.color && storeDetail?.id) {
       const newOptionsColor = productDetail.color.split(",").map((item: string) => ({
         label: item.trim(),
         value: item.trim()
@@ -84,10 +86,13 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
 
       const newTempOrder = { ...temporaryOrder[0] }
       newTempOrder.color = newOptionsColor[0].value
+      newTempOrder.product = productDetail
+      newTempOrder.store = storeDetail.id
+
       setTemporaryOrder([newTempOrder]);
-      setCartIem({ ...cartItem, color: newOptionsColor[0].value });
+      setCartIem({ ...cartItem, color: newOptionsColor[0].value, store_id: storeDetail.id, product_id: productDetail.id });
     }
-  }, [productDetail])
+  }, [productDetail, storeDetail])
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -147,14 +152,9 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
 
     if (userData?.id && productDetail?.id && storeDetail?.id) {
       try {
-        const response = await apiAddToCart({
-          id: userData.id,
-          product_id: productDetail.id,
-          quantity: 1,
-          color: "Đen",
-          store_id: storeDetail?.id
-        })
+        const response = await apiAddToCart(cartItem)
         if (response.status === 201) {
+          message.success("Đã thêm sản phẩm vào giỏ hàng")
           if (targetRect) {
             setFlyingIcon({
               isAnimating: true,
@@ -170,10 +170,18 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
         }
       } catch (e) {
         console.log(e);
+        message.error("Đã xảy ra lõi, vui lòng thử lại!")
       }
     } else {
       ToastFailed(toastWrong)
     }
+  }
+
+  const navigate = useNavigate();
+  const handleBuyNow = () => {
+    if (temporaryOrder.some(item => !item)) return;
+    setOrderLocal(temporaryOrder);
+    navigate(Routes.Payment.path)
   }
 
   const handleOnchangeQuantity = (e: any) => {
@@ -205,6 +213,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
       setCartIem({ ...cartItem, quantity: input });
     }
   }, [input])
+
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -264,20 +273,16 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
             <h2>{productDetail?.name}</h2>
             <hr />
             <div className="d-flex review-sale">
-              <div>
-                <b>4.9</b>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
+              <div className="d-flex gap-2 align-iems-end">
+                <b>{dataReviews?.average_rating ? dataReviews?.average_rating : 0}</b>
+                <div><Rate allowHalf defaultValue={1.5} disabled /></div>
               </div>
-              <div>
-                <b>99</b> <span style={{ color: "gray" }}>Đánh giá</span>
+              <div className="d-flex gap-2">
+                <b>{dataReviews?.total_items ? dataReviews?.total_items : 0}</b> <span style={{ color: "gray" }}>Đánh giá</span>
               </div>
-              <div>
+              {/* <div>
                 <b>249</b> <span style={{ color: "gray" }}>Đã bán</span>
-              </div>
+              </div> */}
             </div>
             <div>
               <b>Số lượng còn:</b>{" "}
@@ -364,7 +369,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork }: any) => {
                 )}
               </div>
               <div className="buy-now">
-                <button>
+                <button onClick={handleBuyNow}>
                   <i className="bi bi-bag-heart-fill"></i> <span className="ms-2">Mua ngay</span>
                 </button>
               </div>

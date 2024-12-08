@@ -97,6 +97,22 @@
       .review-sale {
         width: 350px;
         justify-content: space-between;
+
+        .ant-rate-star {
+          font-size: 16px;
+        }
+
+        .ant-rate-star-half {
+          .ant-rate-star-second {
+            color: vars.$color-content;
+          }
+        }
+
+        .ant-rate-star-zero {
+          .ant-rate-star-second {
+            color: vars.$color-content;
+          }
+        }
       }
 
       >div {

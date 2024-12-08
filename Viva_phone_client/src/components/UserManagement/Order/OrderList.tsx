@@ -8,7 +8,7 @@ import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { apiCanceledOrder } from '../../../services/order';
-import { message, Popconfirm } from 'antd';
+import { Image, message, Popconfirm } from 'antd';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
 
 const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
@@ -69,7 +69,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                         {order.items.map((item: any, index: number) => (
                             <div key={index} className="item">
                                 <div className='image'>
-                                    <img src={getImageUrl(item.product.image)} />
+                                    <Image src={getImageUrl(item.product.image)} />
                                 </div>
                                 <div className="name ms-3">
                                     <div className='fw-bold'>{item.product.name}</div>
@@ -99,7 +99,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                                         <button className="rate-btn">Chi tiết đơn hàng</button>
                                     </div>
                                 </Link>
-                                {order.order_status === OrderStatusType.CANCELLED &&
+                                {(order.order_status === OrderStatusType.CANCELLED || order.order_status === OrderStatusType.DELIVERY) &&
                                     <button className='btn-cancel' onClick={() => { handleBuyBackOrder(order) }}>Mua lại</button>}
                                 {order.order_status === OrderStatusType.PENDING &&
                                     <Popconfirm
