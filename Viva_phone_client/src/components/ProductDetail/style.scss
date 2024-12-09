@@ -150,6 +150,36 @@
         }
       }
 
+      .view-detail {
+        height: 40px !important;
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid transparent;
+        color: #ff652f;
+        padding: 0 16px;
+
+        &:hover {
+          border: 1px solid #ff652f;
+          background-color: transparent;
+        }
+      }
+
+      .btn-compare {
+        height: 40px !important;
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid #ff652f;
+        color: #fff;
+        padding: 0 16px;
+        font-weight: 500;
+
+        &:hover {
+          border: 1px solid #ff652f;
+          background-color: transparent;
+          color: #ff652f;
+        }
+      }
+
       button {
         height: 40px;
         font-weight: 500;
@@ -325,4 +355,35 @@
 
 .nested-list li {
   margin-bottom: 5px;
+}
+
+.modal {
+  color: vars.$common-black;
+  z-index: 9999;
+}
+
+#modalSelectedProduct {
+  .modal-header {
+    color: vars.$common-black;
+  }
+
+  .ant-select-open {
+    z-index: 99999 !important;
+  }
+}
+
+.btn-compare {
+  height: 40px;
+  font-weight: 500;
+  background-color: #ff652f;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  padding: 0 32px;
+  transition: 0.4s ease-in;
+
+  &:hover {
+    background-color: #bd4512;
+    transition: 0.4s ease-in;
+  }
 }

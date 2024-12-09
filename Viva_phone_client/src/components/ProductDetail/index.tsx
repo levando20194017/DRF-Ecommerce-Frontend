@@ -3,7 +3,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import img1 from "../../assets/images/banner.jpg";
 import { useEffect, useRef, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 import "./style.scss";
 import { apiAddToCart } from "../../services/cart";
@@ -21,6 +21,7 @@ import { Routes } from "../../screens/Routes";
 import ModalProductDetail from "./ModalProductDetail";
 import { productData } from "./ProductData";
 import { CompareModal } from "./ModalCompareProduct";
+import { ModalSelectProduct } from "./ModalSelectProduct";
 
 interface Image {
   original: string;
@@ -238,6 +239,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
     }
   };
 
+  console.log()
   const clearSelection = () => setSelectedProducts([]);
 
   return (
@@ -366,6 +368,14 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
                 }
               </>
             }
+            <div className="d-flex justify-content-between align-items-center">
+              <button className="view-detail" onClick={showModalDetail}>
+                Xem thông tin chi tiết sản phẩm <FaChevronDown className="ms-2" />
+              </button>
+              <button className="btn-compare">
+                So sánh sản phẩm khác
+              </button>
+            </div>
             <hr />
             <div className="d-flex mt-2 quantity">
               <span>
@@ -387,7 +397,6 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
                 onChange={handleOnchangeQuantity}
                 onBlur={handleBlur} />
             </div>
-            <button onClick={showModalDetail}>Detail</button>
             <div className="d-flex gap-4 mt-4">
               <div className="button-add">
                 <button onClick={handleAddToCart}>
@@ -423,7 +432,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
       </div>
 
       <div className="container mt-4">
-        <h3 className="mb-4">Danh sách sản phẩm</h3>
+        <h3 className="mb-4">Thông số kĩ thuật</h3>
         <div className="row">
           {productData.map((product) => (
             <div key={product.id} className="col-md-4 mb-3">
@@ -440,6 +449,10 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
           ))}
         </div>
 
+        <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelectedProduct">
+          So sánh ({selectedProducts.length})
+        </button>
+        <ModalSelectProduct productDetail={productDetail} />
         {selectedProducts.length > 0 && (
           <div className="mt-4">
             <button className="btn btn-warning me-3" onClick={clearSelection}>
