@@ -271,3 +271,58 @@
 .fa-chevron-right:hover {
   color: #007bff;
 }
+
+.ant-modal-header {
+  height: 40px;
+
+  .ant-modal-title {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.ant-modal-content {
+  width: 650px !important;
+}
+
+.custom-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table td:first-child {
+  font-weight: bold;
+  color: #555;
+  width: 40%;
+}
+
+.nested-list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.nested-list li {
+  margin-bottom: 5px;
+}

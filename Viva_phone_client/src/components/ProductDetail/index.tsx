@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import img1 from "../../assets/images/banner.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 import "./style.scss";
@@ -18,6 +18,9 @@ import { getUserData } from "../../helps/getItemLocal";
 import { setOrderLocal } from "../../helps/setLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "../../screens/Routes";
+import ModalProductDetail from "./ModalProductDetail";
+import { productData } from "./ProductData";
+import { CompareModal } from "./ModalCompareProduct";
 
 interface Image {
   original: string;
@@ -218,6 +221,25 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
     setProductDetail(product)
   }
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModalDetail = () => {
+    setIsModalVisible(true)
+  }
+
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+
+  const handleSelect = (id: number) => {
+    if (selectedProducts.includes(id)) {
+      setSelectedProducts(selectedProducts.filter((productId) => productId !== id));
+    } else if (selectedProducts.length < 3) {
+      setSelectedProducts([...selectedProducts, id]);
+    } else {
+      alert('Bạn chỉ có thể so sánh tối đa 3 sản phẩm.');
+    }
+  };
+
+  const clearSelection = () => setSelectedProducts([]);
+
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -365,6 +387,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
                 onChange={handleOnchangeQuantity}
                 onBlur={handleBlur} />
             </div>
+            <button onClick={showModalDetail}>Detail</button>
             <div className="d-flex gap-4 mt-4">
               <div className="button-add">
                 <button onClick={handleAddToCart}>
@@ -399,6 +422,39 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
         </div>
       </div>
 
+      <div className="container mt-4">
+        <h3 className="mb-4">Danh sách sản phẩm</h3>
+        <div className="row">
+          {productData.map((product) => (
+            <div key={product.id} className="col-md-4 mb-3">
+              <div className="card p-3">
+                <h5>{product.name}</h5>
+                <button
+                  className={`btn ${selectedProducts.includes(product.id) ? 'btn-danger' : 'btn-primary'} mt-3`}
+                  onClick={() => handleSelect(product.id)}
+                >
+                  {selectedProducts.includes(product.id) ? 'Bỏ chọn' : 'Chọn để so sánh'}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {selectedProducts.length > 0 && (
+          <div className="mt-4">
+            <button className="btn btn-warning me-3" onClick={clearSelection}>
+              Xóa lựa chọn
+            </button>
+            <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#compareModal">
+              So sánh ({selectedProducts.length})
+            </button>
+          </div>
+        )}
+
+        {/* Modal so sánh sản phẩm */}
+        <CompareModal selectedProducts={selectedProducts} />
+      </div>
+
       <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>
         <div style={{ backgroundColor: "black" }}>
           <ImageGallery
@@ -414,6 +470,8 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
           />
         </div>
       </Modal>
+      <ModalProductDetail isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} productDetail={productDetail} />
+
     </div>
   );
 };
