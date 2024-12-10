@@ -431,41 +431,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
           </div>
         </div>
       </div>
-
-      <div className="container mt-4">
-        <h3 className="mb-4">Thông số kĩ thuật</h3>
-        <div className="row">
-          {productData.map((product) => (
-            <div key={product.id} className="col-md-4 mb-3">
-              <div className="card p-3">
-                <h5>{product.name}</h5>
-                <button
-                  className={`btn ${selectedProducts.includes(product.id) ? 'btn-danger' : 'btn-primary'} mt-3`}
-                  onClick={() => handleSelect(product.id)}
-                >
-                  {selectedProducts.includes(product.id) ? 'Bỏ chọn' : 'Chọn để so sánh'}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelectedProduct">
-          So sánh ({selectedProducts.length})
-        </button>
-        <ModalSelectProduct productDetail={productDetail} isModalVisible={isModalSelectedOpen} setIsModalVisible={setIsModalSelectedOpen} />
-        {selectedProducts.length > 0 && (
-          <div className="mt-4">
-            <button className="btn btn-warning me-3" onClick={clearSelection}>
-              Xóa lựa chọn
-            </button>
-            <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#compareModal">
-              So sánh ({selectedProducts.length})
-            </button>
-          </div>
-        )}
-      </div>
-
+      <ModalSelectProduct productDetail={productDetail} isModalVisible={isModalSelectedOpen} setIsModalVisible={setIsModalSelectedOpen} />
       <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>
         <div style={{ backgroundColor: "black" }}>
           <ImageGallery
