@@ -40,19 +40,19 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Độ phân giải:</td>
+                                        <td>Độ phân giải</td>
                                         <td>{showData(productDetail?.resolution)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Kích thước màn hình:</td>
+                                        <td>Kích thước màn hình</td>
                                         <td>{showData(productDetail?.screen_size)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tần số quét (Hz):</td>
+                                        <td>Tần số quét (Hz)</td>
                                         <td>{showData(productDetail?.screen_features)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Công nghệ màn hình:</td>
+                                        <td>Công nghệ màn hình</td>
                                         <td>{showData(productDetail?.screen_technology)}</td>
                                     </tr>
                                 </tbody>
@@ -65,15 +65,15 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Camera chính:</td>
+                                        <td>Camera chính</td>
                                         <td>{showData(productDetail?.main_camera)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tính năng camera:</td>
+                                        <td>Tính năng camera</td>
                                         <td>{showData(productDetail?.camera_features)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Quay phim:</td>
+                                        <td>Quay phim</td>
                                         <td>
                                             {showData(productDetail?.video_recording)}
                                         </td>
@@ -88,7 +88,7 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Quay phim:</td>
+                                        <td>Quay phim</td>
                                         <td>
                                             {showData(productDetail?.front_camera)}
                                         </td>
@@ -103,11 +103,11 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Chipset:</td>
+                                        <td>Chipset</td>
                                         <td>{showData(productDetail?.chipset)}</td>
                                     </tr>
                                     <tr>
-                                        <td>GPU:</td>
+                                        <td>GPU</td>
                                         <td>{showData(productDetail?.gpu)}</td>
                                     </tr>
                                 </tbody>
@@ -118,15 +118,15 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Dung lượng bộ nhớ:</td>
+                                        <td>Dung lượng bộ nhớ</td>
                                         <td>{showData(productDetail?.storage_capacity)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Kích thước:</td>
+                                        <td>Kích thước</td>
                                         <td>{showData(productDetail?.dimensions)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Trọng lượng:</td>
+                                        <td>Trọng lượng</td>
                                         <td>{showData(productDetail?.weight)}</td>
                                     </tr>
                                 </tbody>
@@ -137,19 +137,19 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Hỗ trợ mạng:</td>
+                                        <td>Hỗ trợ mạng</td>
                                         <td>{showData(productDetail?.network_support)}</td>
                                     </tr>
                                     <tr>
-                                        <td>wifi:</td>
+                                        <td>wifi</td>
                                         <td>{showData(productDetail?.wifi)}</td>
                                     </tr>
                                     <tr>
-                                        <td>bluetooth:</td>
+                                        <td>bluetooth</td>
                                         <td>{showData(productDetail?.bluetooth)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Thông tin khác:</td>
+                                        <td>Thông tin khác</td>
                                         <td>{showData(productDetail?.other_info)}</td>
                                     </tr>
                                 </tbody>
@@ -160,15 +160,15 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Hệ điều hành:</td>
+                                        <td>Hệ điều hành</td>
                                         <td>{showData(productDetail?.version)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Tính năng bảo mật:</td>
+                                        <td>Tính năng bảo mật</td>
                                         <td>{showData(productDetail?.security_features)}</td>
                                     </tr>
                                     <tr>
-                                        <td>Pin & công nghệ sạc:</td>
+                                        <td>Pin & công nghệ sạc</td>
                                         <td>{showData(productDetail?.charging)}</td>
                                     </tr>
                                 </tbody>
