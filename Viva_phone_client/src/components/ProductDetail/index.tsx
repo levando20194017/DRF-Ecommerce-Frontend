@@ -55,6 +55,8 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
   const header3 = document.querySelector(".navbar_header3");
   const [input, setInput] = useState<any>(1);
 
+  const [isModalSelectedOpen, setIsModalSelectedOpen] = useState(false);
+
   const [cartItem, setCartIem] = useState<Cartitem>({
     id: userData?.id,
     store_id: 0,
@@ -239,7 +241,6 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
     }
   };
 
-  console.log()
   const clearSelection = () => setSelectedProducts([]);
 
   return (
@@ -372,7 +373,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
               <button className="view-detail" onClick={showModalDetail}>
                 Xem thông tin chi tiết sản phẩm <FaChevronDown className="ms-2" />
               </button>
-              <button className="btn-compare">
+              <button className="btn-compare" onClick={() => { setIsModalSelectedOpen(true) }}>
                 So sánh sản phẩm khác
               </button>
             </div>
@@ -452,7 +453,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
         <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSelectedProduct">
           So sánh ({selectedProducts.length})
         </button>
-        <ModalSelectProduct productDetail={productDetail} />
+        <ModalSelectProduct productDetail={productDetail} isModalVisible={isModalSelectedOpen} setIsModalVisible={setIsModalSelectedOpen} />
         {selectedProducts.length > 0 && (
           <div className="mt-4">
             <button className="btn btn-warning me-3" onClick={clearSelection}>
@@ -463,9 +464,6 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
             </button>
           </div>
         )}
-
-        {/* Modal so sánh sản phẩm */}
-        <CompareModal selectedProducts={selectedProducts} />
       </div>
 
       <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>

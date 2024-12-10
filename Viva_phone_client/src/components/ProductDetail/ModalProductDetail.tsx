@@ -88,10 +88,6 @@ const ModalProductDetail: React.FC<any> = ({ isModalVisible, setIsModalVisible, 
                             <table className="custom-table">
                                 <tbody>
                                     <tr>
-                                        <td>Độ phân giải camera:</td>
-                                        <td>16MP f/2.4</td>
-                                    </tr>
-                                    <tr>
                                         <td>Quay phim:</td>
                                         <td>
                                             {showData(productDetail?.front_camera)}

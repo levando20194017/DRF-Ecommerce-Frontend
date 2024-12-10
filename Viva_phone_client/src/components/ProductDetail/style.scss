@@ -387,3 +387,13 @@
     transition: 0.4s ease-in;
   }
 }
+
+.modal-compare-product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .ant-modal-content {
+    width: 800px !important;
+  }
+}
