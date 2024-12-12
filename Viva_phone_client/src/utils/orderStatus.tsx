@@ -11,7 +11,7 @@ export const OrderStatusShow: any = {
     pending: "Chờ xác nhận",
     confirmed: "Đã xác nhận",
     shipped: "Đang vận chuyển",
-    delivery: "Đã nhận hàng",
+    delivered: "Đã nhận hàng",
     cancelled: "Đã hủy",
     returned: "Đã trả hàng",
 }

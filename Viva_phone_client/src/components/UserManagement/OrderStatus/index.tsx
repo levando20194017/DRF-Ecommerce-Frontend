@@ -82,7 +82,22 @@ const OrderStatus: React.FC = () => {
         }
     }
 
+    const [stepOrder, setStepOrder] = useState(1);
 
+    useEffect(() => {
+        if (orderDetail?.order_status === OrderStatusType.PENDING) {
+            setStepOrder(1)
+        }
+        if (orderDetail?.order_status === OrderStatusType.CONFIRMED) {
+            setStepOrder(2)
+        }
+        if (orderDetail?.order_status === OrderStatusType.SHIPPED) {
+            setStepOrder(3)
+        }
+        if (orderDetail?.order_status === OrderStatusType.DELIVERY) {
+            setStepOrder(4)
+        }
+    }, [orderDetail])
     return (
         <div className="order-status-page">
             <div className='header'>
@@ -101,7 +116,7 @@ const OrderStatus: React.FC = () => {
                 </div>
             </div>
             <div className='order-step'>
-                <Steps current={1} labelPlacement="vertical" items={items} />
+                <Steps current={stepOrder} labelPlacement="vertical" items={items} />
             </div>
             <div className='order-detail'>
                 <div className="order-item">

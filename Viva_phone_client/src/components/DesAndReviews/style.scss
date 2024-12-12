@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .des-and-reviews {
 
   .title {
@@ -34,6 +36,12 @@
   .reviews {
     background-color: #282828;
     border-radius: 4px;
+
+    .ant-rate-star-zero {
+      .ant-rate-star-second {
+        color: vars.$color-content;
+      }
+    }
 
     .review-content {
       color: #aaa6a6;

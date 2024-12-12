@@ -229,20 +229,6 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
     setIsModalVisible(true)
   }
 
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-
-  const handleSelect = (id: number) => {
-    if (selectedProducts.includes(id)) {
-      setSelectedProducts(selectedProducts.filter((productId) => productId !== id));
-    } else if (selectedProducts.length < 3) {
-      setSelectedProducts([...selectedProducts, id]);
-    } else {
-      alert('Bạn chỉ có thể so sánh tối đa 3 sản phẩm.');
-    }
-  };
-
-  const clearSelection = () => setSelectedProducts([]);
-
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -304,7 +290,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
             <div className="d-flex review-sale">
               <div className="d-flex gap-2 align-iems-end">
                 <b>{dataReviews?.average_rating ? dataReviews?.average_rating : 0}</b>
-                <div><Rate allowHalf defaultValue={roundToNearestHalf(dataReviews?.average_rating)} disabled /></div>
+                <div><Rate allowHalf value={roundToNearestHalf(dataReviews?.average_rating)} disabled /></div>
               </div>
               <div className="d-flex gap-2">
                 <b>{dataReviews?.total_items ? dataReviews?.total_items : 0}</b> <span style={{ color: "gray" }}>Đánh giá</span>
