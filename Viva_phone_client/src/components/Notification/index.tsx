@@ -132,7 +132,7 @@ const Notification: React.FC<any> = ({ total_unread }) => {
                     }}
                     className="notification-popup"
                 >
-                    <div style={{ padding: "10px", fontWeight: "bold", fontSize: "16px", borderBottom: "1px solid #ddd" }}>
+                    <div style={{ padding: "16px 10px", fontWeight: "bold", fontSize: "16px", borderBottom: "1px solid #ddd" }}>
                         Thông báo
                     </div>
                     <ul style={{ listStyle: "none", margin: 0, padding: 0, maxHeight: "400px", overflowY: "auto" }}>
@@ -142,7 +142,6 @@ const Notification: React.FC<any> = ({ total_unread }) => {
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
-                                    marginBottom: "15px",
                                     padding: "10px 10px 20px 10px",
                                     borderBottom: "1px solid #f0f0f0",
                                 }}

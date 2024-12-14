@@ -12,8 +12,12 @@ import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
+import ModalReview from '../../Reviews/ModalReview';
 
 const OrderStatus: React.FC = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [productReview, setProductReview] = useState({})
+
     const [items, setItems] = useState<any>([
         {
             title: 'Đơn hàng đã được tạo',
@@ -98,8 +102,19 @@ const OrderStatus: React.FC = () => {
             setStepOrder(4)
         }
     }, [orderDetail])
+
+    const onCloseModal = () => {
+        setModalVisible(false)
+    }
+
+    const handleClickReview = (product: any) => {
+        setProductReview(product)
+        setModalVisible(true)
+    }
+
     return (
         <div className="order-status-page">
+            <ModalReview visible={modalVisible} onClose={onCloseModal} productReview={productReview} />
             <div className='header'>
                 <Link to={Routes.AllOrder.path}>
                     <div className='d-flex gap-2 align-items-center cursor-pointer'>
@@ -156,7 +171,12 @@ const OrderStatus: React.FC = () => {
                                         </>}
 
                                 </div>
-                                <div className="price">{formatPrice(item.unit_price)}</div>
+                                <div className='d-flex flex-column justify-content-between'>
+                                    <div className="price">{formatPrice(item.unit_price)}</div>
+                                    {orderDetail.order_status === OrderStatusType.DELIVERY &&
+                                        <button className="rate-btn" onClick={() => handleClickReview(item.product)}>Đánh giá</button>
+                                    }
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -212,9 +232,7 @@ const OrderStatus: React.FC = () => {
                                         <button className='btn-cancel'>Hủy đơn</button>
                                     </Popconfirm>
                                 }
-                                {orderDetail.order_status === OrderStatusType.DELIVERY &&
-                                    <button className="rate-btn">Đánh giá</button>
-                                }
+
                             </div>
                         </div>
                     </div>

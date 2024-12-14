@@ -276,6 +276,26 @@
   font-weight: bold;
 }
 
+.profile-popup {
+  .profile-item {
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #d1d5d8;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgb(255, 102, 0, 0.1);
+      font-weight: 600;
+      color: rgb(255, 102, 0);
+    }
+  }
+
+}
+
 /*--- Responsive Code ---*/
 @media screen and (max-width: 1920px) {}
 

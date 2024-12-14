@@ -13,6 +13,8 @@ import { formatPrice } from '../../utils/format';
 import { promotionType } from '../../utils/promotionType';
 import { apiCreateNewOrder } from '../../services/order';
 import { getTotalDiscountByCart } from '../../helps/getTotalDiscount';
+import { useHandleGetTotalUnnotification } from '../../hook/GetTotalUnread';
+import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -26,6 +28,9 @@ const PaymentPage: React.FC = () => {
     const totalDiscount = getTotalDiscountByCart(listOrders)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash")
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+    const { handleGetTotalCart } = useHandleGetTotalCart();
+
     const [formData, setFormData] = useState<Order>({
         guest_id: userData.id,
         recipient_phone: userData.phone_number,
@@ -61,7 +66,8 @@ const PaymentPage: React.FC = () => {
             setLoading(true)
             const response = await apiCreateNewOrder(formData)
             if (response.status === 200) {
-
+                handleGetTotalCart()
+                handleGetTotalUnnotification()
             }
         } catch (e) {
             console.log(e);

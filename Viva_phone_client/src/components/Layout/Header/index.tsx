@@ -14,6 +14,7 @@ import { promotionType } from "../../../utils/promotionType";
 import { useSelector } from "react-redux";
 import { useHandleGetTotalUnnotification } from "../../../hook/GetTotalUnread";
 import { useHandleGetTotalCart } from "../../../hook/GetTotalCart";
+import Profile from "./Profile";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
@@ -185,16 +186,13 @@ const Header: FC = () => {
         <Link to={Routes.Cart.path}>
           <div className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
             <i className="bi bi-cart4"></i>
-            <div className="total_item">{total_cart}</div>
+            {total_cart > 0 ?
+              <div className="total_item">{total_cart}</div>
+              :
+              ""}
           </div>
         </Link>
-        <img
-          className="headerUser-right-avt rounded-circle"
-          src="https://th.bing.com/th/id/OIP.rzU5tlNULSLFeXggfJ352QHaNK?w=187&h=333&c=7&r=0&o=5&pid=1.7"
-          alt="user avatar"
-          width={40}
-          height={40}
-        />
+        <Profile />
       </div>
     </Navbar>
   );
