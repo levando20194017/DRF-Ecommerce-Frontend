@@ -72,7 +72,7 @@ const AddToCartPage = () => {
       handleGetListReviews()
       handleGetListProductByCatalog()
     }
-  }, [location.pathname])
+  }, [productId, storeId, catalogId])
 
   return (
     <div>

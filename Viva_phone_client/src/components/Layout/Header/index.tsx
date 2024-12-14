@@ -11,6 +11,9 @@ import { getImageUrl } from "../../../helps/getImageUrl";
 import { formatPrice } from "../../../utils/format";
 import { checkPromotionValid } from "../../../helps/checkPormotionValid";
 import { promotionType } from "../../../utils/promotionType";
+import { useSelector } from "react-redux";
+import { useHandleGetTotalUnnotification } from "../../../hook/GetTotalUnread";
+import { useHandleGetTotalCart } from "../../../hook/GetTotalCart";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
@@ -20,6 +23,10 @@ const Header: FC = () => {
   const [searchInputVisible, setSearchInputVisible] = useState(false); // New state to control search input visibility
   const searchRef = useRef<HTMLDivElement | null>(null); // Thêm kiểu cho ref
   const location = useLocation(); // Lấy thông tin location hiện tại
+  const total_unread = useSelector((state: any) => state.auth.total_unread);
+  const total_cart = useSelector((state: any) => state.auth.total_cart);
+  const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+  const { handleGetTotalCart } = useHandleGetTotalCart();
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.pageYOffset > 150);
@@ -38,6 +45,11 @@ const Header: FC = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    handleGetTotalUnnotification();
+    handleGetTotalCart();
+  }, [])
 
   const menuItems = [
     { name: "TRANG CHỦ", link: Routes.HomePage.path },
@@ -169,10 +181,11 @@ const Header: FC = () => {
             ))}
           </AutoComplete>
         </div>
-        <Notification />
+        <Notification total_unread={total_unread} />
         <Link to={Routes.Cart.path}>
           <div className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
             <i className="bi bi-cart4"></i>
+            <div className="total_item">{total_cart}</div>
           </div>
         </Link>
         <img

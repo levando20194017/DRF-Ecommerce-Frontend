@@ -9,10 +9,12 @@ import { formatPrice, formatTime } from '../../../utils/format';
 import { NotiShow } from '../../../utils/notiType';
 import { messageType } from '../../../utils/message';
 import { useNavigate } from 'react-router-dom';
+import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
 
 const Notification: React.FC = () => {
     const userData = getUserData()
     const [listNoti, setListNoti] = useState<any[]>([])
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
 
     const handleGetListNotification = async () => {
         try {
@@ -33,14 +35,15 @@ const Notification: React.FC = () => {
     const handleReadNotification = async (id: number) => {
         try {
             const response = await apiReadNotification({ noti_id: id })
+            if (response.status === 200) {
+                handleGetTotalUnnotification()
+            }
         } catch (e) {
             console.log(e);
         }
     }
     const navigate = useNavigate()
     const handleClickViewNoti = (id: number, url: string) => {
-        console.log(url);
-
         handleReadNotification(id)
         navigate(url)
     }

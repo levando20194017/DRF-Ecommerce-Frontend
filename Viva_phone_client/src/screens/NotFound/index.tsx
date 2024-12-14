@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Routes } from "../Routes";
 const NotFound = () => {
   return (

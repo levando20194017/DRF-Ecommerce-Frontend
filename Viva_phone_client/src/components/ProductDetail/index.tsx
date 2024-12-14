@@ -19,9 +19,9 @@ import { setOrderLocal } from "../../helps/setLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "../../screens/Routes";
 import ModalProductDetail from "./ModalProductDetail";
-import { productData } from "./ProductData";
-import { CompareModal } from "./ModalCompareProduct";
 import { ModalSelectProduct } from "./ModalSelectProduct";
+import { useHandleGetTotalCart } from "../../hook/GetTotalCart";
+import { useHandleGetTotalUnnotification } from "../../hook/GetTotalUnread";
 
 interface Image {
   original: string;
@@ -50,6 +50,8 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
   const [showModal, setShowModal] = useState(false);
   const [optionsColor, setOptionsColor] = useState([]);
   const userData = getUserData()
+  const { handleGetTotalCart } = useHandleGetTotalCart();
+  const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
 
   const header2 = document.querySelector(".navbar_header2");
   const header3 = document.querySelector(".navbar_header3");
@@ -172,6 +174,8 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
 
             // Kết thúc animation sau 1 giây
             setTimeout(() => setFlyingIcon(null), 1000);
+            handleGetTotalCart()
+            handleGetTotalUnnotification()
           }
         }
       } catch (e) {

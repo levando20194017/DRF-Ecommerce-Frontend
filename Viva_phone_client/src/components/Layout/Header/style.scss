@@ -1,3 +1,5 @@
+@use "../../../styles/variables" as vars;
+
 .headerContainer {
   color: black;
 
@@ -201,6 +203,7 @@
 }
 
 .frame-cart-icon {
+  position: relative;
   background-color: transparent;
   border-radius: 50%;
   width: 50px;
@@ -255,6 +258,22 @@
 
 .ant-select-item.ant-select-item-option.ant-select-item-option-active {
   background-color: rgb(190, 224, 248, 0.8);
+}
+
+.total_item {
+  width: 25px;
+  height: 25px;
+  font-size: 12px;
+  background-color: vars.$color-price;
+  position: absolute;
+  border-radius: 50%;
+  color: vars.$common-white;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 }
 
 /*--- Responsive Code ---*/
