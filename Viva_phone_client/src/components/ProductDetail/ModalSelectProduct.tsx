@@ -58,9 +58,6 @@ export const ModalSelectProduct: React.FC<any> = ({ productDetail, isModalVisibl
         // setIsModalVisible(false);
     }
 
-    console.log(isModalCompareOpen);
-
-
     return (
         <Modal
             visible={isModalVisible}

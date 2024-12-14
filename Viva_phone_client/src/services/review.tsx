@@ -37,10 +37,15 @@ const apiUpdateReview = function (data: any) {
     return client.put(`api/review/update-review/`, data);
 };
 
+const apiAdminReplyReview = function (data: any) {
+    return client.post(`api/review/admin-reply-review/`, data);
+};
+
 export {
     apiGetListReviews,
     apiGuestReview,
     apiGetListGallery,
     apiDeleteReview,
-    apiUpdateReview
+    apiUpdateReview,
+    apiAdminReplyReview
 }

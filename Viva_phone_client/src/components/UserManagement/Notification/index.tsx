@@ -39,6 +39,8 @@ const Notification: React.FC = () => {
     }
     const navigate = useNavigate()
     const handleClickViewNoti = (id: number, url: string) => {
+        console.log(url);
+
         handleReadNotification(id)
         navigate(url)
     }

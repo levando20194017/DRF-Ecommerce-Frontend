@@ -29,7 +29,7 @@
     p {
       line-height: 26px;
       font-weight: 400;
-      color: #aaa6a6;
+      // color: vars.$color-content;
     }
   }
 
@@ -43,9 +43,7 @@
       }
     }
 
-    .review-content {
-      color: #aaa6a6;
-    }
+    .review-content {}
 
     .action-review {
       justify-content: center;

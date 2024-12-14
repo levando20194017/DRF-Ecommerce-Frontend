@@ -2,11 +2,12 @@ import "./style.scss";
 import { FC, useEffect, useRef, useState } from "react";
 import logo4 from "../../assets/images/logo4.png";
 import { getImageUrl } from "../../helps/getImageUrl";
-import { Image, Rate } from "antd";
+import { Button, Image, message, Rate } from "antd";
 import { formatTime } from "../../utils/format";
 import { getUserData } from "../../helps/getItemLocal";
-import { apiDeleteReview } from "../../services/review";
+import { apiAdminReplyReview, apiDeleteReview } from "../../services/review";
 import ModalEditReview from "../Reviews/ModalEditReview";
+import TextArea from "antd/es/input/TextArea";
 
 export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetListReviews }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -45,6 +46,45 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
     setModalVisible(false)
   }
 
+  const [showTextArea, setShowTextArea] = useState(false);
+  const [replyId, setReplyId] = useState(0);
+  const [formReply, setFormReply] = useState({
+    admin_id: userData?.id,
+    review_id: 0,
+    comment: ""
+  })
+  const handleShowTextArea = (id: number) => {
+    setReplyId(id)
+    setShowTextArea(true)
+    setFormReply({ ...formReply, review_id: id })
+  }
+
+  const handleOnchangeComment = (e: any) => {
+    setFormReply({ ...formReply, comment: e.target.value })
+  }
+
+  const handleReplyReview = async () => {
+    if (!formReply.comment || !formReply.admin_id || !formReply.review_id) {
+      return
+    }
+    try {
+      const response = await apiAdminReplyReview(formReply)
+      if (response.status === 201) {
+        message.success("Đã gửi phản hồi")
+        handleGetListReviews();
+        setFormReply({
+          admin_id: userData?.id,
+          review_id: 0,
+          comment: ""
+        })
+        setShowTextArea(false)
+      }
+    } catch (e) {
+      console.log(e);
+      message.error("Đã xảy ra lỗi")
+    }
+  }
+
   return (
     <div className="des-and-reviews mt-5">
       <div className="title">
@@ -76,7 +116,7 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
           }
           <div className="card-body">
             {dataReviews.map((item: any, index: number) => (
-              <div className="mt-3">
+              <div className="mt-3" key={index}>
                 <div className="d-flex justify-content-between">
                   <div className="d-flex">
                     <div>
@@ -99,7 +139,6 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                     <div className="d-flex action-review">
                       <div className="dropdown option-review">
                         <a
-                          href="#"
                           className="text-secondary btn btn-secondary-soft-hover px-2"
                           id="cardFeedAction"
                           data-bs-toggle="dropdown"
@@ -117,7 +156,7 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                             </a>
                           </li>
                           <li onClick={() => handleClickEditReview(item)}>
-                            <a className="dropdown-item" href="#">
+                            <a className="dropdown-item">
                               <i className="bi bi-pen-fill pe-2"></i>Edit review
                             </a>
                           </li>
@@ -146,40 +185,47 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                       </div>
                     )}
                   </div>
-                  <div className="mt-1">
-                    <span className=" text-secondary">{formatTime(item.created_at)}</span>
-                    <span className=" reply">Reply</span>
-                  </div>
                   <div>
-                    <div className="d-flex justify-content-between mt-2">
-                      <div className="d-flex admin">
-                        <div>
-                          <img
-                            className="headerUser-right-avt rounded-circle"
-                            src={logo4}
-                            alt="avatar"
-                            width={50}
-                            height={50}
-                            style={{ border: "1px solid #ff652f" }}
-                          />
-                        </div>
-                        <div className="px-2 d-flex justify-content-center align-items-center">
-                          <b>VIVA PHONE</b>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-5">
-                      <div className="review-content">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Consequatur ipsa facilis eius, soluta accusantium neque
-                        modi aut veritatis dolore qui hic tempore voluptatem. Quos
-                        quasi dolorem voluptatum at recusandae rerum.
-                      </div>
-                      <div className="mt-1">
-                        <span className="text-secondary">20/7/2023 12:30</span>
-                      </div>
-                    </div>
+                    <span className="text-secondary" style={{ fontSize: "14px" }}>{formatTime(item.created_at)}</span>
+                    {userData.role === "ADMIN" &&
+                      <span className=" reply" onClick={() => handleShowTextArea(item.id)}>Reply</span>
+                    }
                   </div>
+                  {showTextArea && replyId === item.id &&
+                    <div className="mt-2">
+                      <TextArea rows={3} style={{ fontSize: "16px" }} onChange={(e: any) => handleOnchangeComment(e)} />
+                      <Button type="primary" className="mt-2" style={{ borderRadius: "2px", fontSize: "16px" }} onClick={handleReplyReview}>Gửi</Button>
+                    </div>
+                  }
+                  {item?.replies?.length > 0 &&
+                    <div>
+                      <div className="d-flex justify-content-between mt-2">
+                        <div className="d-flex admin">
+                          <div>
+                            <img
+                              className="headerUser-right-avt rounded-circle"
+                              src={logo4}
+                              alt="avatar"
+                              width={50}
+                              height={50}
+                              style={{ border: "1px solid #ff652f" }}
+                            />
+                          </div>
+                          <div className="px-2 d-flex justify-content-center align-items-center">
+                            <b>VIVA PHONE</b>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-5">
+                        <div className="review-content">
+                          {item.replies[0].reply}
+                        </div>
+                        <div className="mt-1">
+                          <span className="text-secondary" style={{ fontSize: "14px" }}>{formatTime(item.replies[0].created_at)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
                 </div>
               </div>))}
 
