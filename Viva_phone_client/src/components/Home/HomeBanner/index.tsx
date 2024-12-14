@@ -6,6 +6,8 @@ import { PiMouseSimpleLight } from "react-icons/pi";
 import { IoMdArrowDown } from "react-icons/io";
 
 import "../style.scss";
+import { Link } from "react-router-dom";
+import { Routes } from "../../../screens/Routes";
 const videoSource: string = require("../../../assets/video/videoBanner.mp4");
 
 export const HomeBanner = () => {
@@ -108,12 +110,14 @@ export const HomeBanner = () => {
                 }),
               }}
             >
-              <button
-                className={`contact-button ${isAnimating ? "animating" : ""}`}
-              >
-                <span>Liên hệ ngay</span>
-                <GrLinkNext />
-              </button>
+              <Link to={Routes.Contact.path}>
+                <button
+                  className={`contact-button ${isAnimating ? "animating" : ""}`}
+                >
+                  <span>Liên hệ ngay</span>
+                  <GrLinkNext />
+                </button>
+              </Link>
             </animated.div>
           </div>
         </div>
