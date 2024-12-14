@@ -96,6 +96,13 @@
     }
 }
 
+.toast-modal-success {
+    .modal-content {
+        min-width: 400px !important;
+        border-radius: 16px !important;
+    }
+}
+
 .box00 {
     width: 100px;
     height: 100px;

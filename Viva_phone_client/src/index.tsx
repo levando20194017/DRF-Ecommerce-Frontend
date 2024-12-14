@@ -7,16 +7,18 @@ import store from "./store";
 import { Provider } from "react-redux";
 import "./index.scss";
 import App from "./App";
+import { LoadingProvider } from "./context/LoadingContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <LoadingProvider>
+        <App />
+      </LoadingProvider>
     </Provider>
   </React.StrictMode>
 );

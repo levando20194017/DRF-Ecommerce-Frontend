@@ -7,7 +7,7 @@ import { getUserData } from '../../../helps/getItemLocal';
 import { getImageUrl } from '../../../helps/getImageUrl';
 import { formatPrice, formatTime } from '../../../utils/format';
 import { NotiShow } from '../../../utils/notiType';
-import { messageType } from '../../../utils/message';
+import { messageType, orderStatusCustom } from '../../../utils/message';
 import { useNavigate } from 'react-router-dom';
 import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
 
@@ -60,9 +60,21 @@ const Notification: React.FC = () => {
                             <Image src={item.image ? getImageUrl(item.image) : "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"} />
                         </div>
                         <div className='d-flex flex-column gap-1' style={{ flex: 1 }}>
-                            <div className='title'>{NotiShow[item.notification_type]}</div>
+                            <div className='title'>
+                                {item.notification_type === "order_update" ?
+                                    orderStatusCustom(item)
+                                    :
+                                    NotiShow[item.notification_type]
+                                }
+                            </div>
                             {item.message.includes("You can rate the product quality.") &&
                                 <div className='content'>{messageType.delivery}</div>
+                            }
+                            {item.message.includes("has been pay successfully") &&
+                                <div className='content'>{messageType.pay_success}</div>
+                            }
+                            {item.message.includes("has been pay failed") &&
+                                <div className='content'>{messageType.pay_failed}</div>
                             }
                             {item.message.includes("has been placed successfully.") &&
                                 <div className='content'>{messageType.pending}</div>

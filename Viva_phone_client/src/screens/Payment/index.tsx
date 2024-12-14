@@ -15,6 +15,8 @@ import { apiCreateNewOrder } from '../../services/order';
 import { getTotalDiscountByCart } from '../../helps/getTotalDiscount';
 import { useHandleGetTotalUnnotification } from '../../hook/GetTotalUnread';
 import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
+import ModalSuccess from '../../components/Common/ModalSuccess';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -36,7 +38,7 @@ const PaymentPage: React.FC = () => {
         recipient_phone: userData.phone_number,
         shipping_address: userData.address,
         recipient_name: userData.last_name + " " + userData.first_name,
-        payment_methods: PaymentMethod.cashOnDelivery,
+        payment_method: PaymentMethod.cashOnDelivery,
         shipping_cost: 0,
         gst_amount: 0,
         order_details: listOrders.map((item: any) => ({
@@ -52,11 +54,13 @@ const PaymentPage: React.FC = () => {
 
     const handleChangePaymentMethod = (value: string) => {
         setPaymentMethod(value)
-        setFormData({ ...formData, payment_methods: value })
+        setFormData({ ...formData, payment_method: value })
     }
 
     const [loading, setLoading] = useState<any>(false)
     const [errorLocation, setErrorLocation] = useState<string>("")
+    const [isModalVisibleNoti, setIsModalVisibleNoti] = useState<any>(false);
+    const navigate = useNavigate()
     const handleCreateNewOrder = async () => {
         if (!formData.recipient_name || !formData.shipping_address || !formData.recipient_phone) {
             setErrorLocation("Vui lòng nhập đầy đủ thông tin người nhận");
@@ -64,10 +68,14 @@ const PaymentPage: React.FC = () => {
         }
         try {
             setLoading(true)
-            const response = await apiCreateNewOrder(formData)
-            if (response.status === 200) {
+            const response = await apiCreateNewOrder(formData) as any
+            if (response.status === 201) {
                 handleGetTotalCart()
                 handleGetTotalUnnotification()
+                setIsModalVisibleNoti(true)
+                if (formData.payment_method === PaymentMethod.creditCard) {
+                    window.location.href = response.payment_url;
+                }
             }
         } catch (e) {
             console.log(e);
@@ -80,9 +88,13 @@ const PaymentPage: React.FC = () => {
             setErrorLocation("")
         }
     }, [formData])
+    // const handleCloseModal = () => {
+    //     setIsModalVisible(false); // Đóng modal
+    // };
     return (
         <>
             <div className="div-empty"></div>
+            {/* {isModalVisibleNoti && <ModalSuccess onClose={handleCloseModal} />} */}
             <AddressModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} formData={formData} setFormData={setFormData} />
             <div className="container mt-4 payment-page">
                 <div className="mt-3">
@@ -131,7 +143,7 @@ const PaymentPage: React.FC = () => {
                             <div className='d-flex gap-4 justify-content-center align-items-center'>
                                 {paymentMethod ?
                                     <>
-                                        <span>{formData.payment_methods === PaymentMethod.cashOnDelivery ? "Thanh toán khi nhận hàng" : "Thanh toán bằng VN Pay"}</span>
+                                        <span>{formData.payment_method === PaymentMethod.cashOnDelivery ? "Thanh toán khi nhận hàng" : "Thanh toán bằng VN Pay"}</span>
                                         <Button className="btn-change" onClick={() => { setPaymentMethod("") }}>THAY ĐỔI</Button>
                                     </>
                                     :
