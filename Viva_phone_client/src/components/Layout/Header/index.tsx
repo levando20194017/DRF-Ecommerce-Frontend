@@ -16,6 +16,7 @@ import { useHandleGetTotalUnnotification } from "../../../hook/GetTotalUnread";
 import { useHandleGetTotalCart } from "../../../hook/GetTotalCart";
 import Profile from "./Profile";
 import { getUserData } from "../../../helps/getItemLocal";
+import { useLoading } from "../../../context/LoadingContext";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
@@ -30,6 +31,7 @@ const Header: FC = () => {
   const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
   const { handleGetTotalCart } = useHandleGetTotalCart();
   const userData = getUserData()
+  const { setLoading } = useLoading();
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.pageYOffset > 150);
@@ -115,6 +117,10 @@ const Header: FC = () => {
       navigate(Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog }))
     }
   }
+  const handleLinkCart = () => {
+    setLoading(true)
+    navigate(Routes.Cart.path)
+  }
 
   const renderHeaderContent = (isSticky = false) => (
     <Navbar className={`d-flex ${isSticky ? "navbar_header3" : "navbar_header2"}`}>
@@ -185,15 +191,13 @@ const Header: FC = () => {
           </AutoComplete>
         </div>
         <Notification total_unread={total_unread} />
-        <Link to={Routes.Cart.path}>
-          <div className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
-            <i className="bi bi-cart4"></i>
-            {total_cart > 0 ?
-              <div className="total_item">{total_cart}</div>
-              :
-              ""}
-          </div>
-        </Link>
+        <div onClick={handleLinkCart} className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
+          <i className="bi bi-cart4"></i>
+          {total_cart > 0 ?
+            <div className="total_item">{total_cart}</div>
+            :
+            ""}
+        </div>
         <Profile />
       </div>
     </Navbar>

@@ -36,10 +36,27 @@ const apiSearchProductsInStore = (data: SearchProductStore) => {
     return client.get(`api/product_store/search-products-in-store/?store_id=${data.storeId}&textSearch=${data.textSearch}&page_index=${data.pageIndex}&page_size=${data.pageSize}`);
 }
 
+interface SearchProductStoreByCatalog {
+    storeId: number,
+    pageIndex: number,
+    pageSize: number,
+    catalogId: number,
+    textSearch: string
+}
+const apiSearchProductsInStoreByCatalog = (data: SearchProductStoreByCatalog) => {
+    return client.get(`api/product_store/search-products-in-store-by-catalog/?store_id=${data.storeId}&textSearch=${data.textSearch}&page_index=${data.pageIndex}&page_size=${data.pageSize}&catalog_id=${data.catalogId}`);
+}
+
+//Dùng để hiển thị danh sách các sản phẩm mà cửa hàng nhập về.
+const apiGetListProductsIncomingByCatalog = (data: any) => {
+    return client.get(`api/product_incoming/get-list-product-incoming-by-catalog/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&catalog_id=${data.catalog_id}`);
+}
 export {
     apiGetBestSelling,
     apiGetListProductsByCatalog,
     apiGetProductDetailInStore,
     apiSearchProductsInStore,
-    apiGetAllProducts
+    apiGetAllProducts,
+    apiGetListProductsIncomingByCatalog,
+    apiSearchProductsInStoreByCatalog
 }; 

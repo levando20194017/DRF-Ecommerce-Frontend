@@ -13,6 +13,7 @@ import { getUserData } from '../../helps/getItemLocal';
 import { useNavigate } from 'react-router-dom';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
 import { useLoading } from '../../context/LoadingContext';
+import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
 
 const Cart: React.FC = () => {
     const { setLoading } = useLoading()
@@ -24,6 +25,7 @@ const Cart: React.FC = () => {
     ];
     const userData = getUserData()
     const navigate = useNavigate();
+    const { handleGetTotalCart } = useHandleGetTotalCart()
 
     const handleQuantityChange = (id: number, quantity: number) => {
         setCart((prev: any) =>
@@ -61,7 +63,6 @@ const Cart: React.FC = () => {
     const handleGetCart = async () => {
         if (userData?.id) {
             try {
-                setLoading(true)
                 const response = await apiGetCart(userData?.id)
                 if (response.status === 200) {
                     setCart(response.data.items)
@@ -88,6 +89,7 @@ const Cart: React.FC = () => {
             })
             if (response.status === 204) {
                 handleGetCart()
+                handleGetTotalCart()
             }
         } catch (e) {
             console.log(e);

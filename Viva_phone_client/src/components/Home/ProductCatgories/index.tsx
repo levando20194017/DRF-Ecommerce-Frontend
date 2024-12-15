@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { ModalQuickView } from "../ModalQuickView";
 import { ListProduct } from "./ProductItem";
 import { apiGetCatalog } from "../../../services/catalog";
-import { apiGetListProductsByCatalog } from "../../../services/product";
+import { apiGetListProductsByCatalog, apiGetListProductsIncomingByCatalog, apiSearchProductsInStoreByCatalog } from "../../../services/product";
 import { ProductItem } from "./ProductItem/ProductItem";
 export const ProductCatgories = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [listCatalogs, setListCatalogs] = useState<any[]>([])
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(12);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedCatalog, setSelectedCatalog] = useState(0);
   const [listProducts, setListProducts] = useState<any[]>([])
@@ -46,8 +46,8 @@ export const ProductCatgories = () => {
 
   const handleGetListProductsOfCatalog = async (catalog: number) => {
     try {
-      const response = await apiGetListProductsByCatalog({
-        pageIndex, pageSize, catalog_id: catalog
+      const response = await apiSearchProductsInStoreByCatalog({
+        pageIndex, pageSize, catalogId: catalog, storeId: 1, textSearch: ""
       })
       if (response.status === 200) {
         setListProducts(response.data.products)
@@ -133,8 +133,8 @@ export const ProductCatgories = () => {
               </div>
               <div className="mt-3">
                 <div className="top-categories_list row">
-                  {listProducts.map(product => (
-                    <ProductItem product={product} handleModalQuickView={handleQuickView} />
+                  {listProducts.map(item => (
+                    <ProductItem product={item.product} handleModalQuickView={handleQuickView} />
                   ))}
                 </div>
               </div>
