@@ -39,6 +39,7 @@ const PaymentPage: React.FC = () => {
     }, [])
 
     const [formData, setFormData] = useState<Order>({
+        order_id: listOrders[0]?.order ? listOrders[0].order : null,
         guest_id: userData.id,
         recipient_phone: userData.phone_number,
         shipping_address: userData.address,

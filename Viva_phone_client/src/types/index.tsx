@@ -24,6 +24,7 @@ interface OrderDetail {
     product_id: number
 }
 export interface Order {
+    order_id: number,
     guest_id: number,
     recipient_phone: string,
     shipping_address: string,
