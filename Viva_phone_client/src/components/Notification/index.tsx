@@ -12,6 +12,7 @@ import { NotiShow } from "../../utils/notiType";
 import { getImageUrl } from "../../helps/getImageUrl";
 import { useNavigate } from "react-router-dom";
 import { useHandleGetTotalUnnotification } from "../../hook/GetTotalUnread";
+import { truncateString } from "../../helps/truncateString";
 
 const Notification: React.FC<any> = ({ total_unread }) => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false); // State để quản lý trạng thái hiển thị popup thông báo
@@ -159,6 +160,9 @@ const Notification: React.FC<any> = ({ total_unread }) => {
                                                 NotiShow[item.notification_type]
                                             }
                                         </div>
+                                        {item.notification_type === "review_reply" &&
+                                            <div className='content'>{truncateString(item.message, 90)}</div>
+                                        }
                                         {item.message.includes("You can rate the product quality.") &&
                                             <div className='content'>{messageType.delivery}</div>
                                         }

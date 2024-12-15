@@ -1,16 +1,16 @@
 import React from 'react';
 import BounceLoader from 'react-spinners/BounceLoader';
-
+import './style.scss';
 interface PageLoaderProps {
     loading: boolean;
     size?: number;
     color?: string;
 }
 
-const PageLoader: React.FC<PageLoaderProps> = ({ loading, size = 60, color = '#36d7b7' }) => {
+const PageLoader: React.FC<any> = ({ size = 70, color = '#ff652f' }) => {
     return (
-        <div>
-            <BounceLoader color={color} loading={loading} size={size} />
+        <div className='loading-overlay'>
+            <BounceLoader color={color} size={size} />
         </div>
     );
 };

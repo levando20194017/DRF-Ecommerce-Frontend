@@ -12,9 +12,10 @@ import { setOrderLocal } from '../../helps/setLocalStorage';
 import { getUserData } from '../../helps/getItemLocal';
 import { useNavigate } from 'react-router-dom';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
+import { useLoading } from '../../context/LoadingContext';
 
 const Cart: React.FC = () => {
-    const [loading, setLoading] = useState<Boolean>(false);
+    const { setLoading } = useLoading()
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [cart, setCart] = useState<any>([])
     const breadcrumbs = [
@@ -47,6 +48,7 @@ const Cart: React.FC = () => {
         .reduce((sum: number, cartItem: any) => sum + cartItem.product.price * cartItem.quantity, 0);
 
     const handleCheckout = () => {
+        setLoading(true)
         const order = cart.filter((item: any) => {
             if (selectedIds.includes(item.id)) return item
         })

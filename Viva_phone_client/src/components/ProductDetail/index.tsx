@@ -22,6 +22,7 @@ import ModalProductDetail from "./ModalProductDetail";
 import { ModalSelectProduct } from "./ModalSelectProduct";
 import { useHandleGetTotalCart } from "../../hook/GetTotalCart";
 import { useHandleGetTotalUnnotification } from "../../hook/GetTotalUnread";
+import { useLoading } from "../../context/LoadingContext";
 
 interface Image {
   original: string;
@@ -188,7 +189,9 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
   }
 
   const navigate = useNavigate();
+  const { setLoading } = useLoading()
   const handleBuyNow = () => {
+    setLoading(true)
     if (temporaryOrder.some(item => !item)) return;
     setOrderLocal(temporaryOrder);
     navigate(Routes.Payment.path)

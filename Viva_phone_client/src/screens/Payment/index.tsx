@@ -4,7 +4,7 @@ import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
 import './payment.scss'
 import { FaLocationDot } from "react-icons/fa6";
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import ProductItem from '../../components/Payment/ProductItem';
 import AddressModal from '../../components/Payment/AddressModal';
 import { getOrderLocal, getUserData } from '../../helps/getItemLocal';
@@ -17,6 +17,7 @@ import { useHandleGetTotalUnnotification } from '../../hook/GetTotalUnread';
 import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
 import ModalSuccess from '../../components/Common/ModalSuccess';
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../../context/LoadingContext';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -32,6 +33,10 @@ const PaymentPage: React.FC = () => {
     const [paymentMethod, setPaymentMethod] = useState("cash")
     const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
     const { handleGetTotalCart } = useHandleGetTotalCart();
+    const { setLoading } = useLoading();
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     const [formData, setFormData] = useState<Order>({
         guest_id: userData.id,
@@ -57,7 +62,7 @@ const PaymentPage: React.FC = () => {
         setFormData({ ...formData, payment_method: value })
     }
 
-    const [loading, setLoading] = useState<any>(false)
+    const [loadingData, setLoadingData] = useState<any>(false)
     const [errorLocation, setErrorLocation] = useState<string>("")
     const [isModalVisibleNoti, setIsModalVisibleNoti] = useState<any>(false);
     const navigate = useNavigate()
@@ -68,6 +73,7 @@ const PaymentPage: React.FC = () => {
         }
         try {
             setLoading(true)
+            setLoadingData(true)
             const response = await apiCreateNewOrder(formData) as any
             if (response.status === 201) {
                 handleGetTotalCart()
@@ -75,12 +81,16 @@ const PaymentPage: React.FC = () => {
                 setIsModalVisibleNoti(true)
                 if (formData.payment_method === PaymentMethod.creditCard) {
                     window.location.href = response.payment_url;
+                } else {
+                    navigate(Routes.HomePage.path)
+                    message.success("Đặt hàng thành công")
                 }
             }
         } catch (e) {
             console.log(e);
         } finally {
             setLoading(false)
+            setLoadingData(false)
         }
     }
     useEffect(() => {
@@ -173,7 +183,7 @@ const PaymentPage: React.FC = () => {
                         </div>
                         <div className='payment-action'>
                             <div>Nhấn đặt hàng đồng nghĩa với việc bạn đồng ý điều khoản tuân theo <a style={{ color: "#0d6efd" }} className='cursor-pointer'>Điều khoản Viva Phone</a></div>
-                            <div><Button className='btn-payment' loading={loading} onClick={handleCreateNewOrder}>Thanh toán</Button></div>
+                            <div><Button className='btn-payment' loading={loadingData} onClick={handleCreateNewOrder}>Thanh toán</Button></div>
                         </div>
                     </div>
                 </div>

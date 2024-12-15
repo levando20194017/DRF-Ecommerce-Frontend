@@ -10,14 +10,18 @@ import { NotiShow } from '../../../utils/notiType';
 import { messageType, orderStatusCustom } from '../../../utils/message';
 import { useNavigate } from 'react-router-dom';
 import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
+import { useLoading } from '../../../context/LoadingContext';
+import { truncateString } from '../../../helps/truncateString';
 
 const Notification: React.FC = () => {
     const userData = getUserData()
     const [listNoti, setListNoti] = useState<any[]>([])
     const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+    const { setLoading } = useLoading()
 
     const handleGetListNotification = async () => {
         try {
+            setLoading(true)
             const response = await apiGetNotifications({
                 pageIndex: 1, pageSize: 1000, id: userData?.id
             })
@@ -26,6 +30,8 @@ const Notification: React.FC = () => {
             }
         } catch (e) {
             console.log(e);
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -67,6 +73,9 @@ const Notification: React.FC = () => {
                                     NotiShow[item.notification_type]
                                 }
                             </div>
+                            {item.notification_type === "review_reply" &&
+                                <div className='content'>{truncateString(item.message, 200)}</div>
+                            }
                             {item.message.includes("You can rate the product quality.") &&
                                 <div className='content'>{messageType.delivery}</div>
                             }

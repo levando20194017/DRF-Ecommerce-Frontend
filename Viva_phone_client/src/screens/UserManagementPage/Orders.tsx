@@ -6,12 +6,15 @@ import SearchOrder from '../../components/UserManagement/Order/Search';
 import { apiGetListOrdersByStatus } from '../../services/order';
 import { getUserData } from '../../helps/getItemLocal';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
+import { useLoading } from '../../context/LoadingContext';
 const Orders: React.FC = () => {
     const userData = getUserData()
     const [listOrders, setListOrders] = useState<any[]>([])
+    const { setLoading } = useLoading()
 
     const handleGetListOrder = async (status: string) => {
         try {
+            setLoading(true)
             const response = await apiGetListOrdersByStatus(
                 {
                     page_index: 1,
@@ -24,6 +27,8 @@ const Orders: React.FC = () => {
             }
         } catch (e) {
             console.log(e);
+        } finally {
+            setLoading(false)
         }
     }
 

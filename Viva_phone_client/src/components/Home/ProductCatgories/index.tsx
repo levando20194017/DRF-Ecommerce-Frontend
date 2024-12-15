@@ -1,7 +1,6 @@
 import "../style.scss";
 import "animate.css";
 import { useEffect, useState } from "react";
-import img1 from "../../../assets/images/content.jpg";
 import { ModalQuickView } from "../ModalQuickView";
 import { ListProduct } from "./ProductItem";
 import { apiGetCatalog } from "../../../services/catalog";
@@ -15,7 +14,6 @@ export const ProductCatgories = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedCatalog, setSelectedCatalog] = useState(0);
   const [listProducts, setListProducts] = useState<any[]>([])
-
   const handleQuickView = () => {
     setIsOpenModal(true);
   };

@@ -7,6 +7,7 @@ import { Routes } from "../../../screens/Routes";
 import { removeData } from "../../../helps/setLocalStorage";
 import { useDispatch } from "react-redux";
 import { changeInformation } from "../../../store/actions";
+import NoImage from "../../../assets/images/no_avatar.jpg"
 
 const Profile: React.FC<any> = () => {
     const [isShowPopup, setIsShowPopup] = useState(false); // State để quản lý trạng thái hiển thị popup thông báo
@@ -76,7 +77,7 @@ const Profile: React.FC<any> = () => {
             >
                 <img
                     className="headerUser-right-avt rounded-circle"
-                    src={getImageUrl(userData.avatar)}
+                    src={userData.avatar ? getImageUrl(userData.avatar) : NoImage}
                     alt="user avatar"
                     width={40}
                     height={40}

@@ -1,13 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../../../../screens/Routes";
 import "../../style.scss";
 import { getImageUrl } from "../../../../helps/getImageUrl";
 import { formatPrice } from "../../../../utils/format";
 import { promotionType } from "../../../../utils/promotionType";
 import { checkPromotionValid } from "../../../../helps/checkPormotionValid";
+import { useLoading } from "../../../../context/LoadingContext";
 
 export const ProductItem = (props: any) => {
   const { product, handleModalQuickView } = props
+
+  const navigate = useNavigate()
+  const { setLoading } = useLoading()
+  const handleLink = () => {
+    navigate(Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog }))
+    setLoading(true)
+  }
   return (
     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 top-categories_item mt-4">
       <div className="single-location mb-20">
@@ -15,13 +23,12 @@ export const ProductItem = (props: any) => {
           <div className="location-img">
             <img src={getImageUrl(product.image)} alt={product.name} />
             <div className="item-actions">
-              <Link to={Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog })} style={{ color: "#fff" }}>
-                <div
-                  className="quick-view"
-                >
-                  <i className="bi bi-eye-fill"></i>
-                </div>
-              </Link>
+              <div
+                className="quick-view"
+                onClick={handleLink}
+              >
+                <i className="bi bi-eye-fill"></i>
+              </div>
               <div className="add-to-cart" onClick={() => {
                 handleModalQuickView();
               }}>

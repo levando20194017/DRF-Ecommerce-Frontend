@@ -5,8 +5,8 @@ import { Routes } from "../Routes";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
 import { apiGetListProductsByCatalog, apiGetProductDetailInStore } from "../../services/product";
-import { useLocation } from "react-router-dom";
 import { apiGetListReviews } from "../../services/review";
+import { useLoading } from "../../context/LoadingContext";
 const AddToCartPage = () => {
   const breadcrumbs = [
     { label: "Trang chủ", path: Routes.HomePage.path },
@@ -17,12 +17,12 @@ const AddToCartPage = () => {
   const [storeDetail, setStoreDetail] = useState<any>()
   const [stork, setStork] = useState<number>(0)
   const urlParams = new URLSearchParams(window.location.search);
-  const location = useLocation();
   const storeId = Number(urlParams.get('store_id')) || 0; // Chuyển thành number, mặc định 0 nếu null
   const productId = Number(urlParams.get('product_id')) || 0;
   const catalogId = Number(urlParams.get('catalog_id')) || 0;
   const [dataReviews, setDataReviews] = useState<any>({})
   const [listRelateds, setListRelateds] = useState([])
+  const { setLoading } = useLoading()
 
   const handleGetProductDetail = async () => {
     try {
@@ -38,7 +38,6 @@ const AddToCartPage = () => {
       console.log(e);
     }
   }
-
   const handleGetListProductByCatalog = async () => {
     try {
       const response = await apiGetListProductsByCatalog({ storeId, catalog_id: catalogId })
@@ -47,6 +46,8 @@ const AddToCartPage = () => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -68,6 +69,7 @@ const AddToCartPage = () => {
 
   useEffect(() => {
     if (productId && storeId) {
+      setLoading(true)
       handleGetProductDetail()
       handleGetListReviews()
       handleGetListProductByCatalog()

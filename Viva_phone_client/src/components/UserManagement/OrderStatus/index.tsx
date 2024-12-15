@@ -13,10 +13,12 @@ import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../ut
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
 import ModalReview from '../../Reviews/ModalReview';
+import { useLoading } from '../../../context/LoadingContext';
 
 const OrderStatus: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [productReview, setProductReview] = useState({})
+    const { setLoading } = useLoading()
 
     const [items, setItems] = useState<any>([
         {
