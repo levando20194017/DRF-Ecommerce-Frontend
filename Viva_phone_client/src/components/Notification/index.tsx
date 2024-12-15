@@ -191,7 +191,7 @@ const Notification: React.FC<any> = ({ total_unread }) => {
                                         <div className='content' style={{ fontSize: "14px" }}>{formatTime(item.created_at)}</div>
                                     </div>
                                     {item.message.includes("You can rate the product quality.") ?
-                                        <div className=''>
+                                        <div className='' onClick={() => { handleClickViewNoti(item.id, item.url) }}>
                                             <Button className='btn-rate'>Đánh giá sản phẩm</Button>
                                         </div>
                                         :

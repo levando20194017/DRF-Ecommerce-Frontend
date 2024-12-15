@@ -22,7 +22,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
             const response = await apiCanceledOrder({ order_id: id })
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
-                handleGetListOrder()
+                handleGetListOrder("")
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
             }

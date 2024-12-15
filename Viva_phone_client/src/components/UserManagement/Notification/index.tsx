@@ -105,7 +105,7 @@ const Notification: React.FC = () => {
                         </div>
                         {item.message.includes("You can rate the product quality.") ?
                             <div className=''>
-                                <Button className='btn-rate'>Đánh giá sản phẩm</Button>
+                                <Button className='btn-rate' onClick={() => { handleClickViewNoti(item.id, item.url) }}>Đánh giá sản phẩm</Button>
                             </div>
                             :
                             <div className=''>
