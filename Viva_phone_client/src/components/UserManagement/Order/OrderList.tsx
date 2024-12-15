@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import OrderItem from './OrderItem';
 import './Order.scss';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,28 +8,26 @@ import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { apiCanceledOrder } from '../../../services/order';
-import { message, Popconfirm } from 'antd';
+import { Image, message, Popconfirm } from 'antd';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
+import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
+import ModalReview from '../../Reviews/ModalReview';
+import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
+import { useLoading } from '../../../context/LoadingContext';
 
 const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
-    const handleGetDiscount = (order: any) => {
-        return order.items.reduce((sum: number, item: any) => {
-            if (item.product.promotion) {
-                if (item.product.promotion_discount_type === promotionType.FIXED) {
-                    return sum + (item.product.promotion_discount_value * item.quantity);
-                } else {
-                    return sum + ((item.product.promotion_discount_value * item.unit_price / 100) * item.quantity);
-                }
-            }
-            return sum; // Nếu không có khuyến mãi, giữ nguyên tổng
-        }, 0)
-    }
+    const [modalVisible, setModalVisible] = useState(false);
+    const [productReview, setProductReview] = useState({})
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+    const { setLoading } = useLoading()
+
     const handleCancelOrder = async (id: number) => {
         try {
             const response = await apiCanceledOrder({ order_id: id })
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
-                handleGetListOrder()
+                handleGetListOrder("")
+                handleGetTotalUnnotification();
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
             }
@@ -41,13 +39,24 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
     const navigate = useNavigate();
     const handleBuyBackOrder = (orderDetail: any) => {
         if (orderDetail.items?.length > 0) {
+            setLoading(true)
             setOrderLocal(orderDetail.items)
             navigate(Routes.Payment.path)
         }
     }
 
+    const onCloseModal = () => {
+        setModalVisible(false)
+    }
+
+    const handleClickReview = (product: any) => {
+        setProductReview(product)
+        setModalVisible(true)
+    }
+
     return (
         <div className="order-list">
+            <ModalReview visible={modalVisible} onClose={onCloseModal} productReview={productReview} />
             {listOrders.map((order: any, index: number) => (
                 <div className="order-item" key={index}>
                     <div className="order-item_header">
@@ -69,16 +78,27 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                         {order.items.map((item: any, index: number) => (
                             <div key={index} className="item">
                                 <div className='image'>
-                                    <img src={getImageUrl(item.product.image)} />
+                                    <Image src={getImageUrl(item.product.image)} />
                                 </div>
                                 <div className="name ms-3">
                                     <div className='fw-bold'>{item.product.name}</div>
                                     <div className='qty'>Số lượng: {item.quantity}</div>
                                     <div className='qty'>Màu sắc: {item.product.color}</div>
-                                    <div className='qty'>Ưu đãi: {item.product.promotion ? item.product.promotion_name : "Không"}</div>
-                                    {item.product.promotion_discount_type && <div className='qty'>Giảm giá: <span className="price">{item.product.promotion_discount_type === promotionType.PERCENT ? `${item.product.promotion_discount_value}%` : `${formatPrice(item.product.promotion_discount_value)}`}</span></div>}
+                                    <div className='qty'>Ưu đãi: {item.promotion_name ? item.promotion_name : "Không"}</div>
+                                    {item.promotion_name &&
+                                        <div className='qty'>Giảm giá: <span className="price">
+                                            {item.promotion_discount_type === promotionType.PERCENT ?
+                                                `${item.promotion_discount_value}%` :
+                                                `${formatPrice(item.promotion_discount_value)}`}
+                                        </span>
+                                        </div>}
                                 </div>
-                                <div className="price">{formatPrice(item.unit_price)}</div>
+                                <div className='d-flex flex-column justify-content-between'>
+                                    <div className="price">{formatPrice(item.unit_price)}</div>
+                                    {order.order_status === OrderStatusType.DELIVERY &&
+                                        <button className="rate-btn" onClick={() => handleClickReview(item.product)}>Đánh giá</button>
+                                    }
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -91,7 +111,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                             </Link>
                         </div>
                         <div className='order-item_footer_right'>
-                            {handleGetDiscount(order) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(handleGetDiscount(order))}</span></div> : ""}
+                            {getTotalDiscountByOrder(order.items) ? <div className='total'>Khuyến mãi: <span className='price'>{formatPrice(getTotalDiscountByOrder(order.items))}</span></div> : ""}
                             <div className="total">Tổng thanh toán: <span className='price'>{formatPrice(order.total_cost)}</span></div>
                             <div className='d-flex gap-4 justify-content-end'>
                                 <Link to={Routes.OrderStatus.getPath({ orderId: order.id })}>
@@ -99,7 +119,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                                         <button className="rate-btn">Chi tiết đơn hàng</button>
                                     </div>
                                 </Link>
-                                {order.order_status === OrderStatusType.CANCELLED &&
+                                {(order.order_status === OrderStatusType.CANCELLED || order.order_status === OrderStatusType.DELIVERY) &&
                                     <button className='btn-cancel' onClick={() => { handleBuyBackOrder(order) }}>Mua lại</button>}
                                 {order.order_status === OrderStatusType.PENDING &&
                                     <Popconfirm
@@ -111,9 +131,6 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                                     >
                                         <button className='btn-cancel'>Hủy đơn</button>
                                     </Popconfirm>
-                                }
-                                {order.order_status === OrderStatusType.DELIVERY &&
-                                    <button className="rate-btn">Đánh giá</button>
                                 }
                             </div>
                         </div>

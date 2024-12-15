@@ -6,7 +6,7 @@ interface DataGetNotification {
 }
 
 const apiGetNotifications = (data: DataGetNotification) => {
-    return client.get(`api/notification/get-list-notifications/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&id=${data.id}`);
+    return client.get(`api/notification/get-list-notifications/?page_index=${data.pageIndex}&page_size=${data.pageSize}&id=${data.id}`);
 }
 
 const apiReadNotification = (data: any) => {

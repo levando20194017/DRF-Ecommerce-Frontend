@@ -22,9 +22,9 @@ const Title = () => {
       </div>
       <div className="d-flex justify-content-between">
         <h4>Order</h4>
-        <div>
+        {/* <div>
           <button className="btn-export">Export</button>
-        </div>
+        </div> */}
       </div>
     </>
   );

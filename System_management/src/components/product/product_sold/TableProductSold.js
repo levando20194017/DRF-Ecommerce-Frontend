@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Table, Image } from "@themesberg/react-bootstrap";
-import { formatPrice, formatTime } from "../../../utils";
+import { formatFullTime, formatPrice, formatTime } from "../../../utils";
 import { changeTextToThreeDot } from "../../../utils";
 import { ToastContainer } from "react-toastify";
 import ImageLink from "../../../assets/img/no-image.png";
@@ -12,7 +12,7 @@ export default ({
 }) => {
 
     const TableRow = (props) => {
-        const { index, product_image, product_name, sale_price, quantity_sold, vat, shipping_cost, sale_date } = props;
+        const { index, product, sale_price, quantity_sold, vat, shipping_cost, sale_date } = props;
         return (
             <tr>
                 <td>
@@ -21,17 +21,17 @@ export default ({
                     </Card.Link>
                 </td>
                 <td>
-                    <Image src={!product_image ? ImageLink : `${process.env.REACT_APP_IMAGE_URL}${product_image}`}
+                    <Image src={!product?.image ? ImageLink : `${process.env.REACT_APP_IMAGE_URL}${product.image}`}
                         className="product-thumbnail me-2" />
                 </td>
                 <td>
-                    {changeTextToThreeDot(product_name, 20)}
+                    {changeTextToThreeDot(product?.name, 20)}
                 </td>
                 <td className="text-danger">{formatPrice(sale_price)}</td>
                 <td className="text-danger">{quantity_sold}</td>
                 <td className="text-danger">{vat}</td>
                 <td className="text-danger">{shipping_cost}</td>
-                <td>{formatTime(sale_date)}</td>
+                <td>{formatFullTime(sale_date)}</td>
             </tr>
         );
     };

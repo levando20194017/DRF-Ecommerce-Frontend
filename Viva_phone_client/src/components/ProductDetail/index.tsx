@@ -2,14 +2,27 @@ import Modal from "react-modal";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import img1 from "../../assets/images/banner.jpg";
-import img2 from "../../assets/images/content.jpg";
-import { useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 import "./style.scss";
 import { apiAddToCart } from "../../services/cart";
 import { ToastFailed } from "../Common/Toast";
 import { toastWrong } from "../../utils/ToastType";
+import { getImageUrl } from "../../helps/getImageUrl";
+import { formatPrice, roundToNearestHalf } from "../../utils/format";
+import { checkPromotionValid } from "../../helps/checkPormotionValid";
+import { promotionType } from "../../utils/promotionType";
+import { message, Rate, Select } from "antd";
+import { getUserData } from "../../helps/getItemLocal";
+import { setOrderLocal } from "../../helps/setLocalStorage";
+import { useNavigate } from "react-router-dom";
+import { Routes } from "../../screens/Routes";
+import ModalProductDetail from "./ModalProductDetail";
+import { ModalSelectProduct } from "./ModalSelectProduct";
+import { useHandleGetTotalCart } from "../../hook/GetTotalCart";
+import { useHandleGetTotalUnnotification } from "../../hook/GetTotalUnread";
+import { useLoading } from "../../context/LoadingContext";
 
 interface Image {
   original: string;
@@ -22,23 +35,73 @@ interface FlyingIconState {
   endY: number;
 }
 
-export const ProductDetail = ({ productDetail, storeDetail }: any) => {
-  const userData = JSON.parse(localStorage.getItem("vivaphone_userData") || "{}").user_infor;
-  const listImages = [
-    { original: img1 },
-    { original: "https://th.bing.com/th/id/OIP.uUcKbkk6gr_sD6iBOZWX6AHaIR?w=156&h=180&c=7&r=0&o=5&pid=1.7" },
-    { original: "https://th.bing.com/th/id/OIP.OKsfBcRCUQUV_VYfj1MozwHaEK?w=310&h=180&c=7&r=0&o=5&pid=1.7" },
-    { original: "https://th.bing.com/th/id/OIP.Yr-TVgQ1AOF3p1nw-j1bywHaE8?w=235&h=180&c=7&r=0&o=5&pid=1.7" },
-    { original: img2 },
-    { original: "https://th.bing.com/th/id/OIP.LhG7XVTSgYz420P_723mjgHaE8?w=236&h=180&c=7&r=0&o=5&pid=1.7" }
-  ];
+interface Cartitem {
+  id: number,
+  store_id: number,
+  product_id: number,
+  quantity: number,
+  color: string
+}
 
-  const [images, setImages] = useState<Image[]>(listImages.slice(0, 4)); // Hiển thị tối đa 4 ảnh
+export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, listRelateds, setProductDetail }: any) => {
+  const [listImages, setListImages] = useState([{ original: img1 }]);
+
+  const [images, setImages] = useState<Image[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [optionsColor, setOptionsColor] = useState([]);
+  const userData = getUserData()
+  const { handleGetTotalCart } = useHandleGetTotalCart();
+  const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
 
   const header2 = document.querySelector(".navbar_header2");
   const header3 = document.querySelector(".navbar_header3");
+  const [input, setInput] = useState<any>(1);
+
+  const [isModalSelectedOpen, setIsModalSelectedOpen] = useState(false);
+
+  const [cartItem, setCartIem] = useState<Cartitem>({
+    id: userData?.id,
+    store_id: 0,
+    product_id: 0,
+    quantity: 1,
+    color: ""
+  })
+
+  const [temporaryOrder, setTemporaryOrder] = useState([{
+    quantity: 1,
+    product: {},
+    store: 0,
+    color: "",
+  }])
+
+  useEffect(() => {
+    if (productDetail?.image) {
+      const newListImages = [{ original: getImageUrl(productDetail.image) }]
+      const gallery = productDetail?.gallery.split(',')
+      gallery.forEach((item: string) => {
+        newListImages.push({ original: getImageUrl(item) })
+      })
+      setListImages(newListImages)
+      setImages(newListImages.slice(0, 4))
+    }
+
+    if (productDetail?.color && storeDetail?.id) {
+      const newOptionsColor = productDetail.color.split(",").map((item: string) => ({
+        label: item.trim(),
+        value: item.trim()
+      }))
+      setOptionsColor(newOptionsColor)
+
+      const newTempOrder = { ...temporaryOrder[0] }
+      newTempOrder.color = newOptionsColor[0].value
+      newTempOrder.product = productDetail
+      newTempOrder.store = storeDetail.id
+
+      setTemporaryOrder([newTempOrder]);
+      setCartIem({ ...cartItem, color: newOptionsColor[0].value, store_id: storeDetail.id, product_id: productDetail.id });
+    }
+  }, [productDetail, storeDetail])
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -83,6 +146,13 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
 
   const [flyingIcon, setFlyingIcon] = useState<FlyingIconState | null>(null);
 
+  const handleChangeOptionColor = (value: string) => {
+    const newTempOrder = { ...temporaryOrder[0] }
+    newTempOrder.color = value
+    setTemporaryOrder([newTempOrder]);
+    setCartIem({ ...cartItem, color: value });
+  }
+
   const handleAddToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const target = document.querySelector('.frame-cart-icon'); // Vị trí giỏ hàng
 
@@ -91,18 +161,10 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
 
     if (userData?.id && productDetail?.id && storeDetail?.id) {
       try {
-        const response = await apiAddToCart({
-          id: userData.id,
-          product_id: productDetail.id,
-          quantity: 1,
-          color: "Đen",
-          store_id: storeDetail?.id
-        })
+        const response = await apiAddToCart(cartItem)
         if (response.status === 201) {
+          message.success("Đã thêm sản phẩm vào giỏ hàng")
           if (targetRect) {
-            console.log('Start:', rect.left + rect.width / 2, rect.top + rect.height / 2);
-            console.log('End:', targetRect.left + targetRect.width / 2, targetRect.top + targetRect.height / 2);
-
             setFlyingIcon({
               isAnimating: true,
               startX: rect.left + rect.width / 2,
@@ -113,15 +175,67 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
 
             // Kết thúc animation sau 1 giây
             setTimeout(() => setFlyingIcon(null), 1000);
+            handleGetTotalCart()
+            handleGetTotalUnnotification()
           }
         }
       } catch (e) {
         console.log(e);
+        message.error("Đã xảy ra lõi, vui lòng thử lại!")
       }
     } else {
       ToastFailed(toastWrong)
     }
   }
+
+  const navigate = useNavigate();
+  const { setLoading } = useLoading()
+  const handleBuyNow = () => {
+    setLoading(true)
+    if (temporaryOrder.some(item => !item)) return;
+    setOrderLocal(temporaryOrder);
+    navigate(Routes.Payment.path)
+  }
+
+  const handleOnchangeQuantity = (e: any) => {
+    let inputValue = e.target.value;
+
+    // Kiểm tra nếu giá trị là rỗng, cập nhật giá trị tạm thời mà không chuyển đổi
+    if (inputValue === "") {
+      setInput("")
+      return;
+    }
+
+    const parsedValue = parseInt(inputValue, 10);
+
+    // Nếu không phải số hợp lệ hoặc nhỏ hơn 1, đặt về giá trị mặc định
+    const validValue = isNaN(parsedValue) || parsedValue < 1 ? 1 : parsedValue;
+    setInput(validValue)
+  };
+
+  const handleBlur = () => {
+    // Nếu giá trị rỗng, tự động điền giá trị là 1
+    setInput(1)
+  };
+
+  useEffect(() => {
+    if (input > 0) {
+      const newTempOrder = { ...temporaryOrder[0] }
+      newTempOrder.quantity = input
+      setTemporaryOrder([newTempOrder]);
+      setCartIem({ ...cartItem, quantity: input });
+    }
+  }, [input])
+
+  const handleSetProductSelected = (product: any) => {
+    setProductDetail(product)
+  }
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModalDetail = () => {
+    setIsModalVisible(true)
+  }
+
   return (
     <div className="pro-form">
       <div className="pro-body mt-5">
@@ -129,7 +243,7 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
           <div className="col-5 images-of-pro">
             <div className="img-show">
               <img
-                src={images[selectedImageIndex].original}
+                src={images[selectedImageIndex]?.original}
                 onClick={() => handleImageClick(selectedImageIndex)}
                 alt="Product"
               />
@@ -178,65 +292,108 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
           </div>
 
           <div className="col-7 pro-detai">
-            <h2>Viva Phone</h2>
+            <h2>{productDetail?.name}</h2>
             <hr />
             <div className="d-flex review-sale">
-              <div>
-                <b>4.9</b>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
+              <div className="d-flex gap-2 align-iems-end">
+                <b>{dataReviews?.average_rating ? dataReviews?.average_rating : 0}</b>
+                <div><Rate allowHalf value={roundToNearestHalf(dataReviews?.average_rating)} disabled /></div>
               </div>
-              <div>
-                <b>99</b> <span style={{ color: "gray" }}>Đánh giá</span>
+              <div className="d-flex gap-2">
+                <b>{dataReviews?.total_items ? dataReviews?.total_items : 0}</b> <span style={{ color: "gray" }}>Đánh giá</span>
               </div>
-              <div>
+              {/* <div>
                 <b>249</b> <span style={{ color: "gray" }}>Đã bán</span>
-              </div>
+              </div> */}
             </div>
             <div>
               <b>Số lượng còn:</b>{" "}
-              <span style={{ color: "gray" }}>225</span>
+              <span style={{ color: "gray" }}>{stork}</span>
             </div>
-            <div className="d-flex">
+            <div className="d-flex gap-2">
               <b>
                 <span style={{ color: "red" }}>*</span>
                 <span className="ms-2">Màu sắc:</span>{" "}
               </b>
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                style={{
-                  width: "200px",
-                  marginLeft: "10px",
-                  color: "gray",
-                  height: "35px",
-                }}
-              >
-                <option selected>--Chọn màu sắc--</option>
-                <option value="1">Blue</option>
-                <option value="2">Orange</option>
-                <option value="3">Purple</option>
-              </select>
+              <Select
+                onChange={handleChangeOptionColor}
+                style={{ width: 150 }}
+                options={optionsColor}
+                value={cartItem.color}
+              />
             </div>
-            <div className="mt-3">
-              <b>Giá bán:</b>{" "}
-              <span style={{ color: "red", fontWeight: "bold" }}>229.000đ</span>
+            {listRelateds.length > 1 ?
+              <div className="list-versions">
+                <b>Lựa chọn phiên bản</b>
+                <div className="row px-2">
+                  {listRelateds.map((item: any, index: number) => (
+                    <div className="col-4 p-1" key={index}>
+                      <div className={`cursor-pointer version-item ${item.id === productDetail?.id ? "active" : ""}`}
+                        onClick={() => { handleSetProductSelected(item) }}>
+                        <div className="fw-bold">{item.name}</div>
+                        <div className="price fw-bold">{formatPrice(item.price)}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              :
+              <div className="mt-3 d-flex gap-2">
+                <b>Giá bán:</b>
+                <span className="price fw-bold">{formatPrice(productDetail?.price)}</span>
+              </div>
+            }
+            {productDetail?.id &&
+              <>
+                <div className="d-flex gap-2">
+                  <span className="fw-bold">Ưu đãi:</span>
+                  <span className="text-content">{checkPromotionValid(productDetail) ? productDetail.promotion_name : "Không"}</span>
+                </div>
+                {checkPromotionValid(productDetail) &&
+                  <>
+                    <div>Giảm giá: <span className="price fw-bold">
+                      {productDetail.promotion_discount_type === promotionType.PERCENT ?
+                        `${productDetail.promotion_discount_value}%` :
+                        `${formatPrice(productDetail.promotion_discount_value)}`}
+                    </span>
+                    </div>
+                    <div className="text-content">Chương trình khuyễn mãi áp dụng từ ngày {productDetail?.promotion_from_date} đến hết ngày {productDetail?.promotion_to_date}</div>
+                  </>
+                }
+              </>
+            }
+            <div className="d-flex justify-content-between align-items-center">
+              <button className="view-detail" onClick={showModalDetail}>
+                Xem thông tin chi tiết sản phẩm <FaChevronDown className="ms-2" />
+              </button>
+              <button className="btn-compare" onClick={() => { setIsModalSelectedOpen(true) }}>
+                So sánh sản phẩm khác
+              </button>
             </div>
             <hr />
-            <div className="d-flex justify-content-between col-9 mt-4">
-              <div className="d-flex quantity">
-                <span>
-                  <span style={{ color: "red" }}>*</span>
-                  <span>Quantity</span>
-                </span>
-                <input type="number" className="form-control" style={{ width: "70px" }} />
-              </div>
-              <div className="button-add ">
+            <div className="d-flex mt-2 quantity">
+              <span>
+                <span style={{ color: "red" }}>*</span>
+                <span>Số lượng: </span>
+              </span>
+              <input type="number"
+                className="form-control"
+                style={{ width: "70px" }}
+                value={input}
+                min={1}
+                step={1}
+                onKeyDown={(e) => {
+                  const invalidKeys = ["-", "e", "E"];
+                  if (invalidKeys.includes(e.key)) {
+                    e.preventDefault(); // Ngăn chặn hành động mặc định
+                  }
+                }}
+                onChange={handleOnchangeQuantity}
+                onBlur={handleBlur} />
+            </div>
+            <div className="d-flex gap-4 mt-4">
+              <div className="button-add">
                 <button onClick={handleAddToCart}>
-                  {" "}
                   <i className="bi bi-cart4"></i> <span className="ms-2">Thêm vào giỏ hàng</span>
                 </button>
                 {flyingIcon && flyingIcon.isAnimating && (
@@ -259,7 +416,7 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
                 )}
               </div>
               <div className="buy-now">
-                <button>
+                <button onClick={handleBuyNow}>
                   <i className="bi bi-bag-heart-fill"></i> <span className="ms-2">Mua ngay</span>
                 </button>
               </div>
@@ -267,7 +424,7 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
           </div>
         </div>
       </div>
-
+      <ModalSelectProduct productDetail={productDetail} isModalVisible={isModalSelectedOpen} setIsModalVisible={setIsModalSelectedOpen} />
       <Modal isOpen={showModal} onRequestClose={() => handleCloseModal()}>
         <div style={{ backgroundColor: "black" }}>
           <ImageGallery
@@ -283,6 +440,8 @@ export const ProductDetail = ({ productDetail, storeDetail }: any) => {
           />
         </div>
       </Modal>
+      <ModalProductDetail isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} productDetail={productDetail} />
+
     </div>
   );
 };

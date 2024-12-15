@@ -1,3 +1,5 @@
+@use "../../styles/variables" as vars;
+
 .pro-form {
   .pro-header {
     position: relative;
@@ -95,6 +97,22 @@
       .review-sale {
         width: 350px;
         justify-content: space-between;
+
+        .ant-rate-star {
+          font-size: 16px;
+        }
+
+        .ant-rate-star-half {
+          .ant-rate-star-second {
+            color: vars.$color-content;
+          }
+        }
+
+        .ant-rate-star-zero {
+          .ant-rate-star-second {
+            color: vars.$color-content;
+          }
+        }
       }
 
       >div {
@@ -102,7 +120,6 @@
       }
 
       .quantity {
-        width: 130px;
         height: 35px;
 
         span {
@@ -111,21 +128,76 @@
         }
       }
 
+      .text-content {
+        color: vars.$color-content
+      }
+
+      .list-versions {
+        .version-item {
+          // height: 70px;
+          background-color: vars.$color-background;
+          border-radius: 4px;
+          display: flex;
+          flex-direction: column;
+          gap: 0px;
+          align-items: center;
+          line-height: 2;
+          padding: 8px;
+        }
+
+        .version-item.active {
+          border: 1px solid vars.$color-price;
+        }
+      }
+
+      .view-detail {
+        height: 40px !important;
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid transparent;
+        color: #ff652f;
+        padding: 0 16px;
+
+        &:hover {
+          border: 1px solid #ff652f;
+          background-color: transparent;
+        }
+      }
+
+      .btn-compare {
+        height: 40px !important;
+        cursor: pointer;
+        background-color: transparent;
+        border: 1px solid #ff652f;
+        color: #fff;
+        padding: 0 16px;
+        font-weight: 500;
+
+        &:hover {
+          border: 1px solid #ff652f;
+          background-color: transparent;
+          color: #ff652f;
+        }
+      }
+
       button {
-        height: 35px;
+        height: 40px;
         font-weight: 500;
         background-color: #ff652f;
         color: #fff;
         font-weight: bold;
         border: none;
-        box-shadow: 0px 0px 19px 0px #aaa6a6;
+        // box-shadow: 0px 0px 19px 0px #aaa6a6;
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: 0.4s ease-in;
 
-        // height: 100%;
         &:hover {
-          animation: scale 1s ease-in-out;
+          // transform: scale(1.02);
+          // animation: scale 0.4s ease-in-out;
+          background-color: #bd4512;
+          transition: 0.4s ease-in;
         }
 
         i {
@@ -187,6 +259,7 @@
   img {
     object-fit: cover;
     transition: transform 0.3s ease;
+    border-radius: 4px;
   }
 }
 
@@ -227,4 +300,100 @@
 .fa-chevron-left:hover,
 .fa-chevron-right:hover {
   color: #007bff;
+}
+
+.ant-modal-header {
+  height: 40px;
+
+  .ant-modal-title {
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+
+.ant-modal-content {
+  width: 650px !important;
+}
+
+.custom-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table td:first-child {
+  font-weight: bold;
+  color: #555;
+  width: 40%;
+}
+
+.nested-list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.nested-list li {
+  margin-bottom: 5px;
+}
+
+.modal {
+  color: vars.$common-black;
+  z-index: 9999;
+}
+
+#modalSelectedProduct {
+  .modal-header {
+    color: vars.$common-black;
+  }
+
+  .ant-select-open {
+    z-index: 99999 !important;
+  }
+}
+
+.btn-compare {
+  height: 40px;
+  font-weight: 500;
+  background-color: #ff652f;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  padding: 0 32px;
+  transition: 0.4s ease-in;
+
+  &:hover {
+    background-color: #bd4512;
+    transition: 0.4s ease-in;
+  }
+}
+
+.modal-compare-product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .ant-modal-content {
+    width: 800px !important;
+  }
 }

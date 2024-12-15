@@ -12,8 +12,15 @@ import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
+import ModalReview from '../../Reviews/ModalReview';
+import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
+import { useLoading } from '../../../context/LoadingContext';
 
 const OrderStatus: React.FC = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [productReview, setProductReview] = useState({})
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+
     const [items, setItems] = useState<any>([
         {
             title: 'Đơn hàng đã được tạo',
@@ -60,8 +67,10 @@ const OrderStatus: React.FC = () => {
         }
     }, [])
     const navigate = useNavigate()
+    const { setLoading } = useLoading()
     const handleBuyBackOrder = () => {
         if (orderDetail.items?.length > 0) {
+            setLoading(true)
             setOrderLocal(orderDetail.items)
             navigate(Routes.Payment.path)
         }
@@ -72,6 +81,7 @@ const OrderStatus: React.FC = () => {
             const response = await apiCanceledOrder({ order_id: id })
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
+                handleGetTotalUnnotification();
                 navigate(Routes.AllOrder.path)
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
@@ -82,9 +92,35 @@ const OrderStatus: React.FC = () => {
         }
     }
 
+    const [stepOrder, setStepOrder] = useState(1);
+
+    useEffect(() => {
+        if (orderDetail?.order_status === OrderStatusType.PENDING) {
+            setStepOrder(1)
+        }
+        if (orderDetail?.order_status === OrderStatusType.CONFIRMED) {
+            setStepOrder(2)
+        }
+        if (orderDetail?.order_status === OrderStatusType.SHIPPED) {
+            setStepOrder(3)
+        }
+        if (orderDetail?.order_status === OrderStatusType.DELIVERY) {
+            setStepOrder(4)
+        }
+    }, [orderDetail])
+
+    const onCloseModal = () => {
+        setModalVisible(false)
+    }
+
+    const handleClickReview = (product: any) => {
+        setProductReview(product)
+        setModalVisible(true)
+    }
 
     return (
         <div className="order-status-page">
+            <ModalReview visible={modalVisible} onClose={onCloseModal} productReview={productReview} />
             <div className='header'>
                 <Link to={Routes.AllOrder.path}>
                     <div className='d-flex gap-2 align-items-center cursor-pointer'>
@@ -101,7 +137,7 @@ const OrderStatus: React.FC = () => {
                 </div>
             </div>
             <div className='order-step'>
-                <Steps current={1} labelPlacement="vertical" items={items} />
+                <Steps current={stepOrder} labelPlacement="vertical" items={items} />
             </div>
             <div className='order-detail'>
                 <div className="order-item">
@@ -141,7 +177,12 @@ const OrderStatus: React.FC = () => {
                                         </>}
 
                                 </div>
-                                <div className="price">{formatPrice(item.unit_price)}</div>
+                                <div className='d-flex flex-column justify-content-between'>
+                                    <div className="price">{formatPrice(item.unit_price)}</div>
+                                    {orderDetail.order_status === OrderStatusType.DELIVERY &&
+                                        <button className="rate-btn" onClick={() => handleClickReview(item.product)}>Đánh giá</button>
+                                    }
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -162,7 +203,7 @@ const OrderStatus: React.FC = () => {
                             <div className='payment-method'>
                                 <div className='label'>Trạng thái:</div>
                                 <div className={`${orderDetail.payment_status === PaymentStatus.PAID ?
-                                    "status success" : "status unpaid"}`}>
+                                    "status success fw-bold" : "status unpaid fw-bold"}`}>
                                     {PaymentStatusShow[orderDetail.payment_status]}
                                 </div>
                             </div>
@@ -197,9 +238,7 @@ const OrderStatus: React.FC = () => {
                                         <button className='btn-cancel'>Hủy đơn</button>
                                     </Popconfirm>
                                 }
-                                {orderDetail.order_status === OrderStatusType.DELIVERY &&
-                                    <button className="rate-btn">Đánh giá</button>
-                                }
+
                             </div>
                         </div>
                     </div>

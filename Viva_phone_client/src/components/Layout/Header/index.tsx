@@ -1,19 +1,37 @@
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom"; // Import useLocation
-import { Input, AutoComplete } from "antd"; // Import các component cần thiết cho tìm kiếm
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useLocation
+import { AutoComplete } from "antd"; // Import các component cần thiết cho tìm kiếm
 import "./style.scss";
 import { useEffect, useState, FC, useRef } from "react";
 import logo4 from "../../../assets/images/logo4.png";
 import { Routes } from "../../../screens/Routes";
 import Notification from "../../Notification";
+import { apiSearchProductsInStore } from "../../../services/product";
+import { getImageUrl } from "../../../helps/getImageUrl";
+import { formatPrice } from "../../../utils/format";
+import { checkPromotionValid } from "../../../helps/checkPormotionValid";
+import { promotionType } from "../../../utils/promotionType";
+import { useSelector } from "react-redux";
+import { useHandleGetTotalUnnotification } from "../../../hook/GetTotalUnread";
+import { useHandleGetTotalCart } from "../../../hook/GetTotalCart";
+import Profile from "./Profile";
+import { getUserData } from "../../../helps/getItemLocal";
+import { useLoading } from "../../../context/LoadingContext";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [textSearch, setTextSearch] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]); // Kết quả tìm kiếm
   const [searchInputVisible, setSearchInputVisible] = useState(false); // New state to control search input visibility
   const searchRef = useRef<HTMLDivElement | null>(null); // Thêm kiểu cho ref
   const location = useLocation(); // Lấy thông tin location hiện tại
+  const total_unread = useSelector((state: any) => state.auth.total_unread);
+  const total_cart = useSelector((state: any) => state.auth.total_cart);
+  const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+  const { handleGetTotalCart } = useHandleGetTotalCart();
+  const userData = getUserData()
+  const { setLoading } = useLoading();
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.pageYOffset > 150);
@@ -32,6 +50,11 @@ const Header: FC = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    handleGetTotalUnnotification();
+    handleGetTotalCart();
+  }, [])
 
   const menuItems = [
     { name: "TRANG CHỦ", link: Routes.HomePage.path },
@@ -62,22 +85,42 @@ const Header: FC = () => {
       </Link>
     ));
 
-  const handleSearch = (value: string) => {
-    // Giả sử bạn có một hàm fetch dữ liệu tìm kiếm sản phẩm từ API
-    if (value) {
-      setSearchResults([
-        { id: 1, name: "Sản phẩm A", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "22,200,000 VND" },
-        { id: 2, name: "Sản phẩm B", image: "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain", price: "13,300,000 VND" },
-        // Thêm các sản phẩm vào đây...
-      ]);
-    } else {
-      setSearchResults([]);
-    }
+  const handleSearch = async (value: string) => {
+    setTextSearch(value)
   };
+
+  const handleGetListProduct = async (name: string) => {
+    try {
+      const response = await apiSearchProductsInStore({
+        pageIndex: 1, pageSize: 20, textSearch: name, storeId: 1
+      }) as any
+      if (response.status === 200) {
+        setSearchResults(response.data.products)
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  useEffect(() => {
+    if (searchInputVisible) {
+      handleGetListProduct(textSearch)
+    }
+  }, [textSearch, searchInputVisible])
 
   const toggleSearchInput = () => {
     setSearchInputVisible(!searchInputVisible); // Toggle search input visibility
   };
+  const navigate = useNavigate()
+  const handleClickItemProduct = (product: any) => {
+    setTextSearch("");
+    if (product?.id) {
+      navigate(Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog }))
+    }
+  }
+  const handleLinkCart = () => {
+    setLoading(true)
+    navigate(Routes.Cart.path)
+  }
 
   const renderHeaderContent = (isSticky = false) => (
     <Navbar className={`d-flex ${isSticky ? "navbar_header3" : "navbar_header2"}`}>
@@ -110,41 +153,52 @@ const Header: FC = () => {
             onClick={toggleSearchInput} // Toggle search input visibility
           />
           <AutoComplete
-            style={{ width: 300, position: "absolute", top: "40px", right: "0" }}
+            style={{ width: 500, position: "absolute", top: "40px", right: "0", zIndex: 9999 }}
             onSearch={handleSearch}
+            onSelect={() => { }}
+            value={textSearch}
             className={`${searchInputVisible ? "active form-search" : "form-search"}`}
             placeholder="Tìm kiếm sản phẩm"
+            autoFocus
           >
             {searchResults.map((result) => (
-              <AutoComplete.Option key={result.id} value={result.name}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={result.image}
-                    alt={result.name}
-                    style={{ width: 50, height: 50, marginRight: 10 }}
-                  />
-                  <div>
-                    <strong>{result.name}</strong>
-                    <div className="text-danger">{result.price}</div>
+              <AutoComplete.Option key={result.id}>
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  className="justity-content-between"
+                  onClick={() => { handleClickItemProduct(result.product) }}>
+                  <div className="d-flex">
+                    <img
+                      src={getImageUrl(result.product.image)}
+                      alt={result.product.name}
+                      style={{ width: 50, height: 50, marginRight: 10 }}
+                    />
+                    <div>
+                      <strong>{result.product.name}</strong>
+                      <div><span>Ưu đãi:</span> <span className="price">{checkPromotionValid(result.product) ?
+                        result.product.promotion_discount_type === promotionType.PERCENT ?
+                          `${result.product.promotion_discount_value}%` :
+                          `${formatPrice(result.product.promotion_discount_value)}` : <span style={{ color: "gray" }}>Không</span>}</span></div>
+                      <div className="price">{formatPrice(result.product.price)}</div>
+                    </div>
+                  </div>
+                  <div className="price">
+                    {!result.remaining_stock && "Hết hàng"}
                   </div>
                 </div>
               </AutoComplete.Option>
             ))}
           </AutoComplete>
         </div>
-        <Notification />
-        <Link to={Routes.Cart.path}>
-          <div className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
-            <i className="bi bi-cart4"></i>
-          </div>
-        </Link>
-        <img
-          className="headerUser-right-avt rounded-circle"
-          src="https://th.bing.com/th/id/OIP.rzU5tlNULSLFeXggfJ352QHaNK?w=187&h=333&c=7&r=0&o=5&pid=1.7"
-          alt="user avatar"
-          width={40}
-          height={40}
-        />
+        <Notification total_unread={total_unread} />
+        <div onClick={handleLinkCart} className={`${location.pathname === Routes.Cart.path ? "frame-cart-icon active" : "frame-cart-icon"}`}>
+          <i className="bi bi-cart4"></i>
+          {total_cart > 0 ?
+            <div className="total_item">{total_cart}</div>
+            :
+            ""}
+        </div>
+        <Profile />
       </div>
     </Navbar>
   );
@@ -158,7 +212,7 @@ const Header: FC = () => {
         <div className="welcome">
           Xin chào{" "}
           <span style={{ color: "#ff652f", fontWeight: "600", marginLeft: "5px" }}>
-            Lê Văn Do
+            {userData.last_name + " " + userData.first_name}
           </span>
           !
         </div>

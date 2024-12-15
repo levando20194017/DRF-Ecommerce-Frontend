@@ -4,7 +4,9 @@ import { DesAndReviews } from "../../components/DesAndReviews";
 import { Routes } from "../Routes";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
-import { apiGetProductDetailInStore } from "../../services/product";
+import { apiGetListProductsByCatalog, apiGetProductDetailInStore } from "../../services/product";
+import { apiGetListReviews } from "../../services/review";
+import { useLoading } from "../../context/LoadingContext";
 const AddToCartPage = () => {
   const breadcrumbs = [
     { label: "Trang chủ", path: Routes.HomePage.path },
@@ -18,6 +20,9 @@ const AddToCartPage = () => {
   const storeId = Number(urlParams.get('store_id')) || 0; // Chuyển thành number, mặc định 0 nếu null
   const productId = Number(urlParams.get('product_id')) || 0;
   const catalogId = Number(urlParams.get('catalog_id')) || 0;
+  const [dataReviews, setDataReviews] = useState<any>({})
+  const [listRelateds, setListRelateds] = useState([])
+  const { setLoading } = useLoading()
 
   const handleGetProductDetail = async () => {
     try {
@@ -33,17 +38,43 @@ const AddToCartPage = () => {
       console.log(e);
     }
   }
-
   const handleGetListProductByCatalog = async () => {
+    try {
+      const response = await apiGetListProductsByCatalog({ storeId, catalog_id: catalogId })
+      if (response.status === 200) {
+        setListRelateds(response.data.products)
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  const handleGetListReviews = async () => {
+    try {
+      const response = await apiGetListReviews({
+        storeId,
+        productId,
+        pageIndex: 1,
+        pageSize: 100
+      })
+      if (response.status === 200) {
+        setDataReviews(response.data.reviews)
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
     if (productId && storeId) {
+      setLoading(true)
       handleGetProductDetail()
+      handleGetListReviews()
+      handleGetListProductByCatalog()
     }
-  }, [])
-
+  }, [productId, storeId, catalogId])
 
   return (
     <div>
@@ -54,8 +85,15 @@ const AddToCartPage = () => {
         </div>
         <ProductDetail
           productDetail={productDetail}
-          storeDetail={storeDetail} />
-        <DesAndReviews />
+          storeDetail={storeDetail}
+          dataReviews={dataReviews}
+          listRelateds={listRelateds}
+          stork={stork}
+          setProductDetail={setProductDetail} />
+        <DesAndReviews
+          productDetail={productDetail}
+          dataReviews={dataReviews}
+          handleGetListReviews={handleGetListReviews} />
         <RelatedProduct />
       </div>
     </div>

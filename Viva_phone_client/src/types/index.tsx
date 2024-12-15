@@ -24,11 +24,12 @@ interface OrderDetail {
     product_id: number
 }
 export interface Order {
+    order_id: number,
     guest_id: number,
     recipient_phone: string,
     shipping_address: string,
     recipient_name: string,
-    payment_methods: string,
+    payment_method: string,
     shipping_cost: number,
     gst_amount: number,
     order_details: OrderDetail[]

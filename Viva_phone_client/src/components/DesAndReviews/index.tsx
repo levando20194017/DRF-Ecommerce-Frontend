@@ -1,13 +1,90 @@
 import "./style.scss";
-import { useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import logo4 from "../../assets/images/logo4.png";
-export const DesAndReviews = () => {
+import { getImageUrl } from "../../helps/getImageUrl";
+import { Button, Image, message, Rate } from "antd";
+import { formatTime } from "../../utils/format";
+import { getUserData } from "../../helps/getItemLocal";
+import { apiAdminReplyReview, apiDeleteReview } from "../../services/review";
+import ModalEditReview from "../Reviews/ModalEditReview";
+import TextArea from "antd/es/input/TextArea";
+
+export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetListReviews }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const userData = getUserData();
+  const [selectedReview, setSelectedReview] = useState<any>({});
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSetActiveIndex = (index: number) => {
     setActiveIndex(index);
   };
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.innerHTML = productDetail?.description; // Gán HTML vào phần tử thông qua innerHTML
+    }
+  }, [productDetail, activeIndex]);
+
+  const handleDeleteReview = async (id: number) => {
+    try {
+      const response = await apiDeleteReview(id)
+      if (response.status === 200) {
+        handleGetListReviews()
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleClickEditReview = (review: any) => {
+    setSelectedReview(review)
+    setModalVisible(true)
+  }
+
+  const onCloseModal = () => {
+    setModalVisible(false)
+  }
+
+  const [showTextArea, setShowTextArea] = useState(false);
+  const [replyId, setReplyId] = useState(0);
+  const [formReply, setFormReply] = useState({
+    admin_id: userData?.id,
+    review_id: 0,
+    comment: ""
+  })
+  const handleShowTextArea = (id: number) => {
+    setReplyId(id)
+    setShowTextArea(true)
+    setFormReply({ ...formReply, review_id: id })
+  }
+
+  const handleOnchangeComment = (e: any) => {
+    setFormReply({ ...formReply, comment: e.target.value })
+  }
+
+  const handleReplyReview = async () => {
+    if (!formReply.comment || !formReply.admin_id || !formReply.review_id) {
+      return
+    }
+    try {
+      const response = await apiAdminReplyReview(formReply)
+      if (response.status === 201) {
+        message.success("Đã gửi phản hồi")
+        handleGetListReviews();
+        setFormReply({
+          admin_id: userData?.id,
+          review_id: 0,
+          comment: ""
+        })
+        setShowTextArea(false)
+      }
+    } catch (e) {
+      console.log(e);
+      message.error("Đã xảy ra lỗi")
+    }
+  }
+
   return (
     <div className="des-and-reviews mt-5">
       <div className="title">
@@ -16,284 +93,142 @@ export const DesAndReviews = () => {
             className={activeIndex === 0 ? "nav-item active" : "nav-item"}
             onClick={() => handleSetActiveIndex(0)}
           >
-            Description
+            Bài viết
           </li>
           <li
             className={activeIndex === 1 ? "nav-item active" : "nav-item"}
             onClick={() => handleSetActiveIndex(1)}
           >
-            Reviews (99)
+            Đánh giá (99)
           </li>
         </ul>
       </div>
       {activeIndex === 0 && (
         <div className="des">
-          <div className="car-body p-3">
-            <p className="title">
-              <b>The standard Lorem Ipsum passage, used since the 1500</b>
-            </p>
-            <p>
-              Fashion has been creating well-designed collections since 2010.
-              The brand offers feminine designs delivering stylish separates and
-              statement dresses which has since evolved into a full
-              ready-to-wear collection in which every item is a vital part of a
-              woman's wardrobe. The result? Cool, easy, chic looks with youthful
-              elegance.Many desktop publishing packages and web page editors now
-              use Lorem Ipsum as their default model text, and a search for
-              'lorem ipsum' will uncover many web sites still in their infancy.
-            </p>
-            <p>
-              c It has roots in a piece of classical Latin literature from 45
-              BC, making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature.
-            </p>
-            <p className="title">
-              <b>
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text.
-              </b>
-            </p>
-            <p>
-              Many desktop publishing packages and web page editors now use
-              Lorem Ipsum as their default model text, and a search for 'lorem
-              ipsum' will uncover many web sites still in their infancy. Various
-              versions have evolved over the years, sometimes by accident,
-              sometimes on purpose (injected humour and the like).All the Lorem
-              Ipsum generators on the Internet tend to repeat predefined chunks
-              as necessary, making this the first true generator on the
-              Internet.
-            </p>
+          <div className="car-body p-4" ref={contentRef}>
           </div>
         </div>
       )}
       {activeIndex === 1 && (
-        <div className="reviews p-3">
+        <div className="reviews p-4">
+          {selectedReview?.id &&
+            <ModalEditReview visible={modalVisible} onClose={onCloseModal} review={selectedReview} handleGetListReviews={handleGetListReviews} />
+          }
           <div className="card-body">
-            <div className="mt-3">
-              <div className="d-flex justify-content-between">
-                <div className="d-flex">
-                  <div>
-                    <img
-                      className="headerUser-right-avt rounded-circle"
-                      src="https://th.bing.com/th/id/OIP.rzU5tlNULSLFeXggfJ352QHaNK?w=187&h=333&c=7&r=0&o=5&pid=1.7"
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                    />
-                  </div>
-                  <div className="px-2">
+            {dataReviews.map((item: any, index: number) => (
+              <div className="mt-3" key={index}>
+                <div className="d-flex justify-content-between">
+                  <div className="d-flex">
                     <div>
-                      <b style={{ fontSize: "18px" }}>Lê Văn Do</b>
+                      <img
+                        className="headerUser-right-avt rounded-circle"
+                        src={getImageUrl(item.guest.avatar)}
+                        alt="avatar"
+                        width={50}
+                        height={50}
+                      />
                     </div>
-                    <div>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i className="bi bi-star"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex action-review">
-                  <div className="dropdown option-review">
-                    <a
-                      href="#"
-                      className="text-secondary btn btn-secondary-soft-hover px-2"
-                      id="cardFeedAction"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-three-dots"></i>
-                    </a>
-                    <ul
-                      className="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardFeedAction"
-                    >
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          {" "}
-                          <i className="bi bi-trash3 pe-2"></i>Delete review
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          {" "}
-                          <i className="bi bi-flag fa-fw pe-2"></i>Report post
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="px-5 py-1">
-                <div className="review-content">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-                  harum cum distinctio, at accusantium nam pariatur omnis quod
-                  corporis temporibus fugit ab quas facilis tempora iste commodi
-                  impedit odio ex?
-                </div>
-                <div className="mt-1">
-                  <span className=" text-secondary">20/7/2023 10:30</span>
-                  <span className=" reply">Reply</span>
-                </div>
-                <div>
-                  <div className="d-flex justify-content-between mt-2">
-                    <div className="d-flex admin">
+                    <div className="px-2">
                       <div>
-                        <img
-                          className="headerUser-right-avt rounded-circle"
-                          src={logo4}
-                          alt="avatar"
-                          width={50}
-                          height={50}
-                          style={{ border: "1px solid #ff652f" }}
-                        />
+                        <b style={{ fontSize: "18px" }}>{item.guest.last_name + " " + item.guest.first_name}</b>
                       </div>
-                      <div className="px-2 d-flex justify-content-center align-items-center">
-                        <b>VIVA PHONE</b>
-                      </div>
+                      <div><Rate allowHalf value={item.rating} disabled /></div>
                     </div>
                   </div>
-                  <div className="px-5">
-                    <div className="review-content">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Consequatur ipsa facilis eius, soluta accusantium neque
-                      modi aut veritatis dolore qui hic tempore voluptatem. Quos
-                      quasi dolorem voluptatum at recusandae rerum.
+                  {item.guest.id === userData.id &&
+                    <div className="d-flex action-review">
+                      <div className="dropdown option-review">
+                        <a
+                          className="text-secondary btn btn-secondary-soft-hover px-2"
+                          id="cardFeedAction"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i className="bi bi-three-dots"></i>
+                        </a>
+                        <ul
+                          className="dropdown-menu dropdown-menu-end"
+                          aria-labelledby="cardFeedAction"
+                        >
+                          <li onClick={() => handleDeleteReview(item.id)}>
+                            <a className="dropdown-item">
+                              <i className="bi bi-trash3 pe-2"></i>Delete review
+                            </a>
+                          </li>
+                          <li onClick={() => handleClickEditReview(item)}>
+                            <a className="dropdown-item">
+                              <i className="bi bi-pen-fill pe-2"></i>Edit review
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div className="mt-1">
-                      <span className="text-secondary">20/7/2023 12:30</span>
-                    </div>
-                  </div>
+                  }
                 </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between">
-                <div className="d-flex">
+                <div className="px-5 py-1">
+                  <div className="review-content">
+                    {item.comment}
+                  </div>
                   <div>
-                    <img
-                      className="headerUser-right-avt rounded-circle"
-                      src="https://th.bing.com/th/id/OIP.rzU5tlNULSLFeXggfJ352QHaNK?w=187&h=333&c=7&r=0&o=5&pid=1.7"
-                      alt="avatar"
-                      width={50}
-                      height={50}
-                    />
-                  </div>
-                  <div className="px-2">
-                    <div>
-                      <b style={{ fontSize: "18px" }}>Lê Văn Do</b>
-                    </div>
-                    <div>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i
-                        className="bi bi-star-fill"
-                        style={{ color: "orange" }}
-                      ></i>
-                      <i className="bi bi-star"></i>
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex action-review">
-                  <div className="dropdown option-review">
-                    <a
-                      href="#"
-                      className="text-secondary btn btn-secondary-soft-hover px-2"
-                      id="cardFeedAction"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="bi bi-three-dots"></i>
-                    </a>
-                    <ul
-                      className="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="cardFeedAction"
-                    >
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          {" "}
-                          <i className="bi bi-trash3 pe-2"></i>Delete review
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          {" "}
-                          <i className="bi bi-flag fa-fw pe-2"></i>Report post
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="px-5 py-1">
-                <div className="review-content">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-                  harum cum distinctio, at accusantium nam pariatur omnis quod
-                  corporis temporibus fugit ab quas facilis tempora iste commodi
-                  impedit odio ex?
-                </div>
-                <div className="mt-1">
-                  <span className=" text-secondary">20/7/2023 10:30</span>
-                  <span className="reply">Reply</span>
-                </div>
-                <div>
-                  <div className="d-flex justify-content-between mt-2">
-                    <div className="d-flex admin">
-                      <div>
-                        <img
-                          className="headerUser-right-avt rounded-circle"
-                          src={logo4}
-                          alt="avatar"
-                          width={50}
-                          height={50}
-                          style={{ border: "1px solid #ff652f" }}
-                        />
+                    {item.gallery && item.gallery.split(',').length > 0 && (
+                      <div className="row">
+                        {item.gallery.split(',').map((image: string, index: number) => (
+                          <div key={index} className="col-2 position-relative mb-3 p-2">
+                            <Image
+                              src={getImageUrl(image)}
+                              alt={`Image ${index}`}
+                              className="img-fluid"
+                              style={{ borderRadius: "4px", backgroundColor: "gray" }}
+                            />
+                          </div>
+                        ))}
                       </div>
-                      <div className="px-2 d-flex justify-content-center align-items-center">
-                        <b>VIVA PHONE</b>
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-secondary" style={{ fontSize: "14px" }}>{formatTime(item.created_at)}</span>
+                    {userData.role === "ADMIN" &&
+                      <span className=" reply" onClick={() => handleShowTextArea(item.id)}>Reply</span>
+                    }
+                  </div>
+                  {showTextArea && replyId === item.id &&
+                    <div className="mt-2">
+                      <TextArea rows={3} style={{ fontSize: "16px" }} onChange={(e: any) => handleOnchangeComment(e)} />
+                      <Button type="primary" className="mt-2" style={{ borderRadius: "2px", fontSize: "16px" }} onClick={handleReplyReview}>Gửi</Button>
+                    </div>
+                  }
+                  {item?.replies?.length > 0 &&
+                    <div>
+                      <div className="d-flex justify-content-between mt-2">
+                        <div className="d-flex admin">
+                          <div>
+                            <img
+                              className="headerUser-right-avt rounded-circle"
+                              src={logo4}
+                              alt="avatar"
+                              width={50}
+                              height={50}
+                              style={{ border: "1px solid #ff652f" }}
+                            />
+                          </div>
+                          <div className="px-2 d-flex justify-content-center align-items-center">
+                            <b>VIVA PHONE</b>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-5">
+                        <div className="review-content">
+                          {item.replies[0].reply}
+                        </div>
+                        <div className="mt-1">
+                          <span className="text-secondary" style={{ fontSize: "14px" }}>{formatTime(item.replies[0].created_at)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="px-5">
-                    <div className="review-content">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Consequatur ipsa facilis eius, soluta accusantium neque
-                      modi aut veritatis dolore qui hic tempore voluptatem. Quos
-                      quasi dolorem voluptatum at recusandae rerum.
-                    </div>
-                    <div className="mt-1">
-                      <span className="text-secondary">20/7/2023 12:30</span>
-                    </div>
-                  </div>
+                  }
                 </div>
-              </div>
-            </div>
+              </div>))}
+
           </div>
         </div>
       )}

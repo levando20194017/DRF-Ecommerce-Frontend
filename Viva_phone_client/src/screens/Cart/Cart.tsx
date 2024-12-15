@@ -12,9 +12,11 @@ import { setOrderLocal } from '../../helps/setLocalStorage';
 import { getUserData } from '../../helps/getItemLocal';
 import { useNavigate } from 'react-router-dom';
 import EmptyOrder from '../../components/UserManagement/Order/EmptyOrder';
+import { useLoading } from '../../context/LoadingContext';
+import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
 
 const Cart: React.FC = () => {
-    const [loading, setLoading] = useState<Boolean>(false);
+    const { setLoading } = useLoading()
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [cart, setCart] = useState<any>([])
     const breadcrumbs = [
@@ -23,6 +25,7 @@ const Cart: React.FC = () => {
     ];
     const userData = getUserData()
     const navigate = useNavigate();
+    const { handleGetTotalCart } = useHandleGetTotalCart()
 
     const handleQuantityChange = (id: number, quantity: number) => {
         setCart((prev: any) =>
@@ -47,6 +50,7 @@ const Cart: React.FC = () => {
         .reduce((sum: number, cartItem: any) => sum + cartItem.product.price * cartItem.quantity, 0);
 
     const handleCheckout = () => {
+        setLoading(true)
         const order = cart.filter((item: any) => {
             if (selectedIds.includes(item.id)) return item
         })
@@ -59,7 +63,6 @@ const Cart: React.FC = () => {
     const handleGetCart = async () => {
         if (userData?.id) {
             try {
-                setLoading(true)
                 const response = await apiGetCart(userData?.id)
                 if (response.status === 200) {
                     setCart(response.data.items)
@@ -86,6 +89,7 @@ const Cart: React.FC = () => {
             })
             if (response.status === 204) {
                 handleGetCart()
+                handleGetTotalCart()
             }
         } catch (e) {
             console.log(e);

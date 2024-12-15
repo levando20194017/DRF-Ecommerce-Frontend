@@ -1,3 +1,5 @@
+@use "../../../styles/variables" as vars;
+
 .headerContainer {
   color: black;
 
@@ -201,6 +203,7 @@
 }
 
 .frame-cart-icon {
+  position: relative;
   background-color: transparent;
   border-radius: 50%;
   width: 50px;
@@ -253,6 +256,45 @@
   margin-right: 10px;
 }
 
+.ant-select-item.ant-select-item-option.ant-select-item-option-active {
+  background-color: rgb(190, 224, 248, 0.8);
+}
+
+.total_item {
+  width: 25px;
+  height: 25px;
+  font-size: 12px;
+  background-color: vars.$color-price;
+  position: absolute;
+  border-radius: 50%;
+  color: vars.$common-white;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.profile-popup {
+  .profile-item {
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #d1d5d8;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: rgb(255, 102, 0, 0.1);
+      font-weight: 600;
+      color: rgb(255, 102, 0);
+    }
+  }
+
+}
 
 /*--- Responsive Code ---*/
 @media screen and (max-width: 1920px) {}

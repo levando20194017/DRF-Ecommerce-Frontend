@@ -15,10 +15,6 @@ interface CartItemProps {
 
 const CartItem: React.FC<CartItemProps> = ({ cartItem, onQuantityChange, onSelect, selected, handleRemoveCartItem }) => {
 
-    const confirm = (cartId: number) => {
-        handleRemoveCartItem(cartId)
-    };
-
     return (
         <div className="d-flex align-items-center py-3 cart-item">
             {/* Checkbox */}
@@ -77,7 +73,7 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem, onQuantityChange, onSelec
                     <Popconfirm
                         title="Xoá sản phẩm"
                         description="Xác nhận xóa sản phẩm khỏi giỏ hàng?"
-                        onConfirm={() => confirm(cartItem.id)}
+                        onConfirm={() => handleRemoveCartItem(cartItem.id)}
                         okText="Đồng ý"
                         cancelText="Hủy"
                     >

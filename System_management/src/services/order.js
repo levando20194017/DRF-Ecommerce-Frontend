@@ -10,10 +10,10 @@ const apiOrderDetail = function (id) {
 };
 
 const apiUpdateOrderStatus = function (data) {
-  return axios.put(`/api/order/admin/update-order-status/`, { order_id: data.id, order_status: data.orderStatus });
+  return axios.put(`/api/order/admin/update-order-status/`, data);
 };
 
 const apiUpdatePaymentStatus = function (data) {
-  return axios.put(`/api/order/admin/update-payment-status/`, { order_id: data.id, order_status: data.paymentStatus });
+  return axios.put(`/api/order/admin/update-payment-status/`, data);
 };
 export { apiGetOrderList, apiOrderDetail, apiUpdateOrderStatus, apiUpdatePaymentStatus };

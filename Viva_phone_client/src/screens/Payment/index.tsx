@@ -4,7 +4,7 @@ import { Routes } from '../Routes';
 import Breadcrumb from '../../components/Breadcrumb';
 import './payment.scss'
 import { FaLocationDot } from "react-icons/fa6";
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import ProductItem from '../../components/Payment/ProductItem';
 import AddressModal from '../../components/Payment/AddressModal';
 import { getOrderLocal, getUserData } from '../../helps/getItemLocal';
@@ -13,6 +13,11 @@ import { formatPrice } from '../../utils/format';
 import { promotionType } from '../../utils/promotionType';
 import { apiCreateNewOrder } from '../../services/order';
 import { getTotalDiscountByCart } from '../../helps/getTotalDiscount';
+import { useHandleGetTotalUnnotification } from '../../hook/GetTotalUnread';
+import { useHandleGetTotalCart } from '../../hook/GetTotalCart';
+import ModalSuccess from '../../components/Common/ModalSuccess';
+import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../../context/LoadingContext';
 
 const PaymentPage: React.FC = () => {
     const breadcrumbs = [
@@ -26,17 +31,25 @@ const PaymentPage: React.FC = () => {
     const totalDiscount = getTotalDiscountByCart(listOrders)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("cash")
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+    const { handleGetTotalCart } = useHandleGetTotalCart();
+    const { setLoading } = useLoading();
+    useEffect(() => {
+        setLoading(false)
+    }, [])
+
     const [formData, setFormData] = useState<Order>({
+        order_id: listOrders[0]?.order ? listOrders[0].order : null,
         guest_id: userData.id,
         recipient_phone: userData.phone_number,
         shipping_address: userData.address,
         recipient_name: userData.last_name + " " + userData.first_name,
-        payment_methods: PaymentMethod.cashOnDelivery,
+        payment_method: PaymentMethod.cashOnDelivery,
         shipping_cost: 0,
         gst_amount: 0,
         order_details: listOrders.map((item: any) => ({
             quantity: item.quantity,
-            store_id: 1,
+            store_id: item.store,
             color: item.color,
             product_id: item.product.id
         }))
@@ -47,26 +60,36 @@ const PaymentPage: React.FC = () => {
 
     const handleChangePaymentMethod = (value: string) => {
         setPaymentMethod(value)
-        setFormData({ ...formData, payment_methods: value })
+        setFormData({ ...formData, payment_method: value })
     }
 
-    const [loading, setLoading] = useState<any>(false)
+    const [loadingData, setLoadingData] = useState<any>(false)
     const [errorLocation, setErrorLocation] = useState<string>("")
+    const [isModalVisibleNoti, setIsModalVisibleNoti] = useState<any>(false);
+    const navigate = useNavigate()
     const handleCreateNewOrder = async () => {
         if (!formData.recipient_name || !formData.shipping_address || !formData.recipient_phone) {
             setErrorLocation("Vui lòng nhập đầy đủ thông tin người nhận");
             return;
         }
         try {
-            setLoading(true)
-            const response = await apiCreateNewOrder(formData)
-            if (response.status === 200) {
-
+            setLoadingData(true)
+            const response = await apiCreateNewOrder(formData) as any
+            if (response.status === 201) {
+                handleGetTotalCart()
+                handleGetTotalUnnotification()
+                setIsModalVisibleNoti(true)
+                if (formData.payment_method === PaymentMethod.creditCard) {
+                    window.location.href = response.payment_url;
+                } else {
+                    navigate(Routes.HomePage.path)
+                    message.success("Đặt hàng thành công")
+                }
             }
         } catch (e) {
             console.log(e);
         } finally {
-            setLoading(false)
+            setLoadingData(false)
         }
     }
     useEffect(() => {
@@ -74,9 +97,13 @@ const PaymentPage: React.FC = () => {
             setErrorLocation("")
         }
     }, [formData])
+    // const handleCloseModal = () => {
+    //     setIsModalVisible(false); // Đóng modal
+    // };
     return (
         <>
             <div className="div-empty"></div>
+            {/* {isModalVisibleNoti && <ModalSuccess onClose={handleCloseModal} />} */}
             <AddressModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} formData={formData} setFormData={setFormData} />
             <div className="container mt-4 payment-page">
                 <div className="mt-3">
@@ -125,7 +152,7 @@ const PaymentPage: React.FC = () => {
                             <div className='d-flex gap-4 justify-content-center align-items-center'>
                                 {paymentMethod ?
                                     <>
-                                        <span>{formData.payment_methods === PaymentMethod.cashOnDelivery ? "Thanh toán khi nhận hàng" : "Thanh toán bằng VN Pay"}</span>
+                                        <span>{formData.payment_method === PaymentMethod.cashOnDelivery ? "Thanh toán khi nhận hàng" : "Thanh toán bằng VN Pay"}</span>
                                         <Button className="btn-change" onClick={() => { setPaymentMethod("") }}>THAY ĐỔI</Button>
                                     </>
                                     :
@@ -155,7 +182,7 @@ const PaymentPage: React.FC = () => {
                         </div>
                         <div className='payment-action'>
                             <div>Nhấn đặt hàng đồng nghĩa với việc bạn đồng ý điều khoản tuân theo <a style={{ color: "#0d6efd" }} className='cursor-pointer'>Điều khoản Viva Phone</a></div>
-                            <div><Button className='btn-payment' loading={loading} onClick={handleCreateNewOrder}>Thanh toán</Button></div>
+                            <div><Button className='btn-payment' loading={loadingData} onClick={handleCreateNewOrder}>Thanh toán</Button></div>
                         </div>
                     </div>
                 </div>

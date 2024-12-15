@@ -1,5 +1,6 @@
 import React from "react";
 import "./test.scss"
+import { Button } from "antd";
 
 const ModalSuccess: React.FC = () => {
     return (
@@ -17,7 +18,7 @@ const ModalSuccess: React.FC = () => {
             <main className="cd__main container p-5">
                 <div className="row">
                     <div
-                        className="modal fade"
+                        className="modal fade toast-modal-success"
                         id="statusSuccessModal"
                         tabIndex={-1}
                         aria-hidden="true"
@@ -49,17 +50,17 @@ const ModalSuccess: React.FC = () => {
                                             points="100.2,40.2 51.5,88.8 29.8,67.5"
                                         />
                                     </svg>
-                                    <h4 className="text-success mt-3">Oh Yeah!</h4>
+                                    <h4 className="text-success mt-3">Đặt hàng thành công!</h4>
                                     <p className="mt-3">
-                                        You have successfully registered and logged in.
+                                        Cám ơn bạn đã sử dụng dịch vụ của chúng tôi, vui lòng để ý điện thoại để chúng tôi xác nhận lại
                                     </p>
-                                    <button
-                                        type="button"
-                                        className="btn btn-sm mt-3 btn-success"
+                                    <Button
+                                        className="mt-3"
                                         data-bs-dismiss="modal"
+                                        type="primary"
                                     >
-                                        Ok
-                                    </button>
+                                        Đóng
+                                    </Button>
                                 </div>
                             </div>
                         </div>

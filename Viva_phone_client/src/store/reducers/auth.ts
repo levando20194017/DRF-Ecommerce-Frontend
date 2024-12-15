@@ -25,7 +25,9 @@ const initialState = {
             majorName: "Accounting",
         },
     ],
-    userData: {}
+    user_infor: {},
+    total_unread: 0,
+    total_cart: 0,
 }
 
 export const authReducer = (state = initialState, actions: any) => {
@@ -47,11 +49,18 @@ export const authReducer = (state = initialState, actions: any) => {
             return {
                 ...state, userData: actions.payload
             }
+        case Actions.TOTAL_UNREAD:
+            return {
+                ...state, total_unread: actions.payload
+            }
+        case Actions.TOTAL_CART:
+            return {
+                ...state, total_cart: actions.payload
+            }
         case Actions.GET_MAJOR:
             return {
                 ...state
             }
-            break;
         case Actions.ADD_MAJOR:
             const newMajor = {
                 id: actions.payload.id,

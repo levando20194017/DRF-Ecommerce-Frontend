@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { apiDeleteProduct, apiDetailProduct, apiRestoreProduct } from "../../services/product";
 import ImageLink from "../../assets/img/no-image.png";
 
-import { formatTime, toastFailed, toastSuccess } from "../../utils/index";
+import { formatPrice, formatTime, toastFailed, toastSuccess } from "../../utils/index";
 import { Popconfirm } from "antd";
 import { UndoOutlined } from '@ant-design/icons';
 
@@ -90,7 +90,7 @@ export const ProductTable = ({
           )}
         </td>
         <td>{name ? name : "--"}</td>
-        <td><div className="text-danger">{price}</div></td>
+        <td><div className="text-danger">{formatPrice(price)}</div></td>
         <td>{catalog_name}</td>
         <td>{promotion_name ? promotion_name : "---"}</td>
         <td>{product_type}</td>
