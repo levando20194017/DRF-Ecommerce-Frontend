@@ -108,7 +108,7 @@ const Notification: React.FC<any> = ({ total_unread }) => {
             >
                 <i className="bi bi-bell-fill icon-noti" style={{ fontSize: "24px" }}></i>
                 {total_unread ?
-                    <div className="total_item">{total_unread}</div> : ""
+                    <div className="total_item">{total_unread > 99 ? <span>99<span style={{ fontSize: "75%", verticalAlign: "super" }}>+</span></span> : total_unread}</div> : ""
                 }
             </div>
 

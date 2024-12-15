@@ -72,7 +72,6 @@ const PaymentPage: React.FC = () => {
             return;
         }
         try {
-            setLoading(true)
             setLoadingData(true)
             const response = await apiCreateNewOrder(formData) as any
             if (response.status === 201) {
@@ -89,7 +88,6 @@ const PaymentPage: React.FC = () => {
         } catch (e) {
             console.log(e);
         } finally {
-            setLoading(false)
             setLoadingData(false)
         }
     }

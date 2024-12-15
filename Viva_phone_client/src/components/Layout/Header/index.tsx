@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { useHandleGetTotalUnnotification } from "../../../hook/GetTotalUnread";
 import { useHandleGetTotalCart } from "../../../hook/GetTotalCart";
 import Profile from "./Profile";
+import { getUserData } from "../../../helps/getItemLocal";
 
 const Header: FC = () => {
   const [visible, setVisible] = useState(false);
@@ -28,6 +29,7 @@ const Header: FC = () => {
   const total_cart = useSelector((state: any) => state.auth.total_cart);
   const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
   const { handleGetTotalCart } = useHandleGetTotalCart();
+  const userData = getUserData()
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.pageYOffset > 150);
@@ -206,7 +208,7 @@ const Header: FC = () => {
         <div className="welcome">
           Xin chào{" "}
           <span style={{ color: "#ff652f", fontWeight: "600", marginLeft: "5px" }}>
-            Lê Văn Do
+            {userData.last_name + " " + userData.first_name}
           </span>
           !
         </div>

@@ -12,10 +12,14 @@ import { Image, message, Popconfirm } from 'antd';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 import ModalReview from '../../Reviews/ModalReview';
+import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
+import { useLoading } from '../../../context/LoadingContext';
 
 const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [productReview, setProductReview] = useState({})
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
+    const { setLoading } = useLoading()
 
     const handleCancelOrder = async (id: number) => {
         try {
@@ -23,6 +27,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
                 handleGetListOrder("")
+                handleGetTotalUnnotification();
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
             }
@@ -34,6 +39,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
     const navigate = useNavigate();
     const handleBuyBackOrder = (orderDetail: any) => {
         if (orderDetail.items?.length > 0) {
+            setLoading(true)
             setOrderLocal(orderDetail.items)
             navigate(Routes.Payment.path)
         }

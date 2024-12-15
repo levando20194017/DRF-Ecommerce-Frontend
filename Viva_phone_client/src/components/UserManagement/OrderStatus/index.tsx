@@ -13,12 +13,13 @@ import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../ut
 import { getTotalDiscountByOrder } from '../../../helps/getTotalDiscount';
 import { setOrderLocal } from '../../../helps/setLocalStorage';
 import ModalReview from '../../Reviews/ModalReview';
+import { useHandleGetTotalUnnotification } from '../../../hook/GetTotalUnread';
 import { useLoading } from '../../../context/LoadingContext';
 
 const OrderStatus: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [productReview, setProductReview] = useState({})
-    const { setLoading } = useLoading()
+    const { handleGetTotalUnnotification } = useHandleGetTotalUnnotification();
 
     const [items, setItems] = useState<any>([
         {
@@ -66,8 +67,10 @@ const OrderStatus: React.FC = () => {
         }
     }, [])
     const navigate = useNavigate()
+    const { setLoading } = useLoading()
     const handleBuyBackOrder = () => {
         if (orderDetail.items?.length > 0) {
+            setLoading(true)
             setOrderLocal(orderDetail.items)
             navigate(Routes.Payment.path)
         }
@@ -78,6 +81,7 @@ const OrderStatus: React.FC = () => {
             const response = await apiCanceledOrder({ order_id: id })
             if (response.status === 200) {
                 message.success("Hủy đơn hàng thành công.")
+                handleGetTotalUnnotification();
                 navigate(Routes.AllOrder.path)
             } else {
                 message.error("Hủy đơn hàng thất bại, liên hệ chúng tôi để được hỗ trợ.")
