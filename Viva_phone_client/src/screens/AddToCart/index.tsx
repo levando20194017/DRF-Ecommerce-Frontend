@@ -60,7 +60,7 @@ const AddToCartPage = () => {
         pageSize: 100
       })
       if (response.status === 200) {
-        setDataReviews(response.data.reviews)
+        setDataReviews(response.data)
       }
     } catch (e) {
       console.log(e);
@@ -92,7 +92,7 @@ const AddToCartPage = () => {
           setProductDetail={setProductDetail} />
         <DesAndReviews
           productDetail={productDetail}
-          dataReviews={dataReviews}
+          dataReviews={dataReviews?.reviews}
           handleGetListReviews={handleGetListReviews} />
         <RelatedProduct />
       </div>

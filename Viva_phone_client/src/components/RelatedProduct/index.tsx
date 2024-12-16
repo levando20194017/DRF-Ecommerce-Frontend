@@ -7,6 +7,7 @@ import { getUserData } from "../../helps/getItemLocal";
 
 export const RelatedProduct = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [listRelatedProducts, setListRelatedProduct] = useState([])
 
     const handleQuickView = () => {
         setIsOpenModal(true);
@@ -21,6 +22,10 @@ export const RelatedProduct = () => {
         if (userData?.id) {
             try {
                 const response = await apiRecommendProducts({ store_id: 1, guest_id: userData.id })
+                if (response.status === 200) {
+                    setListRelatedProduct(response.data)
+                }
+
             } catch (e) {
                 console.log(e);
             }
@@ -41,7 +46,7 @@ export const RelatedProduct = () => {
                     Xem thêm nhiều sản phẩm khác có thể phù hợp với bạn
                 </p>
             </div>
-            <ListProduct handleQuickView={handleQuickView} />
+            <ListProduct handleQuickView={handleQuickView} listRelatedProducts={listRelatedProducts} />
         </div>
     );
 };
