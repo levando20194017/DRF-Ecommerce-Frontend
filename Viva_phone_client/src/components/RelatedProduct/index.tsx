@@ -1,7 +1,9 @@
 import "./style.scss";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ListProduct } from "../Home/ProductCatgories/ProductItem";
 import { ModalQuickView } from "../Home/ModalQuickView";
+import { apiRecommendProducts } from "../../services/product";
+import { getUserData } from "../../helps/getItemLocal";
 
 export const RelatedProduct = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -14,6 +16,19 @@ export const RelatedProduct = () => {
     const toggleModal = () => {
         setIsOpenModal(!isOpenModal);
     }
+    const userData = getUserData()
+    const handleGetListRelatedProduct = async () => {
+        if (userData?.id) {
+            try {
+                const response = await apiRecommendProducts({ store_id: 1, guest_id: userData.id })
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+    useEffect(() => {
+        handleGetListRelatedProduct()
+    }, [])
     return (
         <div className="related-pro">
             <ModalQuickView

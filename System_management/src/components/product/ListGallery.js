@@ -56,7 +56,8 @@ export default ({ formData, setFormData, errors, listGallery, setListGallery }) 
                         file.type === "image/jpeg" ||
                         file.type === "image/jpg" ||
                         file.type === "image/png" ||
-                        file.type === "image/gif"
+                        file.type === "image/gif" ||
+                        file.type === "image/avif"
                     )
                 ) {
                     ToastFailed("Please select PNG, GIF or JPG file.")

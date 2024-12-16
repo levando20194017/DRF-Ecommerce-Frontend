@@ -11,7 +11,7 @@ const InvoiceContent = () => {
                 <img src={invoiceImage} />
               </div>
               <div>
-                <h4>MINT ADMIN.</h4>
+                <h4>VIVA ADMIN.</h4>
                 <div>112 Washington Square</div>
                 <div>New York, USA</div>
                 <div style={{ color: "#111827" }} className="fw-bold">

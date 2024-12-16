@@ -54,7 +54,7 @@ const ModalEditReview: React.FC<ReviewModalProps> = ({ visible, onClose, review,
     };
 
     const clearForm = () => {
-        setFormReview({ ...formReview, comment: "", gallery: "" })
+        setFormReview({ ...formReview, rating: 5, comment: "", gallery: "" })
         setListImages([])
     }
 

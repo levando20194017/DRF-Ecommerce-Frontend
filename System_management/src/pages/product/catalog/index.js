@@ -13,7 +13,7 @@ import SearchInput from "../../../components/common/SearchInput";
 export default () => {
     const history = useHistory();
     const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(1000);
     const [totalRecords, setToalRecords] = useState();
     const [search, setSearch] = useState("");
     const [listData, setListData] = useState([])
