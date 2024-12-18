@@ -1,12 +1,12 @@
 
 import React, { useEffect, useState } from "react";
 import { Col, Row, } from '@themesberg/react-bootstrap';
-
 import { CounterWidget, BarChartWidget } from "../../components/Widgets";
 import { totalOrders } from "../../data/charts";
-import { apiGetChart } from "../../services/dashboard";
-import { DatePicker } from "antd";
+import { apiGetChart, apiGetTotalReport } from "../../services/dashboard";
 import { SalesValueWidget } from "./SaleValueWiget";
+import { formatPrice } from "../../utils";
+import './style.scss'
 
 export default () => {
     const [formFilter, setFormFilter] = useState({
@@ -14,7 +14,7 @@ export default () => {
         startDate: "",
         endDate: ""
     })
-    const { RangePicker } = DatePicker;
+    const [totalData, setTotalData] = useState({})
     const dateFormat = 'YYYY/MM/DD';
     const [rangeValue, setRangeValue] = useState([]);
     const [dataChart, setDataChart] = useState({})
@@ -40,33 +40,47 @@ export default () => {
             handleGetChartLine()
         }
     }, [formFilter])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await apiGetTotalReport({ storeId: 1 })
+                if (response.status === 200) {
+                    setTotalData(response.data)
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        fetchData()
+    }, [])
     return (
         <>
             <Row className="justify-content-md-center mt-4">
                 <Col xs={12} sm={6} xl={3} className="mb-4">
                     <CounterWidget
                         category="Total Customers"
-                        data={"500"}
+                        data={totalData?.total_guest}
                     />
                 </Col>
 
                 <Col xs={12} sm={6} xl={3} className="mb-4">
                     <CounterWidget
                         category="Total income"
-                        data={"333.500.000 VND"}
+                        data={formatPrice(totalData?.total_income)}
                     />
                 </Col>
 
                 <Col xs={12} sm={6} xl={3} className="mb-4">
                     <CounterWidget
                         category="Revenue"
-                        data={"455.444.000 VND"}
+                        data={formatPrice(totalData?.total_revenue)}
                     />
                 </Col>
                 <Col xs={12} sm={6} xl={3} className="mb-4">
                     <CounterWidget
-                        category="New orders"
-                        data={"999"}
+                        category="Total orders"
+                        data={totalData?.total_orders}
                     />
                 </Col>
 

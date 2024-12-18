@@ -43,9 +43,12 @@ export const SalesValueWidget = (props) => {
         <Card className="bg-secondary-alt shadow-sm">
             <Card.Header className="d-flex flex-row align-items-center flex-0">
                 <div className="d-block">
-                    <h5 className="fw-bold mb-2">
-                        {title}
-                    </h5>
+                    <div className="d-flex gap-3">
+                        <h5 className="fw-bold mb-2">
+                            {title}
+                        </h5>
+                        <div>(Default 1 month with data)</div>
+                    </div>
                     <div className="d-flex gap-4">
                         <div>Total icome: {formatPrice(statistics.totalIncomePrice)}</div>
                         <div>Quantity in: {statistics.totalQuantityIn}</div>

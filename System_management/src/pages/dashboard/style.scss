@@ -1,0 +1,61 @@
+// .ct-series-a .ct-line {
+//     stroke: #FF5733;
+//     /* Màu đỏ */
+//     stroke-width: 2px;
+// }
+
+.ct-series-b .ct-line {
+    stroke: green;
+    /* Màu xanh lá */
+    stroke-width: 2px;
+}
+
+.ct-series-a .ct-point {
+    // stroke: #FF5733;
+    /* Màu đỏ */
+    stroke-width: 7px;
+    /* Độ rộng */
+    r: 10;
+    /* Kích thước */
+}
+
+.ct-series-b .ct-point {
+    stroke: green;
+    /* Màu xanh lá */
+    stroke-width: 7px;
+    r: 10;
+}
+
+// .ct-chart {
+//     background-color: #f0f8ff;
+//     /* Màu nền khung */
+//     /* Đường viền */
+//     border-radius: 8px;
+//     /* Bo tròn khung */
+//     padding: 10px;
+//     /* Khoảng cách từ nội dung đến khung */
+// }
+
+// .ct-grid {
+//     stroke: #ccc;
+//     /* Màu của các đường lưới */
+//     stroke-width: 1px;
+//     /* Độ rộng đường lưới */
+// }
+
+.ct-label {
+    fill: green;
+    /* Màu chữ */
+    font-size: 12px;
+    /* Kích thước chữ */
+}
+
+.ct-series-a .ct-area {
+    fill: rgb(21, 21, 237, 0.5)
+        /* Màu nền choline đầu tiên */
+}
+
+.ct-series-b .ct-area {
+    fill: rgb(10, 128, 10, 0.7);
+    /* Màu nền cho line thứ hai */
+}
