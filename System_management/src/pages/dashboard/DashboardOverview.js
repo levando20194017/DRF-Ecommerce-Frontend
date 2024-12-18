@@ -1,11 +1,45 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, } from '@themesberg/react-bootstrap';
 
-import { CounterWidget, BarChartWidget, SalesValueWidget } from "../../components/Widgets";
+import { CounterWidget, BarChartWidget } from "../../components/Widgets";
 import { totalOrders } from "../../data/charts";
+import { apiGetChart } from "../../services/dashboard";
+import { DatePicker } from "antd";
+import { SalesValueWidget } from "./SaleValueWiget";
 
 export default () => {
+    const [formFilter, setFormFilter] = useState({
+        storeId: 1,
+        startDate: "",
+        endDate: ""
+    })
+    const { RangePicker } = DatePicker;
+    const dateFormat = 'YYYY/MM/DD';
+    const [rangeValue, setRangeValue] = useState([]);
+    const [dataChart, setDataChart] = useState({})
+
+    const handleRangeChange = (dates) => {
+        setRangeValue(dates);
+        setFormFilter({ ...formFilter, startDate: dates[0].format('YYYY-MM-DD'), endDate: dates[1].format('YYYY-MM-DD') })
+    };
+
+    const handleGetChartLine = async () => {
+
+        try {
+            const response = await apiGetChart(formFilter)
+            if (response.status === 200) {
+                setDataChart(response.data)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    useEffect(() => {
+        if (formFilter.storeId) {
+            handleGetChartLine()
+        }
+    }, [formFilter])
     return (
         <>
             <Row className="justify-content-md-center mt-4">
@@ -38,9 +72,13 @@ export default () => {
 
                 <Col xs={12} className="mb-4 d-none d-sm-block">
                     <SalesValueWidget
-                        title="Sales Value"
+                        title="Statistics"
                         value="10,567"
                         percentage={10.57}
+                        dataChart={dataChart}
+                        rangeValue={rangeValue}
+                        dateFormat={dateFormat}
+                        handleRangeChange={handleRangeChange}
                     />
                 </Col>
                 {/* <Col xs={12} className="mb-4 d-sm-none">
