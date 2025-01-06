@@ -8,6 +8,7 @@ import { getUserData } from "../../helps/getItemLocal";
 import { apiAdminReplyReview, apiDeleteReview } from "../../services/review";
 import ModalEditReview from "../Reviews/ModalEditReview";
 import TextArea from "antd/es/input/TextArea";
+import NoImage from "../../assets/images/no_avatar.jpg"
 
 export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetListReviews }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -122,7 +123,7 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                     <div>
                       <img
                         className="headerUser-right-avt rounded-circle"
-                        src={getImageUrl(item.guest.avatar)}
+                        src={item.guest.avatar ? getImageUrl(item.guest.avatar) : NoImage}
                         alt="avatar"
                         width={50}
                         height={50}

@@ -296,7 +296,7 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
             <hr />
             <div className="d-flex review-sale">
               <div className="d-flex gap-2 align-iems-end">
-                <b>{dataReviews?.average_rating ? dataReviews?.average_rating : 0}</b>
+                <b>{dataReviews?.average_rating ? dataReviews?.average_rating?.toFixed(1) : 0}</b>
                 <div><Rate allowHalf value={roundToNearestHalf(dataReviews?.average_rating)} disabled /></div>
               </div>
               <div className="d-flex gap-2">

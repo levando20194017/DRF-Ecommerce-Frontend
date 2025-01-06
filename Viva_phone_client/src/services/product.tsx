@@ -6,11 +6,11 @@ interface BestSelling {
 }
 
 const apiGetBestSelling = (data: BestSelling) => {
-    return client.get(`api/product_sale/get-list-sold-products-filter/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&store_id=${data.store_id}`);
+    return client.get(`api/product_sale/get-list-sold-products-filter/?page_index=${data.pageIndex}&page_size=${data.pageSize}&store_id=${data.store_id}`);
 }
 
 const apiGetListProductsByCatalog = (data: any) => {
-    return client.get(`api/product/get-list-products-by-catalog/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&catalog_id=${data.catalog_id}`);
+    return client.get(`api/product/get-list-products-by-catalog/?page_index=${data.pageIndex}&page_size=${data.pageSize}&catalog_id=${data.catalog_id}`);
 }
 
 //api/product/get-one-product-per-catalog/
@@ -23,7 +23,7 @@ const apiGetProductDetailInStore = (data: DetailProductStore) => {
 }
 
 const apiGetAllProducts = (data: any) => {
-    return client.get(`api/product/get-list-products/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`);
+    return client.get(`api/product/get-list-products/?page_index=${data.pageIndex}&page_size=${data.pageSize}`);
 }
 
 interface SearchProductStore {
@@ -49,7 +49,13 @@ const apiSearchProductsInStoreByCatalog = (data: SearchProductStoreByCatalog) =>
 
 //Dùng để hiển thị danh sách các sản phẩm mà cửa hàng nhập về.
 const apiGetListProductsIncomingByCatalog = (data: any) => {
-    return client.get(`api/product_incoming/get-list-product-incoming-by-catalog/?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}&catalog_id=${data.catalog_id}`);
+    return client.get(`api/product_incoming/get-list-product-incoming-by-catalog/?page_index=${data.pageIndex}&page_size=${data.pageSize}&catalog_id=${data.catalog_id}`);
+}
+
+//api gợi ý sản phẩm
+
+const apiRecommendProducts = (data: any) => {
+    return client.get(`api/product_store/recommend-products/?page_index=${data.pageIndex}&page_size=${data.pageSize}&store_id=${data.store_id}&guest_id=${data.guest_id}`);
 }
 export {
     apiGetBestSelling,
@@ -58,5 +64,6 @@ export {
     apiSearchProductsInStore,
     apiGetAllProducts,
     apiGetListProductsIncomingByCatalog,
-    apiSearchProductsInStoreByCatalog
+    apiSearchProductsInStoreByCatalog,
+    apiRecommendProducts
 }; 

@@ -4,7 +4,7 @@ import { DesAndReviews } from "../../components/DesAndReviews";
 import { Routes } from "../Routes";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
-import { apiGetListProductsByCatalog, apiGetProductDetailInStore } from "../../services/product";
+import { apiGetListProductsByCatalog, apiGetProductDetailInStore, apiSearchProductsInStoreByCatalog } from "../../services/product";
 import { apiGetListReviews } from "../../services/review";
 import { useLoading } from "../../context/LoadingContext";
 const AddToCartPage = () => {
@@ -40,9 +40,9 @@ const AddToCartPage = () => {
   }
   const handleGetListProductByCatalog = async () => {
     try {
-      const response = await apiGetListProductsByCatalog({ storeId, catalog_id: catalogId })
+      const response = await apiSearchProductsInStoreByCatalog({ storeId, catalogId, pageSize: 10, pageIndex: 1, textSearch: "" })
       if (response.status === 200) {
-        setListRelateds(response.data.products)
+        setListRelateds(response.data.products.map((item: any) => item.product))
       }
     } catch (e) {
       console.log(e);
@@ -60,7 +60,7 @@ const AddToCartPage = () => {
         pageSize: 100
       })
       if (response.status === 200) {
-        setDataReviews(response.data.reviews)
+        setDataReviews(response.data)
       }
     } catch (e) {
       console.log(e);
@@ -92,7 +92,7 @@ const AddToCartPage = () => {
           setProductDetail={setProductDetail} />
         <DesAndReviews
           productDetail={productDetail}
-          dataReviews={dataReviews}
+          dataReviews={dataReviews?.reviews}
           handleGetListReviews={handleGetListReviews} />
         <RelatedProduct />
       </div>

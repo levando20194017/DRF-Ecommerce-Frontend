@@ -77,7 +77,7 @@ const Profile: React.FC<any> = () => {
             >
                 <img
                     className="headerUser-right-avt rounded-circle"
-                    src={userData.avatar ? getImageUrl(userData.avatar) : NoImage}
+                    src={userData?.avatar ? getImageUrl(userData.avatar) : NoImage}
                     alt="user avatar"
                     width={40}
                     height={40}

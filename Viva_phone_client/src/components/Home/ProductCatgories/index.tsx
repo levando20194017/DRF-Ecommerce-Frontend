@@ -10,7 +10,7 @@ export const ProductCatgories = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [listCatalogs, setListCatalogs] = useState<any[]>([])
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(100);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedCatalog, setSelectedCatalog] = useState(0);
   const [listProducts, setListProducts] = useState<any[]>([])

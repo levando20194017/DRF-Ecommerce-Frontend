@@ -6,7 +6,7 @@ import ChartistTooltip from 'chartist-plugin-tooltips-updated';
 export const SalesValueChart = () => {
   const data = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    series: [[1, 2, 2, 3, 3, 4, 3]]
+    series: [[1, 2, 2, 3, 3, 4, 3], [3, 1, 5, 6, 7, 8, 3]]
   };
 
   const options = {
@@ -30,14 +30,14 @@ export const SalesValueChart = () => {
   ]
 
   return (
-    <Chartist data={data} options={{...options, plugins}} type="Line" className="ct-series-g ct-double-octave" />
+    <Chartist data={data} options={{ ...options, plugins }} type="Line" className="ct-series-g ct-double-octave" />
   );
 };
 
 export const SalesValueChartphone = () => {
   const data = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    series: [[1, 2, 2, 3, 3, 4, 3]]
+    series: [[1, 2, 2, 3, 3, 4, 3], [3, 1, 5, 6, 7, 8, 3]]
   };
 
   const options = {
@@ -61,7 +61,7 @@ export const SalesValueChartphone = () => {
   ]
 
   return (
-    <Chartist data={data} options={{...options, plugins}} type="Line" className="ct-series-g ct-major-tenth" />
+    <Chartist data={data} options={{ ...options, plugins }} type="Line" className="ct-series-g ct-major-tenth" />
   );
 };
 
@@ -85,7 +85,7 @@ export const CircleChart = (props) => {
   ]
 
   return (
-    <Chartist data={{ series }} options={{...options, plugins}} type="Pie" className="ct-golden-section" />
+    <Chartist data={{ series }} options={{ ...options, plugins }} type="Pie" className="ct-golden-section" />
   );
 };
 
@@ -111,6 +111,6 @@ export const BarChart = (props) => {
   ]
 
   return (
-    <Chartist data={data} options={{...options, plugins}} type="Bar" className={chartClassName} />
+    <Chartist data={data} options={{ ...options, plugins }} type="Bar" className={chartClassName} />
   );
 };

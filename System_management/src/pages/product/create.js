@@ -106,7 +106,8 @@ export default () => {
           file.type === "image/jpeg" ||
           file.type === "image/jpg" ||
           file.type === "image/png" ||
-          file.type === "image/gif"
+          file.type === "image/gif" ||
+          file.type === "image/avif"
         )
       ) {
         toastFailed("Please select PNG, GIF or JPG file.")

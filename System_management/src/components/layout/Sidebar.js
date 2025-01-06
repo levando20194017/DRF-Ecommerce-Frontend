@@ -168,7 +168,7 @@ export default () => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="Mint Admin" image={ReactHero} link="#" />
+              <NavItem title="Viva Admin" image={ReactHero} link="#" />
               <NavItem
                 title="Dashboard"
                 link={Routes.DashboardOverview.path}

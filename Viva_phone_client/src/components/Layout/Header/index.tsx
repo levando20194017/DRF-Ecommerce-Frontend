@@ -118,7 +118,9 @@ const Header: FC = () => {
     }
   }
   const handleLinkCart = () => {
-    setLoading(true)
+    if (userData?.id) {
+      setLoading(true)
+    }
     navigate(Routes.Cart.path)
   }
 
@@ -209,13 +211,15 @@ const Header: FC = () => {
         <div className="location">
           <i className="bi bi-geo-alt-fill"></i> 46 Ngõ 61 Định Công, Hoàng Mai, Hà Nội
         </div>
-        <div className="welcome">
-          Xin chào{" "}
-          <span style={{ color: "#ff652f", fontWeight: "600", marginLeft: "5px" }}>
-            {userData.last_name + " " + userData.first_name}
-          </span>
-          !
-        </div>
+        {userData?.id &&
+          <div className="welcome">
+            Xin chào{" "}
+            <span style={{ color: "#ff652f", fontWeight: "600", marginLeft: "5px" }}>
+              {userData?.last_name + " " + userData?.first_name}
+            </span>
+            !
+          </div>
+        }
       </Navbar>
       <div className="header2">{renderHeaderContent()}</div>
       <header className={visible ? "header visible" : "header"}>{renderHeaderContent(true)}</header>
