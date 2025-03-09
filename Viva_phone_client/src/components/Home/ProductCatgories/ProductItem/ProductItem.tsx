@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../../../../screens/Routes";
 import "../../style.scss";
-import { getImageUrl } from "../../../../helps/getImageUrl";
 import { formatPrice } from "../../../../utils/format";
 import { promotionType } from "../../../../utils/promotionType";
 import { checkPromotionValid } from "../../../../helps/checkPormotionValid";
@@ -21,7 +20,7 @@ export const ProductItem = (props: any) => {
       <div className="single-location mb-20">
         <div className="frame-product">
           <div className="location-img">
-            <img src={getImageUrl(product.image)} alt={product.name} />
+            <img src={(product.image)} alt={product.name} />
             <div className="item-actions">
               <div
                 className="quick-view"

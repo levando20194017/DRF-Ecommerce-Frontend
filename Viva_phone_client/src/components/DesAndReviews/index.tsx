@@ -1,7 +1,6 @@
 import "./style.scss";
 import { FC, useEffect, useRef, useState } from "react";
 import logo4 from "../../assets/images/logo4.png";
-import { getImageUrl } from "../../helps/getImageUrl";
 import { Button, Image, message, Rate } from "antd";
 import { formatTime } from "../../utils/format";
 import { getUserData } from "../../helps/getItemLocal";
@@ -123,7 +122,7 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                     <div>
                       <img
                         className="headerUser-right-avt rounded-circle"
-                        src={item.guest.avatar ? getImageUrl(item.guest.avatar) : NoImage}
+                        src={item.guest.avatar ? (item.guest.avatar) : NoImage}
                         alt="avatar"
                         width={50}
                         height={50}
@@ -176,7 +175,7 @@ export const DesAndReviews: FC<any> = ({ productDetail, dataReviews, handleGetLi
                         {item.gallery.split(',').map((image: string, index: number) => (
                           <div key={index} className="col-2 position-relative mb-3 p-2">
                             <Image
-                              src={getImageUrl(image)}
+                              src={(image)}
                               alt={`Image ${index}`}
                               className="img-fluid"
                               style={{ borderRadius: "4px", backgroundColor: "gray" }}

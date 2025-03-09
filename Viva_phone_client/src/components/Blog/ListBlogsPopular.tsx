@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { apiGetListHotBlogs } from '../../services/blog';
-import { getImageUrl } from '../../helps/getImageUrl';
 import { formatTime } from '../../utils/format';
 import { truncateString } from '../../helps/truncateString';
 import { Link } from 'react-router-dom';
@@ -33,7 +32,7 @@ const ListBlogsPopular: React.FC = () => {
                         <div key={index} className="pb-4 mt-4 frame-blog-popular">
                             <div className='d-flex gap-3'>
                                 <div className='frame-blog-image'>
-                                    <img src={getImageUrl(article.image)} className='img-blog-popular' alt='image' />
+                                    <img src={(article.image)} className='img-blog-popular' alt='image' />
                                 </div>
                                 <div>
                                     <div className='blog-popular-title'>{article.title}</div>

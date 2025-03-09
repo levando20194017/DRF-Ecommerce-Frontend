@@ -3,7 +3,6 @@ import './account.scss';
 import { Button, Image, message } from 'antd';
 import NoImage from "../../../assets/images/no_avatar.jpg"
 import { ToastFailed } from '../../Common/Toast';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { apiChangeAvatar } from '../../../services/userService';
 import { setUserDataLocal } from '../../../helps/setLocalStorage';
 import { TypeLocal } from '../../../helps/typeItem';
@@ -116,7 +115,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ formData, setFormData }) =>
             <div className="avatar-profile">
                 {formData.avatar ? (
                     <Image
-                        src={getImageUrl(formData.avatar)}
+                        src={(formData.avatar)}
                     />
                 ) : (
                     <Image src={formData.avatar ? "" : NoImage} />

@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { apiCanceledOrder, apiGetOrderDetail } from '../../../services/order';
 import { formatPrice, formatTime, formatTime2 } from '../../../utils/format';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusShow, OrderStatusType } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';
@@ -160,7 +159,7 @@ const OrderStatus: React.FC = () => {
                         {orderDetail.items?.map((item: any, index: number) => (
                             <div key={index} className="item">
                                 <div className='image'>
-                                    <img src={getImageUrl(item.product.image)} />
+                                    <img src={(item.product.image)} />
                                 </div>
                                 <div className="name ms-3">
                                     <div className='fw-bold'>{item.product.name}</div>

@@ -8,7 +8,6 @@ import "../../Home/style.scss"; // Đảm bảo bạn import file CSS
 import { apiGetBestSelling } from "../../../services/product";
 import { promotionType } from "../../../utils/promotionType";
 import { formatPrice } from "../../../utils/format";
-import { getImageUrl } from "../../../helps/getImageUrl";
 import { checkPromotionValid } from "../../../helps/checkPormotionValid";
 import { Link } from "react-router-dom";
 import { Routes } from "../../../screens/Routes";
@@ -55,7 +54,7 @@ const TopCategories = () => {
                     <SwiperSlide key={product.id}>
                         <Link to={Routes.AddToCart.getPath({ storeId: 1, productId: product.id, catalogId: product.catalog })}>
                             <div className="carousel-slide cursor-pointer">
-                                <img src={getImageUrl(product.image)} alt={product.name} />
+                                <img src={(product.image)} alt={product.name} />
                                 <div className="d-flex justify-content-start flex-column align-items-start gap-1">
                                     <h4>{product.name}</h4>
                                 </div>

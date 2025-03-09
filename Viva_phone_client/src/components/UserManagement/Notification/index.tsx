@@ -4,7 +4,6 @@ import { Button, Image } from 'antd';
 import EmptyNoti from './EmptyNotification';
 import { apiGetNotifications, apiReadNotification } from '../../../services/notification';
 import { getUserData } from '../../../helps/getItemLocal';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { formatPrice, formatTime } from '../../../utils/format';
 import { NotiShow } from '../../../utils/notiType';
 import { messageType, orderStatusCustom } from '../../../utils/message';
@@ -63,7 +62,7 @@ const Notification: React.FC = () => {
                 {listNoti.map((item, index) => (
                     <div className='d-flex gap-3 justify-content-between' key={index}>
                         <div>
-                            <Image src={item.image ? getImageUrl(item.image) : "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"} />
+                            <Image src={item.image ? (item.image) : "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"} />
                         </div>
                         <div className='d-flex flex-column gap-1' style={{ flex: 1 }}>
                             <div className='title'>

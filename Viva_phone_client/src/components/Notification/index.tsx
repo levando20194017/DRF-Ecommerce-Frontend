@@ -9,7 +9,6 @@ import { Button, Image } from "antd";
 import { formatPrice, formatTime } from "../../utils/format";
 import { messageType, orderStatusCustom } from "../../utils/message";
 import { NotiShow } from "../../utils/notiType";
-import { getImageUrl } from "../../helps/getImageUrl";
 import { useNavigate } from "react-router-dom";
 import { useHandleGetTotalUnnotification } from "../../hook/GetTotalUnread";
 import { truncateString } from "../../helps/truncateString";
@@ -150,7 +149,7 @@ const Notification: React.FC<any> = ({ total_unread }) => {
                             >
                                 <div className='d-flex gap-3 justify-content-between w-100' key={index}>
                                     <div>
-                                        <Image style={{ height: 100, width: 100, borderRadius: "4px" }} src={item.image ? getImageUrl(item.image) : "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"} />
+                                        <Image style={{ height: 100, width: 100, borderRadius: "4px" }} src={item.image ? (item.image) : "https://th.bing.com/th/id/OIP.NNV6upXq_hxGvx9xeVSQ_wHaEK?rs=1&pid=ImgDetMain"} />
                                     </div>
                                     <div className='d-flex flex-column gap-1 w-100' style={{ flex: 1 }}>
                                         <div className='title fw-bold'>

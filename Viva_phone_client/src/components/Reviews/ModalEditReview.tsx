@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Modal, Rate, Input, Checkbox, Button } from "antd";
-import { apiGetListGallery, apiGuestReview, apiUpdateReview } from "../../services/review";
-import { getImageUrl } from "../../helps/getImageUrl";
-import { getUserData } from "../../helps/getItemLocal";
+import { apiGetListGallery, apiUpdateReview } from "../../services/review";
 
 const { TextArea } = Input;
 
@@ -121,7 +119,7 @@ const ModalEditReview: React.FC<ReviewModalProps> = ({ visible, onClose, review,
                 <div className="row align-items-center mb-3">
                     <div className="col-3">
                         <img
-                            src={getImageUrl(review?.product?.image)}
+                            src={(review?.product?.image)}
                             alt="Product"
                             className="img-fluid"
                         />
@@ -174,7 +172,7 @@ const ModalEditReview: React.FC<ReviewModalProps> = ({ visible, onClose, review,
                             {listImages.map((image, index) => (
                                 <div key={index} className="col-3 position-relative mb-3">
                                     <img
-                                        src={getImageUrl(image)}
+                                        src={(image)}
                                         alt={`Image ${index}`}
                                         className="img-fluid"
                                     />

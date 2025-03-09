@@ -1,6 +1,5 @@
 import React from 'react';
 import { Checkbox, InputNumber, Button, Popconfirm } from 'antd';
-import { getImageUrl } from '../../helps/getImageUrl';
 import { formatPrice } from '../../utils/format';
 import { promotionType } from '../../utils/promotionType';
 import { checkPromotionValid } from '../../helps/checkPormotionValid';
@@ -29,7 +28,7 @@ const CartItem: React.FC<CartItemProps> = ({ cartItem, onQuantityChange, onSelec
                 {/* Product Info */}
                 <div className="col-11 d-flex">
                     <img
-                        src={getImageUrl(cartItem.product.image)}
+                        src={(cartItem.product.image)}
                         alt={cartItem.product.name}
                         style={{ width: 80, height: 80, objectFit: 'cover' }}
                         className="me-3"
