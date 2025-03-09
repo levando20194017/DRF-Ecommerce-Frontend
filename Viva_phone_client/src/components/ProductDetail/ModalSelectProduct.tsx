@@ -80,14 +80,14 @@ export const ModalSelectProduct: React.FC<any> = ({ productDetail, isModalVisibl
                     <div className='d-flex justify-content-between align-items-center mt-4'>
                         <div className='text-center' style={{ flexGrow: 1 }}>
                             <div>
-                                <img src={getImageUrl(productDetail?.image)} width={120} height={120} />
+                                <img src={(productDetail?.image)} width={120} height={120} />
                             </div>
                             <div className='fw-bold price mt-2'>{productDetail?.name}</div>
                         </div>
                         <div className='fw-bold price'>VS</div>
                         <div className='text-center' style={{ flexGrow: 1 }}>
                             <div>
-                                <img src={getImageUrl(optionSelected?.image)} width={120} height={120} />
+                                <img src={(optionSelected?.image)} width={120} height={120} />
                             </div>
                             <div className='fw-bold price mt-2'>{optionSelected?.name}</div>
                         </div>

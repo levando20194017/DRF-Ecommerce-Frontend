@@ -21,7 +21,7 @@ export const ProductItem = (props: any) => {
       <div className="single-location mb-20">
         <div className="frame-product">
           <div className="location-img">
-            <img src={getImageUrl(product.image)} alt={product.name} />
+            <img src={(product.image)} alt={product.name} />
             <div className="item-actions">
               <div
                 className="quick-view"

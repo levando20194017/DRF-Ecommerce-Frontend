@@ -160,7 +160,7 @@ const OrderStatus: React.FC = () => {
                         {orderDetail.items?.map((item: any, index: number) => (
                             <div key={index} className="item">
                                 <div className='image'>
-                                    <img src={getImageUrl(item.product.image)} />
+                                    <img src={(item.product.image)} />
                                 </div>
                                 <div className="name ms-3">
                                     <div className='fw-bold'>{item.product.name}</div>

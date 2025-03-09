@@ -116,7 +116,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ formData, setFormData }) =>
             <div className="avatar-profile">
                 {formData.avatar ? (
                     <Image
-                        src={getImageUrl(formData.avatar)}
+                        src={(formData.avatar)}
                     />
                 ) : (
                     <Image src={formData.avatar ? "" : NoImage} />

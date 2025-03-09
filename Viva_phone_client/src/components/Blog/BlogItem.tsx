@@ -25,7 +25,7 @@ export const BlogItem = (props: Props) => {
                 <div className="single-location-blog mb-20">
                     <div className="frame-blog-item">
                         <div className="location-img">
-                            <img src={getImageUrl(blog.image)} alt={blog.title} />
+                            <img src={(blog.image)} alt={blog.title} />
                         </div>
                         <div className="d-flex flex-column" style={{ gap: "8px" }}>
                             <div className="blog-title">{blog.title}</div>
