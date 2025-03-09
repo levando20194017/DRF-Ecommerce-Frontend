@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { apiCanceledOrder, apiGetOrderDetail } from '../../../services/order';
 import { formatPrice, formatTime, formatTime2 } from '../../../utils/format';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusShow, OrderStatusType } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { PaymentMethodShow, PaymentStatus, PaymentStatusShow } from '../../../utils/paymentType';

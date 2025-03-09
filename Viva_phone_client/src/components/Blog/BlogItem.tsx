@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Routes } from "../../screens/Routes";
 import { formatTime } from "../../utils/format";
 import { Image } from "antd";
-import { getImageUrl } from "../../helps/getImageUrl";
 
 interface Props {
     blog: Blog,

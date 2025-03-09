@@ -8,7 +8,6 @@ import { getUserData } from '../../helps/getItemLocal';
 import { Routes } from '../../screens/Routes';
 import { useSelector } from 'react-redux';
 import { Image } from 'antd';
-import { getImageUrl } from '../../helps/getImageUrl';
 
 const Sidebar: React.FC = () => {
     const tabsSidebar = [
@@ -34,7 +33,7 @@ const Sidebar: React.FC = () => {
         <div className="sidebar">
             <div className="user-info">
                 <div className="avatar">
-                    <Image src={getImageUrl(userInfor?.avatar)} />
+                    <Image src={(userInfor?.avatar)} />
                 </div>
                 <div className="username">{userInfor?.last_name} {userInfor?.first_name}</div>
                 <Link to={Routes.UserInfor.path}>

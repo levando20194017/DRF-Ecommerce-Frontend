@@ -1,7 +1,6 @@
 import React from 'react';
 // import { Product } from '../../types';
 import { formatPrice } from '../../utils/format';
-import { getImageUrl } from '../../helps/getImageUrl';
 import { promotionType } from '../../utils/promotionType';
 import { checkPromotionValid } from '../../helps/checkPormotionValid';
 import { Image } from 'antd';
@@ -16,7 +15,7 @@ const ProductItem: React.FC<any> = ({ item }) => {
             {/* Checkbox */}
             <div className='d-flex col-6'>
                 <Image
-                    src={getImageUrl(item.product.image)}
+                    src={(item.product.image)}
                     alt={item.product.name}
                     style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: "4px" }}
                     className="me-3"

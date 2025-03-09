@@ -3,7 +3,6 @@ import './account.scss';
 import { Button, Image, message } from 'antd';
 import NoImage from "../../../assets/images/no_avatar.jpg"
 import { ToastFailed } from '../../Common/Toast';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { apiChangeAvatar } from '../../../services/userService';
 import { setUserDataLocal } from '../../../helps/setLocalStorage';
 import { TypeLocal } from '../../../helps/typeItem';

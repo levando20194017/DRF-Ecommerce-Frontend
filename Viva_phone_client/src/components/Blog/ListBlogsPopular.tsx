@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { apiGetListHotBlogs } from '../../services/blog';
-import { getImageUrl } from '../../helps/getImageUrl';
 import { formatTime } from '../../utils/format';
 import { truncateString } from '../../helps/truncateString';
 import { Link } from 'react-router-dom';

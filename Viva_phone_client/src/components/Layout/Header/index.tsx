@@ -7,7 +7,6 @@ import logo4 from "../../../assets/images/logo4.png";
 import { Routes } from "../../../screens/Routes";
 import Notification from "../../Notification";
 import { apiSearchProductsInStore } from "../../../services/product";
-import { getImageUrl } from "../../../helps/getImageUrl";
 import { formatPrice } from "../../../utils/format";
 import { checkPromotionValid } from "../../../helps/checkPormotionValid";
 import { promotionType } from "../../../utils/promotionType";
@@ -171,7 +170,7 @@ const Header: FC = () => {
                   onClick={() => { handleClickItemProduct(result.product) }}>
                   <div className="d-flex">
                     <img
-                      src={getImageUrl(result.product.image)}
+                      src={(result.product.image)}
                       alt={result.product.name}
                       style={{ width: 50, height: 50, marginRight: 10 }}
                     />

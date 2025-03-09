@@ -4,7 +4,6 @@ import './Order.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { Routes } from '../../../screens/Routes';
 import { formatPrice } from '../../../utils/format';
-import { getImageUrl } from '../../../helps/getImageUrl';
 import { OrderStatusType, OrderStatusShow } from '../../../utils/orderStatus';
 import { promotionType } from '../../../utils/promotionType';
 import { apiCanceledOrder } from '../../../services/order';
@@ -78,7 +77,7 @@ const OrderList: React.FC<any> = ({ listOrders, handleGetListOrder }) => {
                         {order.items.map((item: any, index: number) => (
                             <div key={index} className="item">
                                 <div className='image'>
-                                    <Image src={getImageUrl(item.product.image)} />
+                                    <Image src={(item.product.image)} />
                                 </div>
                                 <div className="name ms-3">
                                     <div className='fw-bold'>{item.product.name}</div>

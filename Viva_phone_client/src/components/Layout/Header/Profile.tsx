@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getUserData } from "../../../helps/getItemLocal";
-import { getImageUrl } from "../../../helps/getImageUrl";
 import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../../../screens/Routes";
 import { removeData } from "../../../helps/setLocalStorage";
@@ -77,7 +76,7 @@ const Profile: React.FC<any> = () => {
             >
                 <img
                     className="headerUser-right-avt rounded-circle"
-                    src={userData?.avatar ? getImageUrl(userData.avatar) : NoImage}
+                    src={userData?.avatar ? (userData.avatar) : NoImage}
                     alt="user avatar"
                     width={40}
                     height={40}

@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../../../../screens/Routes";
 import "../../style.scss";
-import { getImageUrl } from "../../../../helps/getImageUrl";
 import { formatPrice } from "../../../../utils/format";
 import { promotionType } from "../../../../utils/promotionType";
 import { checkPromotionValid } from "../../../../helps/checkPormotionValid";

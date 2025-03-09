@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import "./style.scss"
 import { apiGetListHotBlogs } from "../../services/blog";
 import { useEffect, useState } from "react";
-import { getImageUrl } from "../../helps/getImageUrl";
 import { formatTime } from "../../utils/format";
 
 interface PopularBlog {
@@ -43,7 +42,7 @@ const PopularBlog = () => {
       <div className="news-card">
         <img
           className="news-image"
-          src={getImageUrl(popularBlog.image)}
+          src={(popularBlog.image)}
           alt={popularBlog.title}
         />
         <div className="news-content">

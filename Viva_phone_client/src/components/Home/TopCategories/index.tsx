@@ -8,7 +8,6 @@ import "../../Home/style.scss"; // Đảm bảo bạn import file CSS
 import { apiGetBestSelling } from "../../../services/product";
 import { promotionType } from "../../../utils/promotionType";
 import { formatPrice } from "../../../utils/format";
-import { getImageUrl } from "../../../helps/getImageUrl";
 import { checkPromotionValid } from "../../../helps/checkPormotionValid";
 import { Link } from "react-router-dom";
 import { Routes } from "../../../screens/Routes";

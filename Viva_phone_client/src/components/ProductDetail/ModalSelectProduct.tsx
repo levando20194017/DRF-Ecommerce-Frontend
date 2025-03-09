@@ -1,7 +1,6 @@
 import { Modal, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { apiGetAllProducts } from '../../services/product';
-import { getImageUrl } from '../../helps/getImageUrl';
 import { CompareModal } from './ModalCompareProduct';
 
 // interface CompareModalProps {

@@ -9,7 +9,6 @@ import "./style.scss";
 import { apiAddToCart } from "../../services/cart";
 import { ToastFailed } from "../Common/Toast";
 import { toastWrong } from "../../utils/ToastType";
-import { getImageUrl } from "../../helps/getImageUrl";
 import { formatPrice, roundToNearestHalf } from "../../utils/format";
 import { checkPromotionValid } from "../../helps/checkPormotionValid";
 import { promotionType } from "../../utils/promotionType";
@@ -77,10 +76,10 @@ export const ProductDetail = ({ productDetail, storeDetail, stork, dataReviews, 
 
   useEffect(() => {
     if (productDetail?.image) {
-      const newListImages = [{ original: getImageUrl(productDetail.image) }]
+      const newListImages = [{ original: (productDetail.image) }]
       const gallery = productDetail?.gallery.split(',')
       gallery.forEach((item: string) => {
-        newListImages.push({ original: getImageUrl(item) })
+        newListImages.push({ original: (item) })
       })
       setListImages(newListImages)
       setImages(newListImages.slice(0, 4))
